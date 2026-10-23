@@ -138,7 +138,7 @@ $('old').addEventListener('change',async()=>{await new Promise(r=>setTimeout(r,2
 <section class="card"><h2><span class="n">2</span>報表設定</h2><div id="lockInfo" class="lock"><span id="lockText">建立新報表：可自由設定</span><button type="button" class="secondary hidden" id="unlock">解鎖並修改設定</button></div><fieldset id="settings"><div class="settings-layout">
 <div class="settings-row two"><div><label>報表類型</label><select id="type"><option value="" selected disabled>請選擇報表類型</option><option value="YT 優化轉換（訂閱 CPA）">YouTube｜優化轉換（訂閱 CPA）</option><option value="YT_VIEW">YouTube｜影片觀看 CPV</option><option value="DGC_CLICK">Demand Gen｜點擊 CPC</option><option value="GS_STANDARD">Google Search｜標準版（多分頁）</option><option value="GS_SHOPPING">Google Search｜轉換版</option><option value="GS_ADVANCED">Google Search｜進階版（多分頁）</option><option value="APP_INSTALL">App｜安裝 CPI（月度分頁）</option><option value="PMAX_ORIGINAL">PMax｜原版型（每日＋素材資源群組）</option></select></div><div id="normalCampaignField"><label>行銷活動</label><select id="campaign"><option value="">請選擇行銷活動</option></select></div><div id="gsScopeField" class="hidden"><label>GS 專案資料範圍</label><select id="gsScope"><option value="custom" selected>自訂合併的廣告活動（預設）</option><option value="all">全部廣告活動</option></select><div id="gsCustomCampaigns" class="hidden gs-campaign-list"></div><div class="tiny">GS 標準版與進階版皆產出一份多分頁 Excel，不會依 Campaign 拆成多份。</div></div></div>
 <div class="settings-row four"><div><label>走期開始（選填，自動辨識）</label><input id="start" type="date"></div><div><label>走期結束（選填，自動辨識）</label><input id="end" type="date"></div><div><label>預算（TWD，選填）</label><input id="budget" type="number" min="0" placeholder="請輸入預算"></div><div><label>預設 CPC（指標，選填）</label><input id="unit" type="number" min="0" step="0.01" placeholder="例如 5.00"></div></div>
-<div class="settings-row two"><div><label>轉換指標顯示名稱（選填，自動帶入預設）</label><input id="convLabel" placeholder="例如：訂閱次數、安裝次數"></div><div><label>下載檔名（必填；自動附加今日 _MMDD）</label><input id="filename" placeholder="例如：國泰投信_YT_週報"></div></div>
+<div class="settings-row two"><div><label>轉換指標顯示名稱（選填，自動帶入預設）</label><input id="convLabel" placeholder="例如：訂閱次數、安裝次數"></div><div><label>下載檔名（選填；留白自動命名並附加今日 _MMDD）</label><input id="filename" placeholder="例如：國泰投信_YT_週報"></div></div>
 <div class="settings-row two"><div><label>服務費（直接併入廣告費用）</label><select id="feeRate"><option value="0">不加服務費（預設）</option><optgroup label="外加：媒體費 × (1＋費率)"><option value="15">外加 15%</option><option value="20">外加 20%</option><option value="custom">外加自訂比例</option></optgroup><optgroup label="內含：媒體費 ÷ (1－費率)"><option value="included15">內含 15%</option><option value="included20">內含 20%</option><option value="includedCustom">內含自訂比例</option></optgroup></select></div><div id="customFeeWrap" class="hidden"><label>自訂服務費（%）</label><input id="customFee" type="number" min="0" max="99.99" step="0.01" value="0"></div></div>
 </div><p class="tiny" style="margin:-6px 0 10px;color:#5C6B7A">外加 15%：原始廣告費用 × 1.15；內含 15%：原始廣告費用 ÷ 0.85。兩者皆直接寫入「廣告費用」，不增加服務費欄。</p>
 <div id="gsMetricOpts" class="hidden" style="margin:12px 0 16px;border:1px solid #DDE3E9;border-radius:9px;background:#FAFBFC;padding:14px 18px"><div style="font-weight:700;margin-bottom:8px">GS 成效指標（選填）</div><div style="display:flex;flex-wrap:wrap;gap:22px"><label style="font-weight:normal"><input type="checkbox" id="gsCPA"> 加入轉換次數及 CPA</label><label style="font-weight:normal"><input type="checkbox" id="gsROAS"> 加入轉換價值及 ROAS</label></div><p class="tiny">CPA＝含服務費廣告費用 ÷ 轉換次數；ROAS＝轉換價值 ÷ 含服務費廣告費用。未勾選即不產出；原始資料缺少必要欄位時會提示，不會以 0 假裝有資料。</p></div><div class="image-upload"><label class="image-upload-title"><input type="checkbox" id="includeImages"> 新增「上刊圖」分頁（選填）</label><p class="tiny">可上傳多張 PNG／JPG，Excel 會依檔名列出並嵌入圖片；批次輸出時可依圖片檔名中的 Campaign 名稱分配。</p><input type="file" id="imagesInput" multiple accept="image/png,image/jpeg"><div id="imagesStatus" class="tiny">尚未選擇圖片</div></div><div class="note">原始 CSV 的「轉換」預設對應此範本的「訂閱次數」。請確認 Google Ads 匯出時的轉換動作確實為頻道訂閱。此版以「廣告群組」彙總興趣受眾，以「廣告名稱」彙總素材；服務費直接併入廣告費用及 CPC／CPA，不增加費用欄。</div></fieldset><div class="note">多 Campaign 規格：不同活動產出獨立 Excel；同一報表可保留多個工作表。此測試版先以活動下拉逐份產出，ZIP 批次產出已加入，依上方勾選分別生成 Excel。</div></section>
@@ -264,7 +264,7 @@ function compatibleImages(c,selected){if(!selected.length)return selected;const 
 function insertImageSheet(wb,c){if(!$('includeImages').checked||!uploadedCreativeImages.length)return;let selected=compatibleImages(c,uploadedCreativeImages);if(!selected.length)return;let name='上刊圖';let ws=wb.getWorksheet(name)||wb.addWorksheet(name);ws.getColumn(1).width=38;for(let i=2;i<=8;i++)ws.getColumn(i).width=13;ws.getCell('A1').value='上刊圖';ws.getCell('A1').font={name:'微軟正黑體',size:17,bold:true};let r=3;for(const im of selected){ws.getCell(r,1).value=im.name;ws.getCell(r,1).font={name:'微軟正黑體',size:11,bold:true};const id=wb.addImage({buffer:im.data,extension:im.type==='image/png'?'png':'jpeg'});ws.addImage(id,{tl:{col:1,row:r-1},br:{col:7,row:r+7},editAs:'oneCell'});for(let q=r;q<r+8;q++)ws.getRow(q).height=22;r+=10;}}
 const previousBuildV3=buildV3;
 buildV3=async function(c,prior=null){const wb=await previousBuildV3(c,prior);insertImageSheet(wb,c);return wb;};
-async function executeV31(isBatch){const btn=$(isBatch?'batchDownload':'download'),box=$('downloadStatus');if(!entries.length)return;let chosen=isBatch?[...document.querySelectorAll('.batch-campaign-check:checked')].map(x=>x.value):[$('campaign').value];if(!chosen.length){box.textContent='請先選擇行銷活動';return;}btn.disabled=true;box.style.display='block';box.className='note';box.textContent='正在建立 Excel…';await new Promise(r=>setTimeout(r,40));try{if(!window.ExcelJS)throw Error('ExcelJS 尚未載入');if(isBatch&&!window.JSZip)throw Error('JSZip 尚未載入');const prior=await getPrior(),zip=isBatch?new JSZip():null;for(let i=0;i<chosen.length;i++){let c=chosen[i];box.textContent=`正在產出 ${i+1}/${chosen.length}：${c||'所有活動'}`;let wb=await buildV3(c,prior),bytes=await wb.xlsx.writeBuffer();let safe=String(c||'所有活動').replace(/[\\/:*?"<>|\x00-\x1f]/g,'_').slice(0,72);let base=$('filename').value.trim()||`${safe}_${formatMap[typeKey()]?.name||'週報'}`;let fname=isBatch?outputName(safe+'_'+(formatMap[typeKey()]?.name||'週報'),'xlsx'):outputName(base,'xlsx');if(zip)zip.file(fname,bytes);else await downloadData(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),fname);}if(zip){box.textContent='正在封裝 ZIP…';await downloadData(await zip.generateAsync({type:'blob'}),outputName($('filename').value.trim()||'GoogleAds_週報','zip'));}box.textContent='✓ 已完成 '+chosen.length+' 份 Excel'+(isBatch?'，已封裝 ZIP':'')+'。';box.className='note success';}catch(e){box.className='note error';box.textContent='Excel 產出失敗：'+e.message;console.error(e);}finally{refresh();}}
+async function executeV31(isBatch){const btn=$(isBatch?'batchDownload':'download'),box=$('downloadStatus');if(!entries.length)return;let chosen=isBatch?[...document.querySelectorAll('.batch-campaign-check:checked')].map(x=>x.value):[$('campaign').value];if(!chosen.length){box.textContent='請先選擇行銷活動';return;}btn.disabled=true;box.style.display='block';box.className='note';box.textContent='正在建立 Excel…';await new Promise(r=>setTimeout(r,40));try{if(!window.ExcelJS)throw Error('ExcelJS 尚未載入');if(isBatch&&!window.JSZip)throw Error('JSZip 尚未載入');const prior=await getPrior(),zip=isBatch?new JSZip():null;for(let i=0;i<chosen.length;i++){let c=chosen[i];box.textContent=`正在產出 ${i+1}/${chosen.length}：${c||'所有活動'}`;let wb=await buildV3(c,prior),bytes=await wb.xlsx.writeBuffer();let safe=String(c||'所有活動').replace(/[\\/:*?"<>|\x00-\x1f]/g,'_').slice(0,72);let base=$('filename').value.trim()||`${safe}_${formatMap[typeKey()]?.name||'週報'}`;let customBatch=(typeof v326R11BatchName==='function'?v326R11BatchName(c):'');let fname=isBatch?outputName(customBatch||safe+'_'+(formatMap[typeKey()]?.name||'週報'),'xlsx'):outputName(base,'xlsx');if(zip)zip.file(fname,bytes);else await downloadData(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),fname);}if(zip){box.textContent='正在封裝 ZIP…';await downloadData(await zip.generateAsync({type:'blob'}),outputName($('filename').value.trim()||'GoogleAds_週報','zip'));}box.textContent='✓ 已完成 '+chosen.length+' 份 Excel'+(isBatch?'，已封裝 ZIP':'')+'。';box.className='note success';}catch(e){box.className='note error';box.textContent='Excel 產出失敗：'+e.message;console.error(e);}finally{refresh();}}
 $('download').onclick=()=>executeV31(false);
 $('batchDownload').onclick=()=>executeV31(true);
 
@@ -830,16 +830,1380 @@ buildV3=async function(c,prior=null){
  try{return await prevBuildV324(c,prior);}finally{$('start').value=oldStart;$('end').value=oldEnd;$('convLabel').value=oldLabel;}
 };
 const beforeDownloadV324=executeV31;
-executeV31=async function(batch){if(!$('filename').value.trim()){
- const box=$('downloadStatus');box.style.display='block';box.className='note error';box.textContent='請先填寫下載檔名（必填）。';return;
- }return beforeDownloadV324(batch);};
+executeV31=async function(batch){return beforeDownloadV324(batch);};
 $('download').onclick=()=>executeV31(false);$('batchDownload').onclick=()=>executeV31(true);
 const oldRefreshV324=refresh;
-refresh=function(){oldRefreshV324();if(!$('filename').value.trim()){$('download').disabled=true;$('batchDownload').disabled=true;}
+refresh=function(){oldRefreshV324();/* Optional filename: generated automatically if blank. */
  if(typeKey()==='PMAX_ORIGINAL'){
  const hint=$('pmaxDownloadHint');if(hint){hint.textContent=$('pmaxAssets').files.length?'已上傳資源群組：產出完整分析版':'未上傳資源群組：產出每日成效基本版';}
  }
 };
 $('filename').addEventListener('input',refresh);
 refresh();
+
+/* V3.25: all-sheet outer table borders and workbook-wide Excel note removal. */
+function finishExcelPresentationV325(wb){
+  const edge={style:'medium',color:{argb:'FF000000'}};
+  const mark=(ws,r1,c1,r2,c2)=>{
+    if(r2<=r1||c2<=c1)return;
+    for(let c=c1;c<=c2;c++){
+      for(const [r,side] of [[r1,'top'],[r2,'bottom']]){
+        const cell=ws.getCell(r,c);cell.border={...(cell.border||{}),[side]:{...edge}};
+      }
+    }
+    for(let r=r1;r<=r2;r++){
+      for(const [c,side] of [[c1,'left'],[c2,'right']]){
+        const cell=ws.getCell(r,c);cell.border={...(cell.border||{}),[side]:{...edge}};
+      }
+    }
+  };
+  for(const ws of wb.worksheets){
+    if(ws.name.startsWith('_')||ws.state==='veryHidden'){
+      ws.eachRow({includeEmpty:true},row=>row.eachCell({includeEmpty:true},cell=>{if(cell.note!==undefined&&cell.note!==null)cell.note=undefined;}));
+      continue;
+    }
+    const rows=[];
+    ws.eachRow({includeEmpty:true},(row,rn)=>{
+      // Only examine instantiated cells to avoid altering the template's blank canvas.
+      const hits=[];
+      row.eachCell({includeEmpty:true},(cell,cn)=>{
+        if(cell.note!==undefined&&cell.note!==null)cell.note=undefined;
+        if(cell.value!==null&&cell.value!==undefined&&cell.value!=='')hits.push(cn);
+      });
+      if(hits.length>=2)rows.push({r:rn,cols:hits});
+    });
+    if(!rows.length)continue;
+    // Connected occupied row/column blocks identify genuine tables, including
+    // separate side-by-side panels and the different uploaded Excel templates.
+    let blocks=[],active=null;
+    for(const item of rows){
+      if(!active||item.r>active.end+1){active={start:item.r,end:item.r,cols:new Set(item.cols)};blocks.push(active)}
+      else {active.end=item.r;item.cols.forEach(c=>active.cols.add(c));}
+    }
+    for(const b of blocks){
+      if(b.end<=b.start)continue;
+      const columns=[...b.cols].sort((a,b)=>a-b);
+      let runs=[],first=columns[0],last=first;
+      for(const c of columns.slice(1)){
+        if(c>last+1){runs.push([first,last]);first=c;}
+        last=c;
+      }
+      runs.push([first,last]);
+      for(const [c1,c2] of runs){
+        if(c2-c1<1)continue;
+        // A panel is a table only when at least two rows have actual values in it.
+        const relevant=rows.filter(x=>x.r>=b.start&&x.r<=b.end&&x.cols.some(c=>c>=c1&&c<=c2));
+        if(relevant.length<2)continue;
+        mark(ws,relevant[0].r,c1,relevant[relevant.length-1].r,c2);
+      }
+    }
+  }
+  return wb;
+}
+const buildBeforePresentationV325=buildV3;
+buildV3=async function(c,prior=null){return finishExcelPresentationV325(await buildBeforePresentationV325(c,prior));};
+
+
+
+/* V3.26 INTEGRATION PATCH | additive changes after V3.25; original builders retained. */
+const V326_VERSION='3.26';
+const V326_ORIGINAL_SOURCE='google_ads_report_generator_v3_25.html';
+
+// Distinguish raw source field from other Google Ads creative fields.
+// Important: avoid silently substituting ad name for an absent ad label.
+const v326PriorUpload=upload;
+upload=async function(f){
+  await v326PriorUpload(f);
+  if(!entries.length) return;
+  try{
+    const raw=await readGrid(f);
+    const hi=raw.findIndex((r,i)=>i<20&&['日期','廣告活動','曝光','點擊','費用'].every(k=>r.map(x=>String(x).trim()).includes(k)));
+    if(hi>=0){
+      const h=raw[hi].map(x=>String(x).trim()),id=h.indexOf('廣告標籤');
+      const idAd=h.indexOf('廣告名稱');
+      const gridRows=raw.slice(hi+1).filter(r=>dateIso(r[h.indexOf('日期')]));
+      entries.forEach((rec,i)=>{
+        const row=gridRows[i];if(!row)return;
+        // Keep the original ad property untouched for legacy creative-group sheets.
+        rec.adLabel=id>=0?String(row[id]??'').trim():'';
+        rec.adOriginalName=idAd>=0?String(row[idAd]??'').trim():'';
+      });
+      window.__v326AdLabelAvailable=id>=0;
+    }
+  }catch(e){console.warn('V3.26 廣告標籤檢查失敗：',e);}
+  refresh();
+};
+
+// Configuration migration is non-destructive; unknown legacy properties survive.
+function v326MigrateConfig(cfg){
+  const c={...(cfg||{})};
+  if(!c.type && c.reportType)c.type=c.reportType;
+  if(c.type==='YT_SUBSCRIBE')c.type='YT 優化轉換（訂閱 CPA）';
+  if(c.type==='GS_CONVERSION')c.type='GS_SHOPPING';
+  if(c.gsCPA===undefined && c.type==='GS_SHOPPING')c.gsCPA=true;
+  if(c.gsROAS===undefined && c.type==='GS_SHOPPING')c.gsROAS=true;
+  c._v326MigratedFrom=c._googleVersion||c.configVersion||c._v326MigratedFrom||'legacy';
+  c._googleVersion='3.26';
+  return c;
+}
+const v326PreviousRestore=restore;
+restore=function(cfg){return v326PreviousRestore(v326MigrateConfig(cfg));};
+const v326PreviousFields=fields;
+fields=function(){return {...v326PreviousFields(),_googleVersion:V326_VERSION};};
+
+// Update existing report data safely while retaining manually maintained sheets.
+function v326ClonePreservedSheet(source,target,name){
+  if(target.getWorksheet(name))return;
+  const ws=target.addWorksheet(name);
+  for(let i=1;i<=source.columnCount;i++)ws.getColumn(i).width=source.getColumn(i).width;
+  source.eachRow({includeEmpty:true},(row,rn)=>{
+    const nr=ws.getRow(rn);nr.height=row.height;nr.hidden=row.hidden;
+    row.eachCell({includeEmpty:true},(cell,cn)=>{
+      const dest=nr.getCell(cn);
+      dest.value=cell.value;
+      dest.style=JSON.parse(JSON.stringify(cell.style||{}));
+    });
+  });
+  for(const rg of Object.keys(source._merges||{})){
+    try{ws.mergeCells(rg);}catch(e){console.warn('保留分頁合併區失敗',name,rg,e.message);}
+  }
+  // In update mode, cell copying alone silently loses Excel-embedded screenshots.
+  // Remap workbook-local image IDs and retain each image's original placement.
+  if(typeof source.getImages==='function'){
+    for(const placed of source.getImages()){
+      try{
+        const original=source.workbook.getImage(placed.imageId);
+        if(!original || (!original.buffer && !original.base64))continue;
+        const imageId=target.addImage({
+          ...(original.buffer?{buffer:original.buffer}:{base64:original.base64}),
+          extension:original.extension||'png'
+        });
+        ws.addImage(imageId,JSON.parse(JSON.stringify(placed.range)));
+      }catch(e){console.warn('保留舊上刊圖失敗',name,e.message);}
+    }
+  }
+}
+function v326PreserveUpdateSheets(wb,prior){
+  if(!prior || $('mode').value!=='update')return wb;
+  const keep=new Set(['GS廣告文案','AI MAX搜尋字詞','上刊圖']);
+  for(const src of prior.worksheets){
+    if(src.name==='_google_config')continue;
+    // Preserve historical month sheets in App, manual sheets and non-tool project tabs.
+    const isMonthly=/^\d{4}$/.test(src.name);
+    const isAncillary=/^(FB_CPM|工作表)/.test(src.name);
+    if(keep.has(src.name)||isMonthly||isAncillary){
+      if(!wb.getWorksheet(src.name))v326ClonePreservedSheet(src,wb,src.name);
+    }
+  }
+  return wb;
+}
+
+// Date inference: apply existing V3.24 logic and permit year prefix YYMM in campaign naming.
+const v326PrevCampaignDates=campaignDateRange;
+campaignDateRange=function(name,records){
+  const out=v326PrevCampaignDates(name,records);
+  if(!out.inferred)return out;
+  const prefix=String(name||'').match(/^(20\d{2}|[2-9]\d)(0[1-9]|1[0-2])(?:_|-)/);
+  if(!prefix)return out;
+  const declaredYear=prefix[1].length===4?Number(prefix[1]):2000+Number(prefix[1]);
+  const srcRows=(records||entries).filter(x=>x.campaign===name);
+  const baseline=srcRows.map(x=>x.date).filter(Boolean).sort()[0]||'';
+  if(baseline && Math.abs(Number(baseline.slice(0,4))-declaredYear)>1)return out;
+  // Original inference is authoritative when explicit year appears in the date range.
+  const explicit=String(name).match(/(?:20\d{2})[./-]?\d{1,2}[/-]\d{1,2}/);
+  if(explicit)return out;
+  const startMonth=Number(out.start.slice(5,7)),startDay=Number(out.start.slice(8));
+  const endMonth=Number(out.end.slice(5,7)),endDay=Number(out.end.slice(8));
+  const endYear=endMonth<startMonth||(endMonth===startMonth&&endDay<startDay)?declaredYear+1:declaredYear;
+  const date=(y,m,d)=>`${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  return {start:date(declaredYear,startMonth,startDay),end:date(endYear,endMonth,endDay),inferred:true};
+};
+
+// GS Advanced: create advertising-copy rows from the *Google Ads 廣告標籤* field.
+// Never create faux labels from responsive search headline, ad name, or keywords.
+function v326WriteAdCopy(wb){
+  if(typeKey()!=='GS_ADVANCED')return;
+  const ws=wb.getWorksheet('GS廣告文案');
+  if(!ws)return;
+  const chosen=scopeRows('');
+  const labeled=chosen.filter(r=>String(r.adLabel||'').trim());
+  if(!labeled.length){
+    if(!$('mode').value.includes('update') && ws.getCell('A1').value==='此分頁由使用者手動維護'){
+      ws.getCell('A1').value='廣告標籤';ws.getCell('B1').value='說明';
+      ws.getCell('A2').value='主要 Raw Data 未提供廣告標籤或欄位皆空白；不使用廣告名稱替代';
+    }
+    return;
+  }
+  // The template layout may include other manual fields: replace only placeholder sheets,
+  // or create one compact panel if no original ad-copy content exists.
+  const prev=ws.getCell('A1').value;
+  const placeholder=prev==='此分頁由使用者手動維護'||ws.actualRowCount<=2;
+  if(!placeholder)return;  // Preserve existing manual/template content.
+  const by=new Map();
+  for(const r of labeled){const key=r.adLabel;let t=by.get(key)||{impr:0,click:0,spend:0,conv:0};t.impr+=r.impr;t.click+=r.click;t.spend+=r.spend;t.conv+=r.conv;by.set(key,t);}
+  ws.getRow(1).values=['廣告文案（廣告標籤）','曝光次數','點擊次數','廣告費用','轉換次數','CTR','CPC','CPA'];
+  let nr=2;
+  for(const [tag,t] of by){
+    const cost=t.spend*(1+serviceFee());
+    ws.getRow(nr).values=[tag,t.impr,t.click,cost,t.conv,t.impr?t.click/t.impr:0,t.click?cost/t.click:null,t.conv?cost/t.conv:null];
+    ws.getCell(nr,6).numFmt='0.00%';nr++;
+  }
+  ws.getColumn(1).width=48;
+  for(let col=2;col<=8;col++)ws.getColumn(col).width=18;
+  ws.getRow(1).eachCell(cell=>{cell.font={bold:true,color:{argb:'FFFFFFFF'}};cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF475368'}};});
+}
+const v326PriorBuild=buildV3;
+buildV3=async function(c,prior=null){
+  const wb=await v326PriorBuild(c,prior);
+  v326PreserveUpdateSheets(wb,prior);
+  v326WriteAdCopy(wb);
+  const config=wb.getWorksheet('_google_config')||wb.addWorksheet('_google_config');
+  let cfg={};try{cfg=JSON.parse(String(config.getCell('A2').value||'{}'));}catch(e){}
+  config.getCell('A1').value='Google Ads Report Generator V3.26 / config';
+  config.getCell('A2').value=JSON.stringify(v326MigrateConfig({...cfg,...fields(),campaign:c||cfg.campaign||'',type:typeKey()}));
+  config.state='veryHidden';
+  return finishExcelPresentationV325(wb);
+};
+
+// Ensure all export entrypoints check the required filename, not only non-GS batches.
+const v326PrevDownload=executeV31;
+executeV31=async function(isBatch){
+  return v326PrevDownload(isBatch);
+};
+// V3.25's GS handler calls buildV3 directly, which now emits V3.26 config.
+const v326OldGsClick=$('download').onclick;
+$('download').onclick=async function(){
+  if(isGsReport()){
+    // GS uses the established single-workbook download handler.
+    const box=$('downloadStatus'),btn=$('download');
+    if(!subset().length)return;
+    btn.disabled=true;box.style.display='block';box.className='note';box.textContent='V3.26：正在產出 GS Excel…';
+    try{
+      const prior=await getPrior();const wb=await buildV3('',prior);
+      const bytes=await wb.xlsx.writeBuffer();
+      await downloadData(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),outputName($('filename').value,'xlsx'));
+      box.className='note success';box.textContent='✓ 已建立 GS Excel；設定版本 V3.26';
+    }catch(e){box.className='note error';box.textContent='GS 產出失敗：'+e.message;console.error(e);}finally{refresh();}
+    return;
+  }
+  return v326OldGsClick();
+};
+$('batchDownload').onclick=()=>executeV31(true);
+document.querySelector('header p').textContent='V3.26｜YouTube／Demand Gen／Search／App／PMax · 範本整合測試版';
+refresh();
+/* END V3.26 PATCH */
+
+
+/* V3.26 ROUND 3: Real reference-template YT_VIEW / DGC_CLICK one-sheet workbook builders. */
+const V326_EXACT_SINGLE_TEMPLATES={YT_VIEW:'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',DGC_CLICK:'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'};
+function v326R3Sum(rs){return rs.reduce((t,r)=>{t.impr+=r.impr||0;t.click+=r.click||0;t.views+=r.views||0;t.spend+=r.spend||0;t.conv+=r.conv||0;return t},{impr:0,click:0,views:0,spend:0,conv:0})}
+function v326R3Group(rs,k){const m=new Map();for(const r of rs){const key=String(r[k]||'未命名');if(!m.has(key))m.set(key,[]);m.get(key).push(r)}return [...m].map(([name,data])=>({name,t:v326R3Sum(data)})).sort((a,b)=>b.t.spend-a.t.spend)}
+function v326R3WriteDaily(ws,rs,yt){
+  const rows=new Map();for(const r of rs){if(!rows.has(r.date))rows.set(r.date,[]);rows.get(r.date).push(r)}
+  const dates=[...rows.keys()].sort(),first=yt?10:11,last=yt?74:69;
+  if(dates.length>last-first+1)throw Error('範本每日表格最多 '+(last-first+1)+' 天，這次資料有 '+dates.length+' 天；為避免覆蓋公式請縮短走期');
+  const fee=1+serviceFee();
+  for(let rn=first;rn<=last;rn++){
+    const day=dates[rn-first],t=day?v326R3Sum(rows.get(day)):null;
+    ws.getCell(rn,1).value=day?excelDate(day):null;
+    for(const [col,value] of [[2,t?.impr],[3,yt?t?.views:t?.click],[4,yt?t?.click:(t?t.spend*fee:null)],[5,yt?(t?t.spend*fee:null):null]]){
+      if(!yt&&col===5)continue;
+      ws.getCell(rn,col).value=value??null;
+    }
+    if(yt){
+      ws.getCell(rn,6).value=t?{formula:`IFERROR(D${rn}/B${rn},0)`}:null;
+      ws.getCell(rn,7).value=t?{formula:`IFERROR(C${rn}/B${rn},0)`}:null;
+      ws.getCell(rn,8).value=t?{formula:`IFERROR(E${rn}/C${rn},0)`}:null;
+    }else{
+      ws.getCell(rn,5).value=t?{formula:`IFERROR(C${rn}/B${rn},0)`}:null;
+      ws.getCell(rn,6).value=t?{formula:`IFERROR(D${rn}/C${rn},0)`}:null;
+    }
+  }
+  const top=yt?9:10,firstData=first,lastData=last;
+  const sums=yt?{2:'曝光',3:'觀看',4:'點擊',5:'費用'}:{2:'曝光',3:'點擊',4:'費用'};
+  for(const col of Object.keys(sums).map(Number))ws.getCell(top,col).value={formula:`SUM(${L(col)}${firstData}:${L(col)}${lastData})`};
+  if(yt){ws.getCell(top,6).value={formula:`IFERROR(D${top}/B${top},0)`};ws.getCell(top,7).value={formula:`IFERROR(C${top}/B${top},0)`};ws.getCell(top,8).value={formula:`IFERROR(E${top}/C${top},0)`};}
+  else{ws.getCell(top,5).value={formula:`IFERROR(C${top}/B${top},0)`};ws.getCell(top,6).value={formula:`IFERROR(D${top}/C${top},0)`};}
+}
+function v326R3WritePanel(ws,items,begin,end,nameCol,numericCols,yt){
+ const fee=1+serviceFee();
+ if(items.length>end-begin+1)throw Error('受眾／素材數量 '+items.length+' 超出正式範本預留的 '+(end-begin+1)+' 列；請先縮小資料範圍');
+ for(let rn=begin;rn<=end;rn++){
+  const ent=items[rn-begin],t=ent?.t;
+  ws.getCell(rn,nameCol).value=ent?.name||null;
+  numericCols.forEach((col,i)=>{
+   const val= i===0?t?.impr:i===1?(yt?t?.views:t?.click):i===2?(yt?t?.click:t?.spend*fee):t?.spend*fee;
+   ws.getCell(rn,col).value=t?val:null;
+  });
+  const pivot=numericCols[0],count=numericCols[1],spend=numericCols[yt?3:2];
+  if(yt){ws.getCell(rn,spend+1).value=t?{formula:`IFERROR(${L(pivot+2)}${rn}/${L(pivot)}${rn},0)`}:null;ws.getCell(rn,spend+2).value=t?{formula:`IFERROR(${L(count)}${rn}/${L(pivot)}${rn},0)`}:null;ws.getCell(rn,spend+3).value=t?{formula:`IFERROR(${L(spend)}${rn}/${L(count)}${rn},0)`}:null;}
+  else{ws.getCell(rn,spend+1).value=t?{formula:`IFERROR(${L(count)}${rn}/${L(pivot)}${rn},0)`}:null;ws.getCell(rn,spend+2).value=t?{formula:`IFERROR(${L(spend)}${rn}/${L(count)}${rn},0)`}:null;}
+ }
+}
+async function v326R3SingleSheet(c,typ){
+ const src=V326_EXACT_SINGLE_TEMPLATES[typ],wb=new ExcelJS.Workbook();
+ await wb.xlsx.load(bytes64(src));
+ // DGC reference workbook uses shared formulas (notably J7:K7). The later
+ // presentation pass removes diagnostic masters; resolve EVERY dependent clone
+ // to an independent formula first, before any master is cleared.
+ if(typ==='DGC_CLICK'){
+  for(const sheet of wb.worksheets){
+   const resolved=[];
+   sheet.eachRow({includeEmpty:false},row=>row.eachCell({includeEmpty:false},cell=>{
+    const val=cell.value;
+    if(val&&typeof val==='object'&&(val.sharedFormula||val.shareType==='shared')){
+     let formula;
+     try{formula=cell.formula;}catch(err){throw Error('DGC 範本共用公式 '+cell.address+' 無法還原：'+err.message)}
+     if(typeof formula!=='string'||!formula.trim())throw Error('DGC 範本公式 '+cell.address+' 無法解析');
+     resolved.push({address:cell.address,formula});
+    }
+   }));
+   // Read all the formulas before replacing masters, otherwise clones lose links.
+   for(const x of resolved)sheet.getCell(x.address).value={formula:x.formula};
+  }
+ }
+ const ws=wb.worksheets[0];if(!ws)throw Error('正式 Excel 範本沒有可編輯分頁');
+ const rows=scopeRows(c),yt=typ==='YT_VIEW';if(!rows.length)throw Error('未找到所選期間的原始資料');
+ if(yt&&!heads.includes('TrueView 觀看'))throw Error('YT觀看需要 TrueView 觀看欄位');
+ const start=$('start').value,end=$('end').value;
+ ws.getCell('B1').value=start.slice(5).replace('-','/')+'-'+end.slice(5).replace('-','/');
+ ws.getCell('B2').value=$('budget').value.trim()===''?null:numeric($('budget').value);
+ ws.getCell('B4').value=$('unit').value.trim()===''?null:numeric($('unit').value);
+ ws.getCell('B3').value={formula:'IFERROR(B2/B4,0)'};
+ v326R3WriteDaily(ws,rows,yt);
+ if(yt){
+  v326R3WritePanel(ws,v326R3Group(rows,'group'),9,13,10,[11,12,13,14],true);
+  v326R3WritePanel(ws,v326R3Group(rows,'ad'),19,21,10,[11,12,13,14],true);
+  for(const [row,start,end] of [[14,9,13],[22,19,21]]){
+   for(const col of [11,12,13,14])ws.getCell(row,col).value={formula:`SUM(${L(col)}${start}:${L(col)}${end})`};
+   ws.getCell(row,15).value={formula:`IFERROR(M${row}/K${row},0)`};
+   ws.getCell(row,16).value={formula:`IFERROR(L${row}/K${row},0)`};
+   ws.getCell(row,17).value={formula:`IFERROR(N${row}/L${row},0)`};
+  }
+ }else{
+  v326R3WritePanel(ws,v326R3Group(rows,'group'),11,15,8,[9,10,11],false);
+  for(const col of [9,10,11])ws.getCell(10,col).value={formula:`SUM(${L(col)}11:${L(col)}15)`};
+  ws.getCell('L10').value={formula:'IFERROR(J10/I10,0)'};
+  ws.getCell('M10').value={formula:'IFERROR(K10/J10,0)'};
+ }
+ const conf=wb.getWorksheet('_google_config')||wb.addWorksheet('_google_config');
+ conf.getCell('A1').value='Google Ads Report Generator V3.26 / config';
+ conf.getCell('A2').value=JSON.stringify(v326MigrateConfig({...fields(),campaign:c,type:typ}));
+ conf.state='veryHidden';
+ wb.creator='cacaFly';
+ return finishExcelPresentationV325(wb);
+}
+const v326R3PriorBuilder=buildV3;
+buildV3=async function(c,prior=null){
+ const typ=typeKey();
+ if(typ==='YT_VIEW'||typ==='DGC_CLICK'){
+  const wb=await v326R3SingleSheet(c,typ);
+  v326PreserveUpdateSheets(wb,prior);
+  insertImageSheet(wb,c);
+  return finishExcelPresentationV325(wb);
+ }
+ return v326R3PriorBuilder(c,prior);
+};
+/* END V3.26 ROUND 3 */
+
+
+/* V3.26 ROUND 4 — update safety: preserve all non-rebuilt sheets and fail closed on images. */
+function v326R4CloneSheet(src,target){
+  const name=src.name;
+  if(target.getWorksheet(name))return;
+  const ws=target.addWorksheet(name);
+  ws.state=src.state;
+  if(src.views)ws.views=JSON.parse(JSON.stringify(src.views));
+  if(src.pageSetup)ws.pageSetup=JSON.parse(JSON.stringify(src.pageSetup));
+  if(src.headerFooter)ws.headerFooter=JSON.parse(JSON.stringify(src.headerFooter));
+  if(src.properties)ws.properties=JSON.parse(JSON.stringify(src.properties));
+  if(src.autoFilter)ws.autoFilter=JSON.parse(JSON.stringify(src.autoFilter));
+  for(let c=1;c<=src.columnCount;c++){
+    const sc=src.getColumn(c),tc=ws.getColumn(c);
+    tc.width=sc.width;tc.hidden=sc.hidden;tc.outlineLevel=sc.outlineLevel;
+    if(sc.style)tc.style=JSON.parse(JSON.stringify(sc.style));
+  }
+  src.eachRow({includeEmpty:true},(r,n)=>{
+    const dst=ws.getRow(n);dst.height=r.height;dst.hidden=r.hidden;dst.outlineLevel=r.outlineLevel;
+    r.eachCell({includeEmpty:true},(cell,c)=>{
+      const dc=dst.getCell(c);
+      dc.value=cell.value;
+      dc.style=JSON.parse(JSON.stringify(cell.style||{}));
+      if(cell.dataValidation)dc.dataValidation=JSON.parse(JSON.stringify(cell.dataValidation));
+      if(cell.hyperlink)dc.hyperlink=cell.hyperlink;
+    });
+  });
+  for(const merge of Object.keys(src._merges||{}))ws.mergeCells(merge);
+  const images=typeof src.getImages==='function'?src.getImages():[];
+  for(const im of images){
+    const original=src.workbook.getImage(im.imageId);
+    if(!original || (!original.buffer&&!original.base64)){
+      throw new Error('更新已停止：舊分頁「'+name+'」的圖片無法完整讀取，避免匯出遺失圖片的報表');
+    }
+    const id=target.addImage({...(original.buffer?{buffer:original.buffer}:{base64:original.base64}),extension:original.extension||'png'});
+    ws.addImage(id,JSON.parse(JSON.stringify(im.range)));
+  }
+}
+// Missing old worksheets can include manually added sheets, not merely predefined names.
+v326PreserveUpdateSheets=function(target,prior){
+  if(!prior||$('mode').value!=='update')return target;
+  for(const s of prior.worksheets){
+    if(s.name==='_google_config')continue;
+    if(!target.getWorksheet(s.name))v326R4CloneSheet(s,target);
+  }
+  return target;
+};
+// Ensure preservation runs regardless of which existing report-type writer is active.
+const v326R4BeforeBuild=buildV3;
+buildV3=async function(c,prior=null){
+  const generated=await v326R4BeforeBuild(c,prior);
+  if(prior && $('mode').value==='update'){
+    v326PreserveUpdateSheets(generated,prior);
+    // Prevent silently dropping embedded images on a worksheet regenerated by a builder.
+    // Such updates need a dedicated same-sheet image migration before they can be safe.
+    for(const old of prior.worksheets){
+      if(old.name==='_google_config')continue;
+      const rebuilt=generated.getWorksheet(old.name);
+      if(!rebuilt||typeof old.getImages!=='function')continue;
+      const oldImages=old.getImages();
+      if(!oldImages.length)continue;
+      const current=typeof rebuilt.getImages==='function'?rebuilt.getImages():[];
+      if(oldImages.length && current.length<oldImages.length){
+        for(const placed of oldImages){
+          const media=prior.getImage(placed.imageId);
+          if(!media||(!media.buffer&&!media.base64))throw Error('更新已停止：舊分頁「'+old.name+'」的圖片內容不可讀取');
+          const imageId=generated.addImage({...(media.buffer?{buffer:media.buffer}:{base64:media.base64}),extension:media.extension||'png'});
+          rebuilt.addImage(imageId,JSON.parse(JSON.stringify(placed.range)));
+        }
+      }
+    }
+  }
+  return generated;
+};
+/* END V3.26 ROUND 4 */
+
+/* V3.26 ROUND 5 — remove stray YT budget subtotal; use thin borders across tables. */
+function v326R5ThinTableBorders(wb){
+  for(const ws of wb.worksheets){
+    if(ws.name==='_google_config'||ws.state==='veryHidden')continue;
+    ws.eachRow({includeEmpty:true},row=>{
+      row.eachCell({includeEmpty:true},cell=>{
+        const old=cell.border;
+        if(!old)return;
+        const updated={...old};
+        let changed=false;
+        for(const side of ['top','bottom','left','right','diagonal']){
+          if(old[side] && old[side].style && old[side].style!=='thin'){
+            updated[side]={...old[side],style:'thin'};
+            changed=true;
+          }
+        }
+        if(changed)cell.border=updated;
+      });
+    });
+  }
+  return wb;
+}
+const v326R5BeforeBuild=buildV3;
+buildV3=async function(c,prior=null){
+  const wb=await v326R5BeforeBuild(c,prior);
+  // The stand-alone NT$ amount above the YT subscribe left table is not needed;
+  // the yellow totals row and all underlying cost/CPC/CPA calculations remain intact.
+  if(typeKey()==='YT 優化轉換（訂閱 CPA）'){
+    const yt=wb.getWorksheet('YT訂閱');
+    if(yt)yt.getCell('G7').value=null;
+  }
+  return v326R5ThinTableBorders(wb);
+};
+/* END V3.26 ROUND 5 */
+
+/* V3.26 ROUND 6 — consolidated customer acceptance changes. */
+const v326R6CampaignCfg={};
+const v326R6EffectiveDates=(name)=>{
+ const prior=v326R6CampaignCfg[name]||{};
+ const auto=campaignDateRange(name);
+ return {start:prior.start||auto.start||'',end:prior.end||auto.end||'',budget:prior.budget??'',unit:prior.unit??''};
+};
+function v326R6DrawCampaignEditor(){
+ let host=$('v326CampaignEditor');if(!host)return;
+ const names=[...new Set(entries.map(r=>r.campaign).filter(Boolean))].sort();
+ host.replaceChildren();host.classList.add('hidden');return; /* Replaced by unified R12 campaign editor. */
+ const heading=document.createElement('h3');heading.textContent='各 Campaign 獨立走期／預算（選填）';heading.style.cssText='font-size:15px;margin:0 0 10px';host.append(heading);
+ const tip=document.createElement('p');tip.className='tiny';tip.textContent='日期預設取自活動名稱，無法辨識時使用該活動 Raw Data 日期；各列可分別手動覆寫。';host.append(tip);
+ for(const n of names){const cfg=v326R6EffectiveDates(n);const wrap=document.createElement('div');wrap.style.cssText='border:1px solid #dde3e9;border-radius:8px;padding:12px;margin:10px 0';
+  const name=document.createElement('div');name.textContent=n;name.style.cssText='font-weight:650;overflow-wrap:anywhere;margin-bottom:8px';wrap.append(name);
+  const grid=document.createElement('div');grid.className='grid';
+  for(const [k,label,type] of [['start','開始日期','date'],['end','結束日期','date'],['budget','預算 TWD','number'],['unit','預設單價','number']]){
+   const slot=document.createElement('div'),lbl=document.createElement('label'),input=document.createElement('input');lbl.textContent=label;input.type=type;input.value=cfg[k]||'';input.setAttribute('data-v326-campaign',n);input.setAttribute('data-v326-field',k);
+   input.addEventListener('change',()=>{const target=v326R6CampaignCfg[n]||(v326R6CampaignCfg[n]={});target[k]=input.value;refresh()});slot.append(lbl,input);grid.append(slot);
+  }wrap.append(grid);host.append(wrap);
+ }
+}
+const v326R6Editor=document.createElement('div');v326R6Editor.id='v326CampaignEditor';v326R6Editor.className='card hidden';
+$('settings').parentElement.insertBefore(v326R6Editor,$('settings').nextSibling);
+const v326R6BeforeUpload=upload;
+upload=async function(file){await v326R6BeforeUpload(file);v326R6DrawCampaignEditor()};
+const v326R6BeforeRestore=restore;
+restore=function(cfg){v326R6BeforeRestore(cfg);if(cfg&&cfg.campaignConfigs&&typeof cfg.campaignConfigs==='object'){
+  for(const [name,val] of Object.entries(cfg.campaignConfigs))v326R6CampaignCfg[name]={...val};
+ }v326R6DrawCampaignEditor()};
+const v326R6PriorFields=fields;
+fields=function(){return {...v326R6PriorFields(),campaignConfigs:JSON.parse(JSON.stringify(v326R6CampaignCfg))}};
+// Campaign-specific dates are respected even within a combined GS workbook.
+const v326R6BeforeScope=scopeRows;
+scopeRows=function(c){let rs=v326R6BeforeScope(c);if(isGsReport())rs=rs.filter(r=>{
+ const d=v326R6EffectiveDates(r.campaign);return (!d.start||r.date>=d.start)&&(!d.end||r.date<=d.end);
+ });return rs};
+const v326R6BeforeSubset=subset;
+subset=function(){let rs=v326R6BeforeSubset();if(isGsReport())rs=rs.filter(r=>{
+ const d=v326R6EffectiveDates(r.campaign);return (!d.start||r.date>=d.start)&&(!d.end||r.date<=d.end);
+ });return rs};
+const v326R6BeforeBuild=buildV3;
+buildV3=async function(c,prior=null){
+ const saved={start:$('start').value,end:$('end').value,budget:$('budget').value,unit:$('unit').value};
+ try{
+  if(c&&!isGsReport()){
+   const cfg=v326R6EffectiveDates(c);
+   if(cfg.start)$('start').value=cfg.start;if(cfg.end)$('end').value=cfg.end;
+   if(cfg.budget!=='')$('budget').value=cfg.budget;if(cfg.unit!=='')$('unit').value=cfg.unit;
+  }else if(isGsReport()){
+   const selected=entries.filter(r=>allowGsRecord(r)),names=[...new Set(selected.map(r=>r.campaign))];
+   const configs=names.map(v326R6EffectiveDates);
+   const budgets=configs.map(x=>x.budget).filter(x=>x!==''&&Number.isFinite(Number(x)));
+   if(budgets.length===configs.length&&configs.length)$('budget').value=String(budgets.reduce((t,v)=>t+Number(v),0));
+   const starts=configs.map(x=>x.start).filter(Boolean).sort(),ends=configs.map(x=>x.end).filter(Boolean).sort();
+   if(starts.length)$('start').value=starts[0];if(ends.length)$('end').value=ends.at(-1);
+  }
+  const wb=await v326R6BeforeBuild(c,prior);
+  v326R6FormatWorkbook(wb);
+  const config=wb.getWorksheet('_google_config');if(config){let obj={};try{obj=JSON.parse(String(config.getCell('A2').value||'{}'));}catch(e){}obj.campaignConfigs=JSON.parse(JSON.stringify(v326R6CampaignCfg));config.getCell('A2').value=JSON.stringify(v326MigrateConfig(obj));}
+  return wb;
+ }finally{Object.entries(saved).forEach(([k,v])=>$(k).value=v)}
+};
+function v326R6IsFilled(cell){return cell&&cell.value!==null&&cell.value!==undefined&&cell.value!==''}
+function v326R6CleanFutureDates(ws){
+ // YT subscription carries all scheduled dates forward; only clear a date if absent
+ // from Raw Data entirely. A present, real zero remains a real zero.
+ if(ws.name!=='YT訂閱')return;
+ const covered=new Set(scopeRows($('campaign').value||'').map(r=>r.date));
+ for(let rn=11;rn<=Math.min(ws.rowCount,400);rn++){
+  const date=ws.getCell(rn,1).value;
+  let iso='';if(date instanceof Date)iso=date.toISOString().slice(0,10);
+  else if(typeof date==='number'&&date>30000)iso=new Date(Date.UTC(1899,11,30)+date*864e5).toISOString().slice(0,10);
+  else if(typeof date==='string')iso=dateIso(date);
+  if(iso&&!covered.has(iso))for(let c=2;c<=8;c++)ws.getCell(rn,c).value=null;
+ }
+}
+function v326R6FormatWorkbook(wb){
+ const black={argb:'FF000000'},thin={style:'thin',color:black},thick={style:'medium',color:black};
+ const frame=(ws,r1,c1,r2,c2)=>{
+  if(r1>r2||c1>c2)return;
+  for(let c=c1;c<=c2;c++)for(const [r,edge] of [[r1,'top'],[r2,'bottom']]){const cell=ws.getCell(r,c);cell.border={...(cell.border||{}),[edge]:thick}}
+  for(let r=r1;r<=r2;r++)for(const [c,edge] of [[c1,'left'],[c2,'right']]){const cell=ws.getCell(r,c);cell.border={...(cell.border||{}),[edge]:thick}}
+ };
+ for(const ws of wb.worksheets){if(ws.name==='_google_config'||ws.state==='veryHidden')continue;
+  v326R6CleanFutureDates(ws);
+  ws.eachRow({includeEmpty:true},row=>row.eachCell({includeEmpty:true},cell=>{
+    if(cell.note)cell.note=undefined;
+    if(cell.border){const b={...cell.border};for(const edge of ['top','bottom','left','right'])if(b[edge]?.style)b[edge]=thin;cell.border=b}
+  }));
+  // Avoid ####: dates, currency and percentage values are displayed at realistic widths.
+  for(let c=1;c<=ws.columnCount;c++){
+   const column=ws.getColumn(c);let needed=0;
+   column.eachCell({includeEmpty:false},cell=>{
+    const v=cell.value;if(v===null||v===undefined)return;
+    const fmt=cell.numFmt||'';
+    if(v instanceof Date||/yy|mm\/dd|yyyy/i.test(fmt))needed=Math.max(needed,16);
+    else if(typeof v==='number')needed=Math.max(needed,Math.min(19,String(Math.round(Math.abs(v))).length+(/%/.test(fmt)?8:7)));
+    else if(v&&typeof v==='object'&&v.formula)needed=Math.max(needed,14);
+   });
+   if(needed)column.width=Math.max(column.width||8,needed);
+  }
+  if(ws.name==='YT訂閱'){frame(ws,8,1,64,8);frame(ws,8,10,16,17);frame(ws,18,10,26,17);continue;}
+  if(typeKey()==='YT_VIEW'&&ws.name!=='上刊圖'){
+   frame(ws,7,1,74,8);
+   frame(ws,7,10,14,17);frame(ws,17,10,22,17);continue;
+  }
+  if(typeKey()==='DGC_CLICK'&&ws.name!=='上刊圖'){
+   frame(ws,8,1,69,6);
+   frame(ws,8,8,16,13);continue;
+  }
+  // Generic report sheets: outline the populated data area only (not empty canvas).
+  if(ws.name==='上刊圖'||ws.name.startsWith('FB_CPM')||ws.name.startsWith('工作表'))continue;
+  const meaningful=[];ws.eachRow({includeEmpty:false},(row,r)=>{
+   let count=0,lo=Infinity,hi=0;row.eachCell({includeEmpty:false},(cell,c)=>{if(v326R6IsFilled(cell)){count++;lo=Math.min(lo,c);hi=Math.max(hi,c)}});
+   if(count>=3)meaningful.push({r,lo,hi});
+  });
+  if(meaningful.length){const r1=meaningful[0].r,r2=meaningful.at(-1).r,c1=Math.min(...meaningful.map(x=>x.lo)),c2=Math.max(...meaningful.map(x=>x.hi));
+   if(r2-r1<3000&&c2-c1<60)frame(ws,r1,c1,r2,c2);
+  }
+ }
+}
+/* END V3.26 ROUND 6 */
+
+
+
+
+/* V3.26 ROUND 7 — YT subscribe missing dates and exact border zones. */
+function v326R7IsoDate(v){
+ if(v instanceof Date&&!isNaN(v.valueOf()))return [v.getFullYear(),String(v.getMonth()+1).padStart(2,'0'),String(v.getDate()).padStart(2,'0')].join('-');
+ if(typeof v==='number'&&v>30000&&v<100000){const d=new Date(Date.UTC(1899,11,30)+Math.floor(v)*86400000);return d.toISOString().slice(0,10)}
+ if(typeof v==='string')return dateIso(v);
+ return '';
+}
+function v326R7RepairSubscribe(wb,campaign){
+ const ws=wb.getWorksheet('YT訂閱');if(!ws)return wb;
+ // Scope against the actual campaign, not the UI's current selection (batch/update safe).
+ const actual=entries.filter(r=>r.campaign===campaign && (!$('start').value||r.date>=$('start').value)&&(!$('end').value||r.date<=$('end').value));
+ const present=new Set(actual.map(r=>r.date));
+ const black={argb:'FF000000'},thin=()=>({style:'thin',color:black}),medium=()=>({style:'medium',color:black});
+ let first=11,last=10;
+ // Scheduled dates are written starting at A11. Also cover original template's
+ // trailing preset rows which could otherwise retain unguarded /0 formulas.
+ for(let row=11;row<=Math.max(69,ws.rowCount);row++){
+  const iso=v326R7IsoDate(ws.getCell(row,1).value);
+  if(!iso)continue;
+  last=row;
+  if(!present.has(iso)){
+   for(let col=2;col<=8;col++)ws.getCell(row,col).value=null;
+  }else{
+   // Existing zero-valued records are real observations; keep their zeros.
+   // Fix any inherited unsafe divide operations without replacing actual data.
+   for(let col=6;col<=8;col++){
+    const cell=ws.getCell(row,col),v=cell.value;
+    if(v&&typeof v==='object'&&typeof v.formula==='string'&&!/^\s*IFERROR\s*\(/i.test(v.formula)){
+     cell.value={formula:`IFERROR(${v.formula},0)`};
+    }
+   }
+  }
+ }
+ // Never apply medium edges to each blank row: every interior boundary thin.
+ const bottom=Math.max(last,10);
+ for(let row=8;row<=bottom;row++)for(let col=1;col<=8;col++){
+  const cell=ws.getCell(row,col);
+  cell.border={...(cell.border||{}),top:thin(),bottom:thin(),left:thin(),right:thin()};
+ }
+ if(bottom>=8){
+  for(let col=1;col<=8;col++){
+   const topCell=ws.getCell(8,col),bottomCell=ws.getCell(bottom,col);
+   topCell.border={...topCell.border,top:medium()};
+   bottomCell.border={...bottomCell.border,bottom:medium()};
+  }
+  for(let row=8;row<=bottom;row++){
+   const left=ws.getCell(row,1),right=ws.getCell(row,8);
+   left.border={...left.border,left:medium()};
+   right.border={...right.border,right:medium()};
+  }
+  // Strong subtotal divider, but not thick borders around every inner cell.
+  for(let col=1;col<=8;col++){
+   const cell=ws.getCell(10,col);
+   cell.border={...cell.border,bottom:medium()};
+  }
+ }
+ // Keep the two right-side tables visually separate and consistent.
+ for(const [r1,r2] of [[8,16],[18,26]]){
+  for(let row=r1;row<=r2;row++)for(let col=10;col<=17;col++){
+   const cell=ws.getCell(row,col);
+   if(!cell.border||!Object.keys(cell.border).length)continue;
+   cell.border={...cell.border,top:thin(),bottom:thin(),left:thin(),right:thin()};
+  }
+  for(let col=10;col<=17;col++){
+   let cell=ws.getCell(r1,col);cell.border={...(cell.border||{}),top:medium()};
+   cell=ws.getCell(r2,col);cell.border={...(cell.border||{}),bottom:medium()};
+  }
+  for(let row=r1;row<=r2;row++){
+   let cell=ws.getCell(row,10);cell.border={...(cell.border||{}),left:medium()};
+   cell=ws.getCell(row,17);cell.border={...(cell.border||{}),right:medium()};
+  }
+ }
+ // Remove leftover template formulas beyond scheduled coverage: they must not
+ // produce #DIV/0! in the downloadable workbook.
+ for(let row=bottom+1;row<=ws.rowCount;row++){
+  if(!v326R7IsoDate(ws.getCell(row,1).value)){
+   for(let col=2;col<=8;col++){
+    const v=ws.getCell(row,col).value;
+    if(v&&typeof v==='object'&&v.formula)ws.getCell(row,col).value=null;
+   }
+  }
+ }
+ return wb;
+}
+const v326R7PriorBuild=buildV3;
+buildV3=async function(c,prior=null){
+ const wb=await v326R7PriorBuild(c,prior);
+ if(typeKey()==='YT 優化轉換（訂閱 CPA）')v326R7RepairSubscribe(wb,c);
+ return wb;
+};
+/* END V3.26 ROUND 7 */
+
+
+/* V3.26 ROUND 8 — explicit border reset for all three YT subscribe regions.
+   Rebuild every cell edge before drawing only the perimeter; never inherit
+   medium strokes from template blank rows or neighboring subtotal cells. */
+function v326R8Borders(wb){
+ const ws=wb.getWorksheet('YT訂閱');if(!ws)return wb;
+ const black='FF000000';
+ const edge=(name)=>({style:name,color:{argb:black}});
+ const apply=(cell,sides)=>{
+  const old=cell.border||{};
+  // Preserve non-edge characteristics, never share mutable border objects.
+  const b={};for(const k of Object.keys(old))if(!['top','bottom','left','right'].includes(k))b[k]=old[k];
+  for(const side of ['top','bottom','left','right'])b[side]=edge(sides[side]||'thin');
+  cell.border=b;
+ };
+ const rectangle=(r1,c1,r2,c2,divider)=>{
+  for(let r=r1;r<=r2;r++)for(let c=c1;c<=c2;c++){
+   const sides={};
+   if(r===r1)sides.top='medium';
+   if(r===r2)sides.bottom='medium';
+   if(c===c1)sides.left='medium';
+   if(c===c2)sides.right='medium';
+   if(divider&&r===divider)sides.bottom='medium';
+   if(divider&&r===divider+1)sides.top='medium';
+   apply(ws.getCell(r,c),sides);
+  }
+ };
+ // Daily segment: all scheduled dates, including those without raw data.
+ let last=10;
+ for(let r=11;r<=Math.max(69,ws.rowCount);r++){
+  if(v326R7IsoDate(ws.getCell(r,1).value))last=r;
+ }
+ rectangle(8,1,Math.max(10,last),8,10);
+ // Independently framed audience and ad tables, including their blank rows.
+ rectangle(8,10,16,17,9);
+ rectangle(18,10,26,17,19);
+ return wb;
+}
+const v326R8BeforeBuild=buildV3;
+buildV3=async function(c,prior=null){
+ const wb=await v326R8BeforeBuild(c,prior);
+ if(typeKey()==='YT 優化轉換（訂閱 CPA）')v326R8Borders(wb);
+ return wb;
+};
+/* END V3.26 ROUND 8 */
+
+
+/* V3.26 ROUND 9 — one final perimeter-only border renderer.
+   No thick per-row or per-cell boxes; keep inner edges thin even in empty rows.
+   Executed after every earlier formatter so a previous pass cannot re-thicken grids. */
+function v326R9FixSubscribeBorders(workbook){
+ const ws=workbook.getWorksheet('YT訂閱');
+ if(!ws)return workbook;
+ const color={argb:'FF000000'};
+ const side=(thick)=>({style:thick?'medium':'thin',color:{...color}});
+ const paint=(r1,c1,r2,c2,separator)=>{
+  for(let r=r1;r<=r2;r++){
+   for(let c=c1;c<=c2;c++){
+    const cell=ws.getCell(r,c);
+    const top=r===r1, bottom=r===r2, left=c===c1, right=c===c2;
+    const border={
+     top:side(top||r===separator+1),
+     bottom:side(bottom||r===separator),
+     left:side(left),right:side(right)
+    };
+    // Detach the cell's style object before assigning a border. This prevents
+    // sibling cells that share style references from inheriting thick edges.
+    const style={...cell.style,border};
+    cell.style=style;
+   }
+  }
+ };
+ let last=10;
+ for(let r=11;r<=Math.max(ws.rowCount,69);r++){
+  if(v326R7IsoDate(ws.getCell(r,1).value))last=r;
+ }
+ paint(8,1,Math.max(last,10),8,10);
+ paint(8,10,16,17,9);
+ paint(18,10,26,17,19);
+ return workbook;
+}
+const v326R9BeforeBuild=buildV3;
+buildV3=async function(c,prior=null){
+ const wb=await v326R9BeforeBuild(c,prior);
+ if(typeKey()==='YT 優化轉換（訂閱 CPA）')v326R9FixSubscribeBorders(wb);
+ return wb;
+};
+/* END V3.26 ROUND 9 */
+
+/* V3.26 ROUND 10 — universal final workbook date/border pass */
+// Executed LAST, after all legacy template-specific painters. Only date-detail
+// cells are trimmed; other historical/manual tabs and right-side blocks survive.
+function v326R10Finish(wb,campaign){
+ const black='FF000000';
+ const edge=style=>({style,color:{argb:black}});
+ const iso=v=>{
+  if(v instanceof Date&&!isNaN(v.getTime()))return `${v.getFullYear()}-${String(v.getMonth()+1).padStart(2,'0')}-${String(v.getDate()).padStart(2,'0')}`;
+  if(typeof v==='number'&&v>=30000&&v<100000)return new Date(Date.UTC(1899,11,30)+Math.floor(v)*86400000).toISOString().slice(0,10);
+  if(typeof v==='string'){
+   const m=v.trim().match(/^(20\d\d)[\/-](\d{1,2})[\/-](\d{1,2})$/);
+   if(m)return `${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`;
+  }
+  return '';
+ };
+ const scoped=(typeof scopeRows==='function'?scopeRows(campaign):entries.filter(r=>!campaign||r.campaign===campaign));
+ const latest=scoped.reduce((a,r)=>r.date>a?r.date:a,'');
+ const cloneEdge=(medium)=>edge(medium?'medium':'thin');
+ const stroke=(ws,r1,c1,r2,c2,separator)=>{
+  if(r2<r1||c2<c1)return;
+  for(let r=r1;r<=r2;r++)for(let c=c1;c<=c2;c++){
+   const cell=ws.getCell(r,c);
+   const b={...(cell.border||{})};
+   for(const side of ['top','bottom','left','right'])b[side]=cloneEdge(false);
+   if(r===r1)b.top=cloneEdge(true);
+   if(r===r2)b.bottom=cloneEdge(true);
+   if(c===c1)b.left=cloneEdge(true);
+   if(c===c2)b.right=cloneEdge(true);
+   if(separator===r)b.bottom=cloneEdge(true);
+   if(separator+1===r)b.top=cloneEdge(true);
+   // Do not retain shared ExcelJS style references between neighboring cells.
+   cell.style={...(cell.style||{}),border:b};
+  }
+ };
+ for(const ws of wb.worksheets){
+  if(ws.name==='_google_config'||ws.state==='veryHidden'||ws.name==='上刊圖')continue;
+  const bound=Math.min(Math.max(ws.rowCount,75),1800);
+  // Date detail is always found by actual date values, not by template height.
+  // Restrict to columns A/B so other human-readable dates cannot trigger trim.
+  let groups=[];
+  for(const col of [1,2]){
+   let part=[];
+   for(let r=5;r<=bound;r++){
+    const d=iso(ws.getCell(r,col).value);
+    if(d){part.push({r,d});continue;}
+    if(part.length>=2)groups.push({col,rows:part});
+    part=[];
+   }
+   if(part.length>=2)groups.push({col,rows:part});
+  }
+  // A template can have stray single dates, but daily series has 2+ entries.
+  const primary=groups.sort((a,b)=>b.rows.length-a.rows.length)[0];
+  let daily=null;
+  if(primary&&latest){
+   const {col,rows}=primary,first=rows[0].r;
+   const lastObserved=rows.filter(x=>x.d<=latest).at(-1);
+   const last=lastObserved?.r;
+   const maxCol=ws.name==='YT訂閱'?8:Math.min(ws.columnCount,Math.max(col+5,8));
+   if(last){
+    daily={first,last,col,maxCol};
+    // Blank ALL future scheduled rows, not only the figures. No outdated thick
+    // frame or #DIV/0! is allowed below the last actual raw date.
+    for(const {r,d} of rows){
+     if(d<=latest)continue;
+     for(let c=col;c<=maxCol;c++){
+      const cell=ws.getCell(r,c);cell.value=null;cell.border={};
+     }
+    }
+    // Also erase inherited borders on the unused template tail, but only in
+    // the daily block; never erase neighboring interest/ad sections.
+    for(let r=rows.at(-1).r+1;r<=Math.min(bound,Math.max(rows.at(-1).r,ws.rowCount));r++){
+     for(let c=col;c<=maxCol;c++){
+      const cell=ws.getCell(r,c);
+      if(cell.value==null)cell.border={};
+     }
+    }
+    const top=ws.name==='YT訂閱'?8:Math.max(1,first-2);
+    stroke(ws,top,col,last,maxCol,first-1);
+   }
+  }
+  // Template-built YouTube single-sheet report: independent blocks at J:Q.
+  // Subscribers: audience J8:Q16, ads J18:Q26.
+  if(ws.name==='YT訂閱'){
+   stroke(ws,8,10,16,17,9);
+   stroke(ws,18,10,26,17,19);
+  }else if(typeKey()==='YT_VIEW'&&ws.columnCount>=17){
+   stroke(ws,7,10,14,17,8);
+   stroke(ws,17,10,22,17,18);
+  }else if(typeKey()==='DGC_CLICK'&&ws.columnCount>=13){
+   stroke(ws,8,8,16,13,9);
+  }
+  // Generic sheets: normalize the filled rectangular data region. Do NOT
+  // frame each data row independently, and do not replace the daily final edge.
+  if(!daily&& !['YT訂閱'].includes(ws.name) && !['YT_VIEW','DGC_CLICK'].includes(typeKey())){
+   const data=[];
+   ws.eachRow({includeEmpty:false},(row,r)=>{
+    if(r>1800)return;
+    let left=Infinity,right=0,count=0;
+    row.eachCell({includeEmpty:false},(cell,c)=>{
+     if(c>55||cell.value===null||cell.value===undefined||cell.value==='')return;
+     count++;left=Math.min(c,left);right=Math.max(c,right);
+    });
+    if(count>=3)data.push({r,left,right});
+   });
+   if(data.length){const first=data[0],last=data.at(-1),left=Math.min(...data.map(x=>x.left)),right=Math.max(...data.map(x=>x.right));
+    if(last.r-first.r<1500&&right-left<45)stroke(ws,first.r,left,last.r,right);
+   }
+  }
+ }
+ return wb;
+}
+const v326R10PriorBuild=buildV3;
+buildV3=async function(c,prior=null){
+ const wb=await v326R10PriorBuild(c,prior);
+ return v326R10Finish(wb,c);
+};
+/* END V3.26 ROUND 10 */
+
+
+/* V3.26 ROUND 11 — per-Campaign batch filenames, template-local frames and exact daily end. */
+const v326R11BatchNames={};
+function v326R11BatchName(c){return String(v326R11BatchNames[c]||'').trim()}
+function v326R11DrawNames(){
+ const host=$('batchCampaignList');if(!host)return;
+ host.querySelectorAll('.v326-r11-name').forEach(el=>el.remove());
+ for(const box of host.querySelectorAll('.batch-item')){
+  const ch=box.querySelector('.batch-campaign-check');if(!ch)continue;
+  box.style.flexWrap='wrap';
+  const field=document.createElement('input');field.type='text';field.className='v326-r11-name';
+  field.placeholder='此 Campaign 的下載檔名（選填）';field.value=v326R11BatchName(ch.value);
+  field.style.cssText='width:100%;margin-top:6px;font-size:12px;padding:8px';
+  field.setAttribute('aria-label',ch.value+' 的下載檔名');
+  field.addEventListener('input',()=>{v326R11BatchNames[ch.value]=field.value});
+  box.append(field);
+ }
+}
+const v326R11PriorRender=renderBatchCampaigns;
+renderBatchCampaigns=function(camps){const out=v326R11PriorRender(camps);v326R11DrawNames();return out};
+const v326R11PriorFields=fields;
+fields=function(){return {...v326R11PriorFields(),batchFilenames:{...v326R11BatchNames}}};
+const v326R11PriorRestore=restore;
+restore=function(o){const out=v326R11PriorRestore(o);if(o?.batchFilenames&&typeof o.batchFilenames==='object')Object.assign(v326R11BatchNames,o.batchFilenames);v326R11DrawNames();return out};
+v326R11DrawNames();
+function v326R11FixTemplateSheet(wb,c,typ){
+ if(!['YT_VIEW','DGC_CLICK','YT 優化轉換（訂閱 CPA）'].includes(typ))return wb;
+ const ws=typ==='YT 優化轉換（訂閱 CPA）'?wb.getWorksheet('YT訂閱'):wb.worksheets.find(x=>x.name!=='_google_config'&&x.name!=='上刊圖');
+ if(!ws)return wb;
+ const ytSub=typ==='YT 優化轉換（訂閱 CPA）',yt=ytSub||typ==='YT_VIEW';
+ const first=ytSub?11:yt?10:11;
+ const lastTemplate=ytSub?Math.max(69,ws.rowCount):yt?74:69;
+ const right=ytSub?8:yt?8:6;
+ const cfg=typeof v326R6EffectiveDates==='function'?v326R6EffectiveDates(c):{start:$('start').value,end:$('end').value};
+ const range=entries.filter(r=>r.campaign===c&&(!cfg.start||r.date>=cfg.start)&&(!cfg.end||r.date<=cfg.end));
+ const dates=new Set(range.map(r=>r.date));const latest=[...dates].sort().at(-1)||'';
+ const toIso=v=>{
+  if(v instanceof Date&&!isNaN(v.getTime()))return v.toISOString().slice(0,10);
+  if(typeof v==='number'&&v>30000&&v<100000)return new Date(Date.UTC(1899,11,30)+Math.floor(v)*86400000).toISOString().slice(0,10);
+  const m=String(v||'').match(/^(20\d\d)[\/-](\d{1,2})[\/-](\d{1,2})$/);
+  return m?m[1]+'-'+m[2].padStart(2,'0')+'-'+m[3].padStart(2,'0'):'';
+ };
+ let last=first-1;
+ for(let r=first;r<=lastTemplate;r++){
+  const iso=toIso(ws.getCell(r,1).value);
+  if(iso&&iso<=latest&&dates.has(iso))last=r;
+ }
+ const black={argb:'FF000000'};
+ const thin=()=>({style:'thin',color:{...black}}),med=()=>({style:'medium',color:{...black}});
+ // All unused template tail is blank, including dates, notes and border artifacts.
+ for(let r=Math.max(last+1,first);r<=lastTemplate;r++)for(let col=1;col<=right;col++){
+  const cell=ws.getCell(r,col);cell.value=null;cell.style={...cell.style,border:{}};
+ }
+ function frame(r1,c1,r2,c2,separator){
+  if(r2<r1)return;
+  for(let r=r1;r<=r2;r++)for(let col=c1;col<=c2;col++){
+   const cell=ws.getCell(r,col);
+   const border={top:thin(),bottom:thin(),left:thin(),right:thin()};
+   if(r===r1)border.top=med();if(r===r2)border.bottom=med();
+   if(col===c1)border.left=med();if(col===c2)border.right=med();
+   if(r===separator)border.bottom=med();
+   cell.style={...cell.style,border};
+  }
+ }
+ const header=ytSub?8:yt?7:8;
+ frame(header,1,Math.max(header,last),right,first-1);
+ // Each right panel is independent: do not draw over the gap between panels.
+ if(ytSub){frame(8,10,16,17,9);frame(18,10,26,17,19)}
+ else if(typ==='YT_VIEW'){
+  frame(7,10,14,17,8);frame(17,10,22,17,18);
+ }else frame(8,8,16,13,9);
+ return wb;
+}
+const v326R11PriorBuild=buildV3;
+buildV3=async function(c,prior=null){
+ const wb=await v326R11PriorBuild(c,prior);
+ return v326R11FixTemplateSheet(wb,c,typeKey());
+};
+/* END V3.26 ROUND 11 */
+
+
+/* V3.26 ROUND 12 — per-campaign batch settings and final data-range formatting. */
+const v326R12Settings={};
+const v326R12FieldKeys=['start','end','budget','unit','convLabel'];
+function v326R12Get(c){
+ if(!v326R12Settings[c]){
+  const d=typeof v326R6EffectiveDates==='function'?v326R6EffectiveDates(c):{};
+  v326R12Settings[c]={start:d?.start||'',end:d?.end||'',budget:'',unit:'',convLabel:''};
+ }
+ return v326R12Settings[c];
+}
+function v326R12Chosen(){return [...document.querySelectorAll('.batch-campaign-check:checked')].map(x=>x.value)}
+function v326R12BatchUI(){
+ const chosen=v326R12Chosen(),active=chosen.length>0;
+ const single=$('normalCampaignField');if(single)single.classList.toggle('hidden',active||isGsReport());
+ let panel=$('v326-r12-panel');
+ if(!panel){panel=document.createElement('div');panel.id='v326-r12-panel';panel.style.cssText='margin:14px 0;padding:14px;background:#fafbfd;border:1px solid #DDE3E9;border-radius:8px';
+  const target=$('settings');target?.parentNode?.insertBefore(panel,target);}
+ panel.classList.toggle('hidden',!active||isGsReport());
+ if(!active||isGsReport())return;
+ const old=new Set([...panel.querySelectorAll('[data-campaign]')].map(x=>x.dataset.campaign));
+ const next=new Set(chosen);
+ if(old.size===next.size&&[...old].every(c=>next.has(c)))return;
+ panel.replaceChildren();const heading=document.createElement('div');heading.textContent='批次報表｜各 Campaign 獨立設定（留白可自動辨識）';heading.style.cssText='font-weight:700;margin-bottom:12px';panel.append(heading);
+ for(const c of chosen){
+  const cfg=v326R12Get(c),box=document.createElement('div');box.dataset.campaign=c;
+  box.style.cssText='padding:12px;margin:10px 0;border:1px solid #dce2e8;border-radius:8px;background:white';
+  const title=document.createElement('div');title.textContent=c;title.style.cssText='font-weight:650;overflow-wrap:anywhere;margin-bottom:10px';box.append(title);
+  const grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px';
+  for(const [key,label,type] of [['start','走期開始','date'],['end','走期結束','date'],['budget','預算 NT$','number'],['unit','預設 CPC／CPV／CPI','number'],['convLabel','轉換指標名稱','text']]){
+   const wrap=document.createElement('div'),lb=document.createElement('label'),input=document.createElement('input');lb.textContent=label;input.type=type;input.value=cfg[key]||'';
+   input.dataset.key=key;input.placeholder='選填';input.addEventListener('input',()=>{cfg[key]=input.value;refresh()});wrap.append(lb,input);grid.append(wrap);
+  }
+  box.append(grid);panel.append(box);
+ }
+}
+const v326R12PriorRender=renderBatchCampaigns;
+renderBatchCampaigns=function(camps){const out=v326R12PriorRender(camps);v326R12BatchUI();return out};
+const v326R12PriorFields=fields;
+fields=function(){return {...v326R12PriorFields(),campaignSettings:JSON.parse(JSON.stringify(v326R12Settings))}};
+const v326R12PriorRestore=restore;
+restore=function(o){const out=v326R12PriorRestore(o);if(o?.campaignSettings&&typeof o.campaignSettings==='object')for(const [c,v] of Object.entries(o.campaignSettings))v326R12Settings[c]={...v};v326R12BatchUI();return out};
+$('batchCampaignList').addEventListener('change',e=>{if(e.target.classList.contains('batch-campaign-check')){v326R12BatchUI();refresh()}});
+const v326R12PriorRefresh=refresh;
+refresh=function(){v326R12PriorRefresh();v326R12BatchUI();const n=v326R12Chosen().length;if(n&&!isGsReport()){const available=!!entries.length&&!!$('type').value;$('batchDownload').disabled=!available;$('download').disabled=true}};
+$('filename').addEventListener('input',refresh);
+async function v326R12BuildFor(c,prior){
+ const saved={};for(const k of v326R12FieldKeys)saved[k]=$(k)?.value;
+ const campaignSaved=$('campaign').value;
+ try{
+  const cfg=v326R12Get(c);$('campaign').value=c;
+  for(const k of v326R12FieldKeys)if(cfg[k]!==undefined&&cfg[k]!==null)$(k).value=cfg[k]||'';
+  const wb=await buildV3(c,prior);
+  const conf=wb.getWorksheet('_google_config');if(conf){let f={};try{f=JSON.parse(String(conf.getCell('A2').value||'{}'))}catch(e){}
+   conf.getCell('A2').value=JSON.stringify({...f,campaign:c,campaignSettings:JSON.parse(JSON.stringify(v326R12Settings)),batchFilenames:{...v326R11BatchNames}});
+  }
+  return wb;
+ }finally{for(const k of v326R12FieldKeys)$(k).value=saved[k];$('campaign').value=campaignSaved;}
+}
+function v326R12ExcelDate(v){
+ if(v instanceof Date)return v.toISOString().slice(0,10);
+ if(typeof v==='number'&&v>30000&&v<100000)return new Date(Date.UTC(1899,11,30)+Math.floor(v)*86400000).toISOString().slice(0,10);
+ const m=String(v||'').match(/^(20\d\d)[\/-](\d{1,2})[\/-](\d{1,2})$/);
+ return m?m[1]+'-'+m[2].padStart(2,'0')+'-'+m[3].padStart(2,'0'):'';
+}
+function v326R12Frame(ws,r1,c1,r2,c2){
+ if(r2<r1)return;
+ const edge=(style)=>({style,color:{argb:'FF000000'}});
+ for(let r=r1;r<=r2;r++)for(let c=c1;c<=c2;c++){
+  const cell=ws.getCell(r,c);
+  cell.border={top:edge(r===r1?'medium':'thin'),bottom:edge(r===r2?'medium':'thin'),left:edge(c===c1?'medium':'thin'),right:edge(c===c2?'medium':'thin')};
+ }
+}
+function v326R12Finish(wb,c){
+ const typ=typeKey();if(!['YT_VIEW','DGC_CLICK','YT 優化轉換（訂閱 CPA）'].includes(typ))return wb;
+ const ws=typ==='YT 優化轉換（訂閱 CPA）'?wb.getWorksheet('YT訂閱'):wb.worksheets.find(x=>x.name!=='_google_config'&&x.name!=='上刊圖');if(!ws)return wb;
+ const ytSub=typ==='YT 優化轉換（訂閱 CPA）',isYT=ytSub||typ==='YT_VIEW';
+ const first=ytSub?11:isYT?10:11,right=isYT?8:6,header=ytSub?8:isYT?7:8;
+ const cfg=v326R12Get(c),dates=entries.filter(x=>x.campaign===c&&(!cfg.start||x.date>=cfg.start)&&(!cfg.end||x.date<=cfg.end)).map(x=>x.date);
+ const valid=new Set(dates),max=dates.sort().at(-1)||'';let last=first-1;
+ for(let r=first;r<=Math.max(74,ws.rowCount);r++){const day=v326R12ExcelDate(ws.getCell(r,1).value);if(day&&day<=max&&valid.has(day))last=r;}
+ // Data can have a real calendar gap: shade it, but never invent zeros.
+ for(let r=first;r<=last;r++){
+  const day=v326R12ExcelDate(ws.getCell(r,1).value);
+  if(day&&!valid.has(day))for(let k=1;k<=right;k++){
+   const cell=ws.getCell(r,k);if(k>1)cell.value=null;
+   cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFE7E6E6'}};
+  }
+ }
+ // All future template days are not part of the current table; remove borders and text.
+ const originalLast=isYT?74:69;
+ for(let r=Math.max(first,last+1);r<=Math.max(originalLast,ws.rowCount);r++){
+  if(typ==='YT_VIEW'&&(r===75||r===76))continue;
+  for(let k=1;k<=right;k++){
+   const cell=ws.getCell(r,k);cell.value=null;cell.border={};
+  }
+ }
+ v326R12Frame(ws,header,1,Math.max(last,header),right);
+ if(ytSub){v326R12Frame(ws,8,10,16,17);v326R12Frame(ws,18,10,26,17)}
+ else if(typ==='YT_VIEW'){
+  v326R12Frame(ws,7,10,14,17);v326R12Frame(ws,17,10,22,17);
+  // Move the two yellow budget rows directly below the last reported date.
+  const summaryRow=Math.max(last+1,first),rateRow=summaryRow+1;
+  if(summaryRow!==75){
+   for(const rg of ['E75:H75','E76:H76'])if(ws._merges?.[rg.split(':')[0]]){try{ws.unMergeCells(rg)}catch(e){}}
+   for(const r of [75,76])for(let k=1;k<=8;k++){const cell=ws.getCell(r,k);cell.value=null;cell.fill={type:'pattern',pattern:'none'};cell.border={};}
+   for(const r of [summaryRow,rateRow])for(let k=1;k<=8;k++){
+    const cell=ws.getCell(r,k);cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFFFFF00'}};
+    cell.font={name:'Microsoft JhengHei',bold:true,color:{argb:'FF000000'}};
+   }
+   ws.getCell(summaryRow,1).value='總預算';ws.getCell(summaryRow,5).value=$('budget').value?Number($('budget').value):null;
+   ws.getCell(rateRow,1).value='總執行率';ws.getCell(rateRow,5).value={formula:`IF(OR(E${summaryRow}="",E${summaryRow}=0),"",IFERROR(E9/E${summaryRow},""))`};
+   ws.getCell(rateRow,5).numFmt='0.00%';
+   try{ws.mergeCells(`E${summaryRow}:H${summaryRow}`);ws.mergeCells(`E${rateRow}:H${rateRow}`)}catch(e){}
+   v326R12Frame(ws,summaryRow,1,rateRow,8);
+  }
+ }else v326R12Frame(ws,8,8,16,13);
+ return wb;
+}
+const v326R12PriorBuild=buildV3;
+buildV3=async function(c,prior=null){const wb=await v326R12PriorBuild(c,prior);return v326R12Finish(wb,c)};
+async function v326R12DownloadBatch(){
+ const chosen=v326R12Chosen(),box=$('downloadStatus'),btn=$('batchDownload');if(!chosen.length)return;
+  btn.disabled=true;box.style.display='block';box.className='note';$('manualDownload').replaceChildren();
+ try{
+  if(!window.ExcelJS||!window.JSZip)throw Error('ExcelJS／JSZip 未成功載入');
+  const prior=await getPrior(),zip=new JSZip();
+  for(let i=0;i<chosen.length;i++){
+   const c=chosen[i];box.textContent=`正在產出 ${i+1}/${chosen.length}：${c}`;
+   const wb=await v326R12BuildFor(c,prior),bytes=await wb.xlsx.writeBuffer();
+   const base=v326R11BatchName(c)||c.replace(/[\\/:*?"<>|\x00-\x1f]/g,'_').slice(0,65);
+   zip.file(outputName(base,'xlsx'),bytes);
+  }
+  await downloadData(await zip.generateAsync({type:'blob'}),outputName(($('filename').value.trim()||'GoogleAds_週報')+'_批次','zip'));
+  box.className='note success';box.textContent=`✓ 已產出 ${chosen.length} 個獨立報表並打包 ZIP`;
+ }catch(e){box.className='note error';box.textContent='批次匯出失敗：'+e.message;console.error(e)}finally{refresh()}
+}
+$('batchDownload').onclick=v326R12DownloadBatch;
+v326R12BatchUI();refresh();
+/* END V3.26 ROUND 12 */
+
+/* V3.26 R13 — eliminate duplicated campaign settings and make filenames optional. */
+function v326R13Sync(){
+ const batch=v326R12Chosen().length>0&&!isGsReport();
+ const editor=$('v326CampaignEditor');if(editor)editor.classList.add('hidden');
+ const settings=$('settings');
+ const startRow=$('start')?.closest('.settings-row');
+ const nameRow=$('filename')?.closest('.settings-row');
+ if(startRow)startRow.classList.toggle('hidden',batch);
+ if(nameRow)nameRow.classList.toggle('hidden',batch);
+ const help=$('dateAutoHint');if(help)help.classList.toggle('hidden',batch);
+ // Per-campaign filenames remain in the batch selection panel.
+ // ZIP filename falls back to GoogleAds_週報_批次_MMDD.zip.
+ const filename=$('filename');if(filename){filename.required=false;filename.placeholder='留白自動依 Campaign 命名';}
+ const c=$('campaign');if(c)c.required=false;
+}
+const v326R13Refresh=refresh;
+refresh=function(){v326R13Refresh();v326R13Sync();if(!isGsReport()&&!v326R12Chosen().length&&entries.length&&typeKey()){
+ const hasRows=subset().length>0;
+ if(hasRows&&$('campaign').value&&$('start').value&&$('end').value)$('download').disabled=false;
+ }
+};
+$('batchCampaignList').addEventListener('change',v326R13Sync);
+$('type').addEventListener('change',v326R13Sync);
+v326R13Sync();refresh();
+/* END V3.26 R13 */
+
+/* V3.26 R14 — batch export: one or more checked campaigns, consistent MMDD names and actionable errors. */
+function v326R14Filename(base, ext){
+ let name=String(base||'').trim().replace(/\.(xlsx|zip)$/i,'').replace(/[\\/:*?"<>|\x00-\x1f]/g,'_');
+ if(!name)name='GoogleAds_週報';
+ const today=outputDateTag();
+ // Replace a prior report's date suffix instead of accumulating _MMDD tags.
+ name=name.replace(/_(0[1-9]|1[0-2])([0-2]\d|3[01])$/,'');
+ return name+'_'+today+'.'+ext;
+}
+async function v326R14DownloadBatch(){
+ const selected=v326R12Chosen(), box=$('downloadStatus'), btn=$('batchDownload');
+ if(!selected.length){box.style.display='block';box.className='note error';box.textContent='請先勾選至少一個 Campaign';return;}
+ btn.disabled=true;box.style.display='block';box.className='note';$('manualDownload').replaceChildren();
+ try{
+  if(!window.ExcelJS)throw Error('ExcelJS 未載入：請檢查網路連線或 CDN 是否被封鎖');
+  if(!window.JSZip)throw Error('JSZip 未載入：請檢查網路連線或 CDN 是否被封鎖');
+  const prior=await getPrior();const zip=new JSZip();const used=new Set();
+  for(let i=0;i<selected.length;i++){
+   const campaign=selected[i];box.textContent=`正在產出 ${i+1}/${selected.length}：${campaign}`;
+   const wb=await v326R12BuildFor(campaign,prior);
+   if(!wb)throw Error('無法建立 '+campaign+' 的工作簿');
+   const bytes=await wb.xlsx.writeBuffer();
+   const base=v326R11BatchName(campaign)||campaign;
+   let filename=v326R14Filename(base,'xlsx');
+   if(used.has(filename))filename=v326R14Filename(`${base}_${i+1}`,'xlsx');
+   used.add(filename);zip.file(filename,bytes);
+  }
+  box.textContent='正在封裝 ZIP…';
+  const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:5}});
+  const name=v326R14Filename((($('filename')?.value||'').trim()||'GoogleAds_週報')+'_批次','zip');
+  await downloadData(blob,name);
+  box.className='note success';box.textContent=`✓ 已下載 ${selected.length} 份 Excel（ZIP），每份檔名已加 _${outputDateTag()}`;
+ }catch(e){box.className='note error';box.textContent='批次下載失敗：'+(e?.message||String(e));console.error('V3.26 batch download',e)}
+ finally{refresh()}
+}
+$('batchDownload').onclick=v326R14DownloadBatch;
+const v326R14Refresh=refresh;
+refresh=function(){v326R14Refresh();if(!isGsReport()){
+ const selected=v326R12Chosen(),hasType=!!typeKey();
+ $('batchDownload').disabled=!entries.length||!hasType||selected.length===0;
+ if(selected.length)$('download').disabled=true;
+}};
+$('batchCampaignList').addEventListener('input',refresh);
+refresh();
+/* END V3.26 R14 */
+
+
+
+
+/* V3.26 R15 — DGC CPC parity with user-approved YT CPV output.
+   This dedicated last-stage adapter never touches YT builders or download behavior. */
+function v326R15DgcFinalize(wb,c){
+ if(typeKey()!=='DGC_CLICK')return wb;
+ const ws=wb.worksheets.find(x=>x.name!=='_google_config'&&x.name!=='上刊圖');
+ if(!ws)return wb;
+ const cfg=typeof v326R12Get==='function'?v326R12Get(c):{};
+ const start=cfg.start||$('start').value,end=cfg.end||$('end').value;
+ const data=entries.filter(r=>r.campaign===c&&(!start||r.date>=start)&&(!end||r.date<=end));
+ if(!data.length)return wb;
+ const dayMap=new Map();for(const r of data){if(!dayMap.has(r.date))dayMap.set(r.date,[]);dayMap.get(r.date).push(r)}
+ const days=[...dayMap.keys()].sort(),begin=days[0],finish=days[days.length-1],fee=1+serviceFee();
+ // A complete calendar is rendered only up to the latest actual data date.
+ const calendar=[];for(let d=new Date(begin+'T00:00:00Z'),limit=new Date(finish+'T00:00:00Z');d<=limit;d.setUTCDate(d.getUTCDate()+1)){
+  calendar.push(d.toISOString().slice(0,10));if(calendar.length>59)throw Error('DGC 範本最多容納 59 個日期，請縮短走期');
+ }
+ const first=11,tail=69,last=first+calendar.length-1;
+ const ink={argb:'FF000000'},stroke=style=>({style,color:{...ink}});
+ for(let r=first;r<=tail;r++){
+  const date=calendar[r-first]||'',arr=dayMap.get(date),cell=ws.getCell(r,1);
+  cell.value=date?excelDate(date):null;
+  let imp=0,clk=0,sp=0;
+  if(arr)for(const v of arr){imp+=v.impr||0;clk+=v.click||0;sp+=v.spend||0;}
+  for(let k=2;k<=6;k++){const x=ws.getCell(r,k);x.value=null;x.border={};
+    if(date&&!arr)x.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFE7E6E6'}};
+    else if(date)x.fill={type:'pattern',pattern:'none'};
+  }
+  if(date){
+   cell.fill=arr?{type:'pattern',pattern:'none'}:{type:'pattern',pattern:'solid',fgColor:{argb:'FFE7E6E6'}};
+   if(arr){
+    ws.getCell(r,2).value=imp;ws.getCell(r,3).value=clk;ws.getCell(r,4).value=Number((sp*fee).toFixed(5));
+    ws.getCell(r,5).value={formula:`IFERROR(C${r}/B${r},0)`};
+    ws.getCell(r,6).value={formula:`IFERROR(D${r}/C${r},0)`};
+   }
+  }else{cell.border={};cell.fill={type:'pattern',pattern:'none'};}
+ }
+ // Existing DGC template displays its summary in row 10.
+ for(const col of [2,3,4])ws.getCell(10,col).value={formula:`SUM(${L(col)}${first}:${L(col)}${last})`};
+ ws.getCell('E10').value={formula:'IFERROR(C10/B10,0)'};
+ ws.getCell('F10').value={formula:'IFERROR(D10/C10,0)'};
+ // Do not retain template-only budget diagnostics that can display stale values/errors.
+ ws.getCell('F7').value={formula:'IF(OR(B2="",B2=0),"",IFERROR(B2-D10,""))'};
+ ws.getCell('B3').value={formula:'IF(OR(B2="",B4="",B4=0),"",IFERROR(B2/B4,""))'};
+ for(const a of ['L7','J7','K7']){const x=ws.getCell(a);if(x?.value?.formula){x.value=null;}}
+ const draw=(r1,c1,r2,c2)=>{
+  for(let r=r1;r<=r2;r++)for(let k=c1;k<=c2;k++){
+   const x=ws.getCell(r,k);
+   // Clone edges for each cell: ExcelJS may share underlying style objects.
+   x.border={top:stroke(r===r1?'medium':'thin'),bottom:stroke(r===r2?'medium':'thin'),left:stroke(k===c1?'medium':'thin'),right:stroke(k===c2?'medium':'thin')};
+  }
+ };
+ // Left daily section and right interest section have independent outer frames.
+ draw(8,1,last,6);draw(8,8,16,13);
+ // R16: clear stray template borders outside the real DGC tables.
+ // Keep A1:C4 (budget/settings), A8:F(last) (daily), H8:M16 (interest).
+ // In particular, D1:D3, row 7, and separator column G must have NO borders.
+ // Do not touch merged cells in the A1:C4 settings panel.
+ for(let r=1;r<=Math.max(tail,ws.rowCount);r++)for(let k=1;k<=13;k++){
+  const inSettings=r>=1&&r<=4&&k<=3;
+  const inDaily=r>=8&&r<=last&&k<=6;
+  const inInterest=r>=8&&r<=16&&k>=8&&k<=13;
+  if(inSettings||inDaily||inInterest)continue;
+  const x=ws.getCell(r,k);
+  // ExcelJS merged cells may share a master style; skip any merge objects.
+  if(x.isMerged)continue;
+  x.border={};
+ }
+
+ // Remove all residual template borders and formula cells after the last dated row.
+ for(let r=last+1;r<=tail;r++)for(let k=1;k<=6;k++){
+  const x=ws.getCell(r,k);x.border={};x.value=null;
+ }
+ ws.getColumn(1).width=Math.max(ws.getColumn(1).width||0,15);
+ for(const k of [2,3,4,5,6])ws.getColumn(k).width=Math.max(ws.getColumn(k).width||0,k===4?17:14);
+ return wb;
+}
+const v326R15PriorBuild=buildV3;
+buildV3=async function(c,prior=null){const wb=await v326R15PriorBuild(c,prior);return v326R15DgcFinalize(wb,c)};
+/* END V3.26 R15 */
+
+/* V3.26 R17 — separate creative sources, DGC material panel and safe empty formulas. */
+function v326R17FillDgcMaterials(wb,c){
+ if(typeKey()!=='DGC_CLICK')return wb;
+ const ws=wb.worksheets.find(w=>w.name!=='_google_config'&&w.name!=='上刊圖');
+ if(!ws)return wb;
+ const cfg=typeof v326R12Get==='function'?v326R12Get(c):{};
+ const start=cfg.start||$('start').value,end=cfg.end||$('end').value;
+ const rs=entries.filter(r=>r.campaign===c&&(!start||r.date>=start)&&(!end||r.date<=end));
+ const grouped=new Map();
+ for(const r of rs){
+  const name=String(r.adOriginalName||'').trim();if(!name)continue;
+  let t=grouped.get(name);if(!t){t={impr:0,click:0,spend:0};grouped.set(name,t)}
+  t.impr+=r.impr||0;t.click+=r.click||0;t.spend+=r.spend||0;
+ }
+ const items=[...grouped.entries()].sort((a,b)=>b[1].spend-a[1].spend);
+ if(items.length>6)throw Error('DGC 廣告名稱有 '+items.length+' 組，超過素材表預留的 6 列，為避免覆蓋資料已停止輸出');
+ const ink={argb:'FF000000'}, border=style=>({style,color:{...ink}});
+ const title={type:'pattern',pattern:'solid',fgColor:{argb:'FF475368'}};
+ const yellow={type:'pattern',pattern:'solid',fgColor:{argb:'FFFFF2CC'}};
+ // Interest table ends at row 16. Rows 17 and 18 remain clean separators.
+ for(let r=17;r<=18;r++)for(let col=8;col<=13;col++){
+  const x=ws.getCell(r,col);if(!x.isMerged){x.border={};x.value=null;}
+ }
+ const header=19, subheader=20, first=21, last=26, total=27;
+ const labels=['素材','廣告','廣告','廣告費用','廣告','廣告CPC'];
+ for(let col=8;col<=13;col++){
+  const a=ws.getCell(header,col),b=ws.getCell(subheader,col);
+  a.value=labels[col-8];a.fill=title;a.font={name:'Microsoft JhengHei',bold:true,color:{argb:'FFFFFFFF'}};
+  b.value=col===9?'呈現次數':col===10?'點擊次數':col===12?'點擊率':col===13?'NT$':null;
+  b.fill=title;b.font={name:'Microsoft JhengHei',bold:true,color:{argb:'FFFFFFFF'}};
+  a.alignment={horizontal:'center',vertical:'middle'};b.alignment={horizontal:'center',vertical:'middle'};
+ }
+ // The descriptive header spans two rows, as in the DGC interest section.
+ if(!ws.getCell('H19').isMerged)ws.mergeCells('H19:H20');
+ for(let r=first;r<=last;r++){
+  const item=items[r-first];const name=item?.[0],t=item?.[1];
+  for(let col=8;col<=13;col++){
+   const x=ws.getCell(r,col);x.value=null;x.fill={type:'pattern',pattern:'none'};
+   x.font={name:'Microsoft JhengHei',size:11,color:{argb:'FF000000'}};
+  }
+  if(!t)continue;
+  const spend=Number((t.spend*(1+serviceFee())).toFixed(5));
+  ws.getCell(r,8).value=name;
+  ws.getCell(r,9).value=t.impr;ws.getCell(r,10).value=t.click;
+  ws.getCell(r,11).value=spend;
+  ws.getCell(r,12).value=t.impr?{formula:`IFERROR(J${r}/I${r},"")`}:null;
+  ws.getCell(r,13).value=t.click?{formula:`IFERROR(K${r}/J${r},"")`}:null;
+  ws.getCell(r,12).numFmt='0.00%';ws.getCell(r,13).numFmt='"$"#,##0.00';
+ }
+ ws.getCell(total,8).value='素材總計';
+ const sum=(k)=>[...grouped.values()].reduce((a,t)=>a+t[k],0);
+ const imp=sum('impr'),clk=sum('click'),sp=Number((sum('spend')*(1+serviceFee())).toFixed(5));
+ for(let col=9;col<=13;col++)ws.getCell(total,col).value=null;
+ // Do not display an invented 0 when Google Ads does not include ad names.
+ if(items.length){
+  ws.getCell(total,9).value=imp;ws.getCell(total,10).value=clk;ws.getCell(total,11).value=sp;
+  ws.getCell(total,12).value=imp?{formula:`IFERROR(J${total}/I${total},"")`}:null;
+  ws.getCell(total,13).value=clk?{formula:`IFERROR(K${total}/J${total},"")`}:null;
+ }
+ for(let col=8;col<=13;col++){
+  const x=ws.getCell(total,col);x.fill=title;
+  x.font={name:'Microsoft JhengHei',bold:true,color:{argb:'FFFFFFFF'}};
+ }
+ ws.getCell(total,12).numFmt='0.00%';ws.getCell(total,13).numFmt='"$"#,##0.00';
+ // Inner edges are black thin; only the outer rectangle is black medium.
+ for(let r=header;r<=total;r++)for(let col=8;col<=13;col++){
+  const x=ws.getCell(r,col);
+  x.border={top:border(r===header?'medium':'thin'),bottom:border(r===total?'medium':'thin'),left:border(col===8?'medium':'thin'),right:border(col===13?'medium':'thin')};
+ }
+ ws.getColumn(8).width=Math.max(ws.getColumn(8).width||0,40);
+ return wb;
+}
+const v326R17PreviousBuild=buildV3;
+buildV3=async function(c,prior=null){
+ const type=typeKey();
+ if(type==='YT 優化轉換（訂閱 CPA）'){
+  // Existing YT subscription builder groups by `ad`: use the actual ad name.
+  const saved=entries.map(r=>r.ad);
+  try{
+   for(const r of entries)if(r.adOriginalName)r.ad=r.adOriginalName;
+   return await v326R17PreviousBuild(c,prior);
+  }finally{entries.forEach((r,i)=>r.ad=saved[i]);}
+ }
+ const wb=await v326R17PreviousBuild(c,prior);
+ return v326R17FillDgcMaterials(wb,c);
+};
+/* END V3.26 R17 */
 </script></body></html>
