@@ -3541,4 +3541,55 @@ buildV3=async function(c,prior=null){
  return typeKey()==='GS_ADVANCED'?v326BuildGsAdvanced(c,prior):v326AcceptedSevenBuilder(c,prior);
 };
 
+
+/* V3.27 — Final YouTube CPV total-row formula guard.
+   Runs after all V3.26 sheet layout and update passes, so the template cannot
+   accidentally erase the E9 or H9 formulas. */
+const v327PriorBuildV3=buildV3;
+buildV3=async function(c,prior=null){
+ const wb=await v327PriorBuildV3(c,prior);
+ if(typeKey()!=='YT_VIEW')return wb;
+ const ws=wb.worksheets.find(w=>w.name!=='_google_config'&&w.name!=='上刊圖');
+ if(!ws)return wb;
+ const cfg=typeof v326R12Get==='function'?v326R12Get(c):{};
+ const start=cfg.start||$('start').value,end=cfg.end||$('end').value;
+ const data=entries.filter(r=>r.campaign===c&&(!start||r.date>=start)&&(!end||r.date<=end));
+ const factor=1+serviceFee();
+ const amount=data.reduce((total,r)=>total+(Number(r.spend)||0),0)*factor;
+ const views=data.reduce((total,r)=>total+(Number(r.views)||0),0);
+ // E is cost; C is TrueView views. H is CPV (not CPC).
+ // Cache calculated results as well, for spreadsheet previews that do not recalculate formulas.
+ ws.getCell('E9').value={formula:'SUM(E10:E74)',result:Math.round(amount*1e6)/1e6};
+ ws.getCell('H9').value={formula:'IFERROR(E9/C9,0)',result:views?amount/views:0};
+ ws.getCell('E9').numFmt='#,##0.00';
+ ws.getCell('H9').numFmt='#,##0.00';
+ wb.calcProperties.fullCalcOnLoad=true;
+ return wb;
+};
+/* END V3.27 */
+
+
+/* V3.27 — YT video CPV: remove stray side borders between the two right-hand
+   tables and fix column A width. This is intentionally the final postprocessor. */
+const v327YtViewBeforeGapCleanup = buildV3;
+buildV3 = async function(c, prior = null) {
+  const wb = await v327YtViewBeforeGapCleanup(c, prior);
+  if (typeKey() !== 'YT_VIEW') return wb;
+  const ws = wb.worksheets.find(sheet => sheet.name !== '_google_config' && sheet.name !== '上刊圖');
+  if (!ws) return wb;
+  // Excel has column widths, not cell-specific widths: A3 means column A.
+  ws.getColumn('A').width = 18;
+  ws.getColumn('A').bestFit = false;
+  for (const r of [15, 16]) {
+    // Preserve all other sides and cell formatting.
+    for (const [col, side] of [['J', 'left'], ['Q', 'right']]) {
+      const cell = ws.getCell(`${col}${r}`);
+      const border = { ...(cell.border || {}) };
+      delete border[side];
+      cell.style = { ...cell.style, border };
+    }
+  }
+  return wb;
+};
+/* END V3.27 YT video gap correction */
 </script></body></html>
