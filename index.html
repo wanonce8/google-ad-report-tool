@@ -133,7 +133,7 @@ $('old').addEventListener('change',async()=>{await new Promise(r=>setTimeout(r,2
 .mode-wrap{grid-column:1/-1}.mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:5px 0 10px}.mode-tab{background:#f7f8fa;border:1px solid var(--line);color:var(--dark);font-weight:700;padding:13px}.mode-tab.active{background:var(--dark);color:#fff;border-color:var(--dark)}.mode-tab:focus-visible{outline:3px solid var(--yellow)}
 </style><style>
 :root{--ink:#1F2733;--slate:#5C6B7A;--paper:#F2F4F6;--accent:#FFD23F}body{font-family:"Microsoft JhengHei","PingFang TC",sans-serif;background:#F2F4F6;color:#1F2733}header{background:#1F2733!important}header h1:before{content:"";display:inline-block;width:10px;height:19px;background:#FFD23F;margin-right:11px;vertical-align:-2px}.card{background:#fff;border:1px solid #DDE3E9;border-radius:10px;box-shadow:none}.card h2{border-bottom:1px solid #DDE3E9;padding-bottom:13px} .n{background:#1F2733!important;color:#FFD23F!important;border-radius:100%!important}button:not(.secondary):not(.mode-tab){background:#FFD23F;color:#1F2733;font-weight:700} .mode-tab.active{background:#1F2733!important;color:#fff!important;border-color:#1F2733!important}.note{border-radius:8px}.advanced{border:1px solid #dde3e9;border-radius:8px;padding:12px 15px}.advanced summary{cursor:pointer;font-weight:700}.extras{padding-top:14px}.hidden{display:none!important}select,input{font-family:inherit}
-</style><style>.batch-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px}.batch-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid #DDE3E9;border-radius:7px;background:#fafbfd;font-size:13px;overflow-wrap:anywhere}.batch-item input{width:auto;flex-shrink:0}.download-actions{display:flex;gap:10px;flex-wrap:wrap}.download-actions button{flex:1;min-width:180px}</style><style>.settings-layout{display:flex;flex-direction:column;gap:20px}.settings-row{display:grid;gap:18px}.settings-row.two{grid-template-columns:repeat(2,minmax(0,1fr))}.settings-row.four{grid-template-columns:repeat(4,minmax(0,1fr))}.settings-row>div{min-width:0}.settings-row input,.settings-row select{width:100%;min-width:0}.image-upload{margin-top:22px;padding:16px 18px;border:1px solid #dce2e8;border-radius:9px;background:#fafbfd}.image-upload-title{display:flex;align-items:center;gap:9px;font-weight:700;color:#263448}.image-upload input[type=file]{margin:12px 0 6px;width:100%}@media(max-width:850px){.settings-row.four{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:530px){.settings-row.four,.settings-row.two{grid-template-columns:1fr}}.gs-campaign-list{display:grid;gap:7px;margin-top:10px;padding:11px;background:#fafbfd;border:1px solid #DDE3E9;border-radius:8px}.gs-campaign-item{display:flex;align-items:center;gap:8px;margin:0;font-weight:400}.gs-campaign-item input{width:auto}#gsScopeField .tiny{margin-top:6px}</style></head><body><header><h1>Google Ads 廣告成效報表產生器</h1><p>V3.0｜YouTube／Demand Gen／Search／App · 共用報表面板</p></header><main class="wrap">
+</style><style>.batch-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px}.batch-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid #DDE3E9;border-radius:7px;background:#fafbfd;font-size:13px;overflow-wrap:anywhere}.batch-item input{width:auto;flex-shrink:0}.download-actions{display:flex;gap:10px;flex-wrap:wrap}.download-actions button{flex:1;min-width:180px}</style><style>.settings-layout{display:flex;flex-direction:column;gap:20px}.settings-row{display:grid;gap:18px}.settings-row.two{grid-template-columns:repeat(2,minmax(0,1fr))}.settings-row.four{grid-template-columns:repeat(4,minmax(0,1fr))}.settings-row>div{min-width:0}.settings-row input,.settings-row select{width:100%;min-width:0}.image-upload{margin-top:22px;padding:16px 18px;border:1px solid #dce2e8;border-radius:9px;background:#fafbfd}.image-upload-title{display:flex;align-items:center;gap:9px;font-weight:700;color:#263448}.image-upload input[type=file]{margin:12px 0 6px;width:100%}@media(max-width:850px){.settings-row.four{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:530px){.settings-row.four,.settings-row.two{grid-template-columns:1fr}}.gs-campaign-list{display:grid;gap:7px;margin-top:10px;padding:11px;background:#fafbfd;border:1px solid #DDE3E9;border-radius:8px}.gs-campaign-item{display:flex;align-items:center;gap:8px;margin:0;font-weight:400}.gs-campaign-item input{width:auto}#gsScopeField .tiny{margin-top:6px}</style></head><body><header><h1>Google Ads 廣告成效報表產生器</h1><p>V3.28｜YouTube／Demand Gen／Search／App · 共用報表面板</p></header><main class="wrap">
 <section class="card"><h2><span class="n">1</span>上傳資料</h2><div class="grid"><div class="mode-wrap"><label>操作模式</label><div class="mode-tabs" role="group" aria-label="操作模式"><button class="mode-tab active" id="tabNew" type="button" aria-pressed="true">建立新報表</button><button class="mode-tab" id="tabUpdate" type="button" aria-pressed="false">更新報表</button></div><input type="hidden" id="mode" value="new"><div class="tiny" id="modeNote">上傳 Google Ads Raw Data，建立全新週報</div></div><div id="oldBox" class="hidden"><label>上次由本工具產生的週報</label><input type="file" id="old" accept=".xlsx"></div></div><div style="margin-top:16px"><label>Google Ads Raw Data（CSV／XLSX）</label><input type="file" id="raw" accept=".csv,.tsv,.txt,.xlsx,.xls"></div><div class="tiny" style="margin-top:8px">自動搜尋「日期／廣告活動／廣告群組／廣告名稱／曝光／點擊／費用／轉換」表頭；支援匯出檔前兩列為報表資訊、第三列為表頭及 UTF-16 Tab 分隔 CSV。</div><div id="uploadInfo"></div><details class="advanced" style="margin-top:16px"><summary>進階：Google Search 額外 Raw Data（選填）</summary><div class="extras"><p class="tiny">依既有 GS 週報規劃的四份選填資料；GS 模式將使用；缺少資料時不會填入虛構的曝光比重。</p><div class="grid"><div><label>Campaign 曝光比重</label><input type="file" id="gsCampaignShare" accept=".csv,.xlsx,.xls"></div><div><label>Ad Group 曝光比重</label><input type="file" id="gsGroupShare" accept=".csv,.xlsx,.xls"></div><div><label>網頁連結額外資訊（Sitelink）</label><input type="file" id="gsSitelink" accept=".csv,.xlsx,.xls"></div><div><label>轉換動作明細（加入購物車／完成購買）</label><input type="file" id="gsConversions" accept=".csv,.tsv,.txt,.xlsx,.xls"><div class="tiny" id="gsConversionsStatus">未上傳；ROAS 必須有「完成購買」的轉換價值來源。</div></div></div><p class="tiny">廣告文案、AI MAX 搜尋字詞保留手動維護；兩個手動維護分頁在更新報表時保留既有內容。</p></div></details><details class="advanced" style="margin-top:12px"><summary>PMax 素材資源群組 Raw Data（選填，自動辨識版型）</summary><div class="extras"><label>素材資源群組報表（CSV／Excel）</label><input id="pmaxAssets" type="file" accept=".csv,.tsv,.xlsx,.xls"><p class="tiny">不必上傳：未上傳則只產出每日成效；上傳時自動加入素材資源群組分析，並核對數據走期。</p></div></details></div><div id="batchCampaignWrap" class="hidden"><h3 style="font-size:14px;margin:15px 0 8px">批次產出｜選擇 Campaign</h3><div id="batchCampaignList" class="batch-list"></div><p class="tiny">依需要勾選廣告活動，分別產出 Excel 並打包 ZIP；每份僅包含自身 Campaign 的數據。</p></div></section>
 <section class="card"><h2><span class="n">2</span>報表設定</h2><div id="lockInfo" class="lock"><span id="lockText">建立新報表：可自由設定</span><button type="button" class="secondary hidden" id="unlock">解鎖並修改設定</button></div><fieldset id="settings"><div class="settings-layout">
 <div class="settings-row two"><div><label>報表類型</label><select id="type"><option value="" selected disabled>請選擇報表類型</option><option value="YT 優化轉換（訂閱 CPA）">YouTube｜優化轉換（訂閱 CPA）</option><option value="YT_VIEW">YouTube｜影片觀看 CPV</option><option value="DGC_CLICK">Demand Gen｜點擊 CPC</option><option value="GS_STANDARD">Google Search｜標準版（多分頁）</option><option value="GS_SHOPPING">Google Search｜轉換版</option><option value="GS_ADVANCED">Google Search｜進階版（多分頁）</option><option value="APP_INSTALL">App｜安裝 CPI（自動分頁）</option><option value="PMAX_ORIGINAL">PMax｜原版型（每日＋素材資源群組）</option></select></div><div id="normalCampaignField"><label>行銷活動</label><select id="campaign"><option value="">請選擇行銷活動</option></select></div><div id="gsScopeField" class="hidden"><label>GS 專案資料範圍</label><select id="gsScope"><option value="custom" selected>自訂合併的廣告活動（預設）</option><option value="all">全部廣告活動</option></select><div id="gsCustomCampaigns" class="hidden gs-campaign-list"></div><div class="tiny">GS 標準版與進階版皆產出一份多分頁 Excel，不會依 Campaign 拆成多份。</div></div></div>
@@ -3592,4 +3592,358 @@ buildV3 = async function(c, prior = null) {
   return wb;
 };
 /* END V3.27 YT video gap correction */
+
+
+/* V3.28 | YT video progress percentages (user optional), safe future-row hiding,
+   and consistent thousands separators across ALL report types.
+   Additive final pass: all V3.27 builders and template-specific styles remain intact. */
+const V328_PROGRESS = [
+  {key:'25', label:'25%'}, {key:'50', label:'50%'},
+  {key:'75', label:'75%'}, {key:'100', label:'100%'}
+];
+const V328_INT_FMT = '#,##0';
+const V328_DEC_FMT = '#,##0.00';
+const v328Clone = obj => (obj == null ? obj : JSON.parse(JSON.stringify(obj)));
+
+// Optional checkboxes: never enabled implicitly, so the existing YT template
+// stays exactly as it is when the user does not request these four fields.
+const v328ProgressPanel = document.createElement('div');
+v328ProgressPanel.id = 'v328YtProgressPanel';
+v328ProgressPanel.style.cssText = 'margin:12px 0 16px;border:1px solid #DDE3E9;border-radius:9px;background:#FAFBFC;padding:14px 18px';
+v328ProgressPanel.classList.add('hidden');
+v328ProgressPanel.innerHTML = '<div style="font-weight:700;margin-bottom:9px">YouTube 影片播放進度（選填欄位）</div>' +
+  '<div style="display:flex;flex-wrap:wrap;gap:16px 26px">' +
+  V328_PROGRESS.map(p => `<label style="font-weight:normal;display:flex;align-items:center;gap:7px;margin:0"><input type="checkbox" class="v328-progress" value="${p.key}" style="width:auto">影片播放進度 ${p.label}</label>`).join('') +
+  '</div><p id="v328ProgressStatus" class="tiny" style="margin-top:9px">僅 YouTube 影片觀看 CPV 使用。彙總為依曝光次數加權的平均百分比，不會將百分比加總；資料欄缺少時會提示。</p>';
+$('gsMetricOpts').parentNode.insertBefore(v328ProgressPanel, $('gsMetricOpts').nextSibling);
+function v328SelectedProgress(){return [...v328ProgressPanel.querySelectorAll('.v328-progress:checked')].map(el=>el.value)}
+function v328SetProgress(keys){const values=new Set(Array.isArray(keys)?keys.map(String):[]);for(const el of v328ProgressPanel.querySelectorAll('.v328-progress'))el.checked=values.has(el.value)}
+function v328SyncProgressUI(){
+  v328ProgressPanel.classList.toggle('hidden',typeKey()!=='YT_VIEW');
+  const found = window.__v328ProgressCols || {};
+  const present = V328_PROGRESS.filter(p=>found[p.key]>=0).map(p=>p.label);
+  const el=$('v328ProgressStatus');
+  if(el) el.textContent=entries.length
+    ? `Raw Data 已辨識：${present.length?present.join('／'):'無播放進度百分比欄位'}。可勾選要產出的欄位；加權平均以曝光次數為權重。`
+    : '從 Google Ads Raw Data 讀取「影片播放進度：25%／50%／75%／100%」等欄位；以曝光數加權平均，不加總百分比。';
+}
+v328ProgressPanel.addEventListener('change',()=>refresh());
+$('type').addEventListener('change',()=>{v328SyncProgressUI();refresh()});
+$('tabNew').addEventListener('click',()=>{v328SetProgress([]);v328SyncProgressUI()});
+
+// Retain opt-in fields in the hidden _google_config for both new / update flows.
+const v328FieldsBeforeProgress=fields;
+fields=function(){return {...v328FieldsBeforeProgress(),ytProgressCols:v328SelectedProgress(),_googleVersion:'3.28'};};
+const v328RestoreBeforeProgress=restore;
+restore=function(cfg){
+  const result=v328RestoreBeforeProgress(cfg);
+  v328SetProgress(cfg&&Array.isArray(cfg.ytProgressCols)?cfg.ytProgressCols:[]);
+  v328SyncProgressUI();
+  return result;
+};
+
+// Google Ads language variations: 影片播放進度：25%, 影片播放至 25%,
+// Video played to 25%; never confuse with view rate, number of views, or cost.
+function v328ProgressHeaderMatch(header,level){
+  const h=String(header??'').normalize('NFKC').toLowerCase()
+    .replace(/[：:()（）\[\]＿_]/g,' ').replace(/\s+/g,' ').trim();
+  return /(?:影片.{0,9}(?:播放進度|播放至|播放到|觀看進度)|video\s*played\s*(?:to)?|video\s*playback\s*progress)/i.test(h) &&
+    new RegExp(`(?:^|[^0-9])${level}\\s*%(?![0-9])`).test(h);
+}
+function v328ParsePercent(input){
+  if(input===null||input===undefined||input==='')return null;
+  if(typeof input==='string' && /^(?:--|—|－|n\/a|nan)$/i.test(input.trim()))return null;
+  const txt=String(input).trim().replace(/,/g,'');
+  const percentage=txt.includes('%');
+  const n=Number(txt.replace('%',''));
+  if(!Number.isFinite(n)||n<0)return null;
+  // XLSX percentage cells commonly contain 0.25, CSV percentages "25%".
+  // Raw numeric 25 means 25%, raw numeric 0.25 means 25%.
+  return percentage||n>1 ? n/100 : n;
+}
+function v328AttachProgressRows(file){
+  return (async()=>{
+    if(!file||!entries.length)return;
+    const grid=await readGrid(file);
+    const hi=grid.findIndex((r,i)=>i<20&&['日期','廣告活動','曝光','點擊','費用'].every(k=>r.map(x=>String(x).trim()).includes(k)));
+    if(hi<0)return;
+    const headers=grid[hi].map(v=>String(v??'').trim()), dateIdx=headers.indexOf('日期');
+    const indexes={};
+    for(const p of V328_PROGRESS) indexes[p.key]=headers.findIndex(h=>v328ProgressHeaderMatch(h,p.key));
+    window.__v328ProgressCols=indexes;
+    const rawRows=grid.slice(hi+1).filter(r=>dateIso(r[dateIdx]));
+    if(rawRows.length!==entries.length)throw Error('播放進度原始列數與主資料列數不一致，為避免錯配已停止對應');
+    entries.forEach((rec,i)=>{
+      rec.ytProgress={};
+      for(const p of V328_PROGRESS){
+        const idx=indexes[p.key];
+        rec.ytProgress[p.key]=idx>=0?v328ParsePercent(rawRows[i][idx]):null;
+      }
+    });
+    v328SyncProgressUI();
+  })();
+}
+const v328UploadPrior=upload;
+upload=async function(file){
+  window.__v328ProgressCols={};
+  await v328UploadPrior(file);
+  if(entries.length && file){
+    try{await v328AttachProgressRows(file)}
+    catch(e){console.warn('YT 影片播放進度解析失敗',e);window.__v328ProgressCols={};}
+  }
+  v328SyncProgressUI();
+};
+
+function v328ScopedCampaignRows(c){
+  const cfg=typeof v326R12Get==='function'?v326R12Get(c):{};
+  const start=cfg.start||$('start').value, end=cfg.end||$('end').value;
+  return entries.filter(r=>(!c||r.campaign===c)&&(!start||r.date>=start)&&(!end||r.date<=end));
+}
+function v328WeightedProgress(rs,key){
+  let total=0,weight=0,plainTotal=0,plainN=0;
+  for(const r of rs){
+    const value=r?.ytProgress?.[key];
+    if(value===null||value===undefined||!Number.isFinite(value))continue;
+    plainTotal+=value;plainN++;
+    const impressions=Number(r.impr)||0;
+    if(impressions>0){total+=value*impressions;weight+=impressions;}
+  }
+  return weight>0?total/weight:plainN?plainTotal/plainN:null;
+}
+function v328ProgressCell(ws,row,col,value,styleSource,isTotal=false){
+  const cell=ws.getCell(row,col);
+  const src=ws.getCell(row,styleSource);
+  cell.style=v328Clone(src.style||{});
+  cell.value=value;
+  cell.numFmt='0.00%';
+  cell.alignment={...(cell.alignment||{}),horizontal:'center',vertical:'middle'};
+  if(isTotal)cell.font={...(cell.font||{}),name:'微軟正黑體',bold:true};
+  return cell;
+}
+function v328WriteProgressHeader(ws,rHead,col,p,styleCol){
+  const upper=v328ProgressCell(ws,rHead,col,'影片播放進度',styleCol,false);
+  const lower=v328ProgressCell(ws,rHead+1,col,p.label,styleCol,false);
+  const dark={type:'pattern',pattern:'solid',fgColor:{argb:'FF475368'}};
+  for(const cell of [upper,lower]){
+    cell.numFmt='General';
+    cell.fill=v328Clone(dark);
+    cell.font={...(cell.font||{}),name:'微軟正黑體',bold:true,color:{argb:'FFFFFFFF'}};
+    cell.alignment={horizontal:'center',vertical:'middle',wrapText:true};
+  }
+}
+function v328Edge(style){return {style,color:{argb:'FF000000'}}}
+function v328Reframe(ws,top,left,bottom,right,separator){
+  for(let r=top;r<=bottom;r++)for(let col=left;col<=right;col++){
+    const x=ws.getCell(r,col),b={...(x.border||{})};
+    b.left=v328Edge(col===left?'medium':'thin');
+    b.right=v328Edge(col===right?'medium':'thin');
+    b.top=v328Edge(r===top||r===separator+1?'medium':'thin');
+    b.bottom=v328Edge(r===bottom||r===separator?'medium':'thin');
+    x.border=b;
+  }
+}
+function v328MoveYtRightTables(ws,n){
+  if(n<=0)return;
+  // Existing YT CPV layout is A:H daily + I gap + J:Q audience/creative.
+  // New data columns occupy I...(H+n); shift right-hand panels n columns to
+  // preserve their independence, preventing overlapping cells and broken merges.
+  const merges=['J7:J8','N7:N8','P7:P8','J17:J18','N17:N18','P17:P18'];
+  // Carry every existing right-panel column width to its new position.
+  // In particular, the group/creative-name column J can be much wider than N.
+  const oldRightWidths=Array.from({length:8},(_,i)=>ws.getColumn(10+i).width);
+  const source=[];
+  for(let row=7;row<=22;row++)for(let col=10;col<=17;col++){
+    const cell=ws.getCell(row,col);
+    const isMergeChild=!!(cell.isMerged&&cell.master&&cell.master.address!==cell.address);
+    let value=isMergeChild?null:cell.value;
+    if(value&&typeof value==='object'&&typeof value.formula==='string'){
+      value={...value,formula:value.formula.replace(/\b([J-Q])(\$?\d+)\b/g,(m,c,r)=>String.fromCharCode(c.charCodeAt(0)+n)+r)};
+    }
+    source.push({row,col,value:v328Clone(value),style:v328Clone(cell.style||{})});
+  }
+  for(const range of merges)try{ws.unMergeCells(range)}catch(e){}
+  // Include the target area, which overlaps the old panel for any n>0.
+  for(let row=7;row<=22;row++)for(let col=10;col<=17+n+n;col++){
+    const cell=ws.getCell(row,col);cell.value=null;cell.style={};
+  }
+  for(const a of source){
+    const target=ws.getCell(a.row,a.col+n);
+    target.style=a.style;
+    if(a.value!==null&&a.value!==undefined)target.value=a.value;
+  }
+  for(const range of merges){
+    const shifted=range.replace(/([J-Q])(?=\d)/g,c=>String.fromCharCode(c.charCodeAt(0)+n));
+    ws.mergeCells(shifted);
+  }
+  for(let i=0;i<8;i++)if(Number.isFinite(oldRightWidths[i]))
+    ws.getColumn(10+i+n).width=oldRightWidths[i];
+  // The separator between A:(H+n) and the right-hand panel is genuinely blank.
+  ws.getColumn(9+n).width=3.5;
+  // The original gap shifted too; clear its old border artifacts.
+  for(let row=7;row<=22;row++){
+    const gap=ws.getCell(row,9+n);gap.value=null;gap.style={};
+  }
+  return {rightStart:10+n,rightEnd:17+n};
+}
+function v328AddYtProgress(wb,c){
+  const keys=v328SelectedProgress();if(typeKey()!=='YT_VIEW'||!keys.length)return;
+  const indexes=window.__v328ProgressCols||{};
+  const missing=keys.filter(k=>!(indexes[k]>=0));
+  if(missing.length)throw Error('YT 影片播放進度缺少 Raw Data 欄位：'+missing.map(k=>k+'%').join('、')+'。請在 Google Ads 匯出這些百分比欄位，或取消勾選。');
+  const ws=wb.worksheets.find(w=>w.name!=='_google_config'&&w.name!=='上刊圖');
+  if(!ws)return;
+  const records=v328ScopedCampaignRows(c),n=keys.length;
+  const byDay=new Map(),byGroup=new Map(),byAd=new Map();
+  for(const rec of records){
+    for(const [map,key] of [[byDay,rec.date],[byGroup,rec.group||'未命名'],[byAd,rec.ad||'未命名']]){
+      if(!map.has(key))map.set(key,[]);map.get(key).push(rec);
+    }
+  }
+  // Capture names from the rendered right-hand panel before relocating it.
+  const groupNames=Array.from({length:5},(_,i)=>String(ws.getCell(9+i,10).value||'').trim());
+  const adNames=Array.from({length:3},(_,i)=>String(ws.getCell(19+i,10).value||'').trim());
+  const {rightStart,rightEnd}=v328MoveYtRightTables(ws,n);
+  // Left: I... onward. Right: the exact same four optional metrics beside each
+  // original audience/creative table; section names, formulas and borders kept.
+  for(let j=0;j<n;j++){
+    const p=V328_PROGRESS.find(x=>x.key===keys[j]);
+    const col=9+j,rightCol=rightEnd+1+j;
+    v328WriteProgressHeader(ws,7,col,p,4); // copy body style, set official dark header
+    v328ProgressCell(ws,9,col,v328WeightedProgress(records,p.key),7,true);
+    for(let row=10;row<=74;row++){
+      const date=v326R12ExcelDate(ws.getCell(row,1).value);
+      const val=date?v328WeightedProgress(byDay.get(date)||[],p.key):null;
+      v328ProgressCell(ws,row,col,val,7,false);
+    }
+    // Right: tables preserve original J:Q content but are shifted by n columns.
+    for(const [header,total,begin,end,names,map] of [
+      [7,14,9,13,groupNames,byGroup],
+      [17,22,19,21,adNames,byAd]
+    ]){
+      v328WriteProgressHeader(ws,header,rightCol,p,rightEnd-4);
+      v328ProgressCell(ws,total,rightCol,v328WeightedProgress(records,p.key),rightEnd,true);
+      for(let row=begin;row<=end;row++){
+        const name=names[row-begin];
+        v328ProgressCell(ws,row,rightCol,name?v328WeightedProgress(map.get(name)||[],p.key):null,rightEnd,false);
+      }
+    }
+    ws.getColumn(col).width=18;
+    ws.getColumn(rightCol).width=18;
+  }
+  // Daily original H was formerly the right edge. It is now an interior border.
+  // The right-hand blocks extend to the newly added average-% columns.
+  const latestRow=Array.from({length:65},(_,i)=>10+i).filter(row=>!!v326R12ExcelDate(ws.getCell(row,1).value)).at(-1)||9;
+  v328Reframe(ws,7,1,Math.max(9,latestRow),8+n,8);
+  v328Reframe(ws,7,rightStart,14,rightEnd+n,8);
+  v328Reframe(ws,17,rightStart,22,rightEnd+n,18);
+  // Gap rows 15 and 16 must remain clean, including newly added columns.
+  for(const r of [15,16])for(let col=rightStart;col<=rightEnd+n;col++){
+    const cell=ws.getCell(r,col);cell.value=null;cell.border={};
+  }
+  ws.getColumn('A').width=18;ws.getColumn('A').bestFit=false;
+  wb.calcProperties.fullCalcOnLoad=true;
+}
+
+// Only hide blank unused tail rows which do NOT intersect live right-hand
+// panels, summaries or other sections. Excel cannot hide half a row.
+function v328HideSafeFutureRows(wb,c){
+  const typ=typeKey();
+  const patterns={
+    YT_VIEW:{first:10,last:74,protectUntil:22},
+    'YT 優化轉換（訂閱 CPA）':{first:11,last:64,protectUntil:26},
+    DGC_CLICK:{first:11,last:69,protectUntil:27}
+  };
+  const p=patterns[typ];
+  const cfg=typeof v326R12Get==='function'&&c?v326R12Get(c):{};
+  const start=cfg?.start||$('start').value, end=cfg?.end||$('end').value;
+  const dates=entries.filter(r=>(!c||r.campaign===c)&&(!start||r.date>=start)&&(!end||r.date<=end)).map(r=>r.date);
+  const latest=dates.sort().at(-1)||'';
+  if(!latest)return;
+  for(const ws of wb.worksheets){
+    if(ws.name==='_google_config'||ws.state==='veryHidden'||ws.name==='上刊圖')continue;
+    if(p && (typ==='YT_VIEW'&&ws.columnCount>=17 || typ==='DGC_CLICK'&&ws.columnCount>=13 || ws.name==='YT訂閱')){
+      for(let r=Math.max(p.first,p.protectUntil+1);r<=p.last;r++){
+        const row=ws.getRow(r),date=v326R12ExcelDate(row.getCell(1).value);
+        if(date&&date<=latest)continue;
+        if(date&&date>latest){ // Future daily date: no separate populated panels may be hidden.
+          if(row.getCell(1).value&&Array.from({length:Math.min(ws.columnCount,50)-8},(_,i)=>row.getCell(9+i).value).some(v=>v!=null&&v!==''))continue;
+        }
+        const firstValue=row.getCell(1).value;
+        if(firstValue!=null && !date)continue; // Total budget, rate, section title.
+        // When an unrelated block is populated on the same row, do not hide it.
+        let sideData=false;
+        for(let col=9;col<=Math.min(ws.columnCount,45);col++){
+          const v=row.getCell(col).value;if(v!==null&&v!==undefined&&v!==''){sideData=true;break;}
+        }
+        if(sideData)continue;
+        // The daily left block may still contain a formula/value on an expired
+        // template date; user asked to hide future, not delete its contents.
+        if(!date && Array.from({length:8},(_,i)=>row.getCell(i+1).value).some(v=>v!==null&&v!==undefined&&v!==''))continue;
+        row.hidden=true;
+      }
+    }else{
+      // For independently laid-out daily reports, only hide explicit future
+      // date rows, and only where no other column block would be hidden.
+      const last=Math.min(ws.rowCount,1800);
+      for(let r=5;r<=last;r++){
+        const row=ws.getRow(r),date=v326R12ExcelDate(row.getCell(1).value);
+        if(!date||date<=latest)continue;
+        let liveSide=false;
+        for(let col=9;col<=Math.min(ws.columnCount,45);col++){
+          const v=row.getCell(col).value;if(v!==null&&v!==undefined&&v!==''){liveSide=true;break;}
+        }
+        if(!liveSide)row.hidden=true;
+      }
+    }
+  }
+}
+
+// Across all types, use grouping for ordinary numeric values but NEVER apply
+// integer/currency formatting to any percent or date. Honor existing decimals.
+function v328ThousandFormat(wb){
+  for(const ws of wb.worksheets){
+    if(ws.name.startsWith('_')||ws.state==='veryHidden')continue;
+    ws.eachRow({includeEmpty:false},row=>row.eachCell({includeEmpty:false},cell=>{
+      const value=cell.value;
+      if(typeof value!=='number' && !(value&&typeof value==='object'&&typeof value.formula==='string'))return;
+      const fmt=String(cell.numFmt||'General');
+      if(fmt.includes('%')||/(?:yy|dd|mm\/|\/mm|h:mm|m\/d)/i.test(fmt))return;
+      if(fmt.includes('#,##')||fmt.includes('\\,')||fmt==='@')return;
+      // Keep original money/unit labels while inserting grouping into simple
+      // custom currency formats such as '"$"0.00'.
+      if((fmt.includes('"')||fmt.includes('$')) && /0(?:\.0+)?/.test(fmt)){
+        cell.numFmt=fmt.replace(/0(?=\.0+|$)/,'#,##0');
+        return;
+      }
+      // Preserve special unit formats with bespoke suffixes when not safe to rewrite.
+      if(/[A-Za-z]/.test(fmt)&&fmt!=='General')return;
+      const precision=(fmt.match(/(?:0|#)\.([0#]+)/)||[])[1];
+      if(precision){
+        if(/^[0#]+$/.test(precision))cell.numFmt='#,##0.'+precision;
+      }else if(fmt==='General'||/^[0#_ ?()\[\];-]+$/.test(fmt)){
+        const result=typeof value==='number'?value:(typeof value?.result==='number'?value.result:null);
+        const decimal=(result!==null&&!Number.isInteger(result)) ||
+          (result===null&&typeof value?.formula==='string'&&/\//.test(value.formula));
+        cell.numFmt=decimal?V328_DEC_FMT:V328_INT_FMT;
+      }
+    }));
+  }
+}
+
+const v328BeforeBuild=buildV3;
+buildV3=async function(c,prior=null){
+  const wb=await v328BeforeBuild(c,prior);
+  if(typeKey()==='YT_VIEW')v328AddYtProgress(wb,c);
+  v328HideSafeFutureRows(wb,c);
+  v328ThousandFormat(wb);
+  const conf=wb.getWorksheet('_google_config');
+  if(conf){
+    let saved={};try{saved=JSON.parse(String(conf.getCell('A2').value||'{}'))}catch(e){}
+    conf.getCell('A2').value=JSON.stringify({...saved,ytProgressCols:v328SelectedProgress(),_googleVersion:'3.28'});
+  }
+  return wb;
+};
+v328SyncProgressUI();
+/* END V3.28 */
+
 </script></body></html>
