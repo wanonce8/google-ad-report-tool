@@ -133,10 +133,10 @@ $('old').addEventListener('change',async()=>{await new Promise(r=>setTimeout(r,2
 .mode-wrap{grid-column:1/-1}.mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:5px 0 10px}.mode-tab{background:#f7f8fa;border:1px solid var(--line);color:var(--dark);font-weight:700;padding:13px}.mode-tab.active{background:var(--dark);color:#fff;border-color:var(--dark)}.mode-tab:focus-visible{outline:3px solid var(--yellow)}
 </style><style>
 :root{--ink:#1F2733;--slate:#5C6B7A;--paper:#F2F4F6;--accent:#FFD23F}body{font-family:"Microsoft JhengHei","PingFang TC",sans-serif;background:#F2F4F6;color:#1F2733}header{background:#1F2733!important}header h1:before{content:"";display:inline-block;width:10px;height:19px;background:#FFD23F;margin-right:11px;vertical-align:-2px}.card{background:#fff;border:1px solid #DDE3E9;border-radius:10px;box-shadow:none}.card h2{border-bottom:1px solid #DDE3E9;padding-bottom:13px} .n{background:#1F2733!important;color:#FFD23F!important;border-radius:100%!important}button:not(.secondary):not(.mode-tab){background:#FFD23F;color:#1F2733;font-weight:700} .mode-tab.active{background:#1F2733!important;color:#fff!important;border-color:#1F2733!important}.note{border-radius:8px}.advanced{border:1px solid #dde3e9;border-radius:8px;padding:12px 15px}.advanced summary{cursor:pointer;font-weight:700}.extras{padding-top:14px}.hidden{display:none!important}select,input{font-family:inherit}
-</style><style>.batch-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px}.batch-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid #DDE3E9;border-radius:7px;background:#fafbfd;font-size:13px;overflow-wrap:anywhere}.batch-item input{width:auto;flex-shrink:0}.download-actions{display:flex;gap:10px;flex-wrap:wrap}.download-actions button{flex:1;min-width:180px}</style><style>.settings-layout{display:flex;flex-direction:column;gap:20px}.settings-row{display:grid;gap:18px}.settings-row.two{grid-template-columns:repeat(2,minmax(0,1fr))}.settings-row.four{grid-template-columns:repeat(4,minmax(0,1fr))}.settings-row>div{min-width:0}.settings-row input,.settings-row select{width:100%;min-width:0}.image-upload{margin-top:22px;padding:16px 18px;border:1px solid #dce2e8;border-radius:9px;background:#fafbfd}.image-upload-title{display:flex;align-items:center;gap:9px;font-weight:700;color:#263448}.image-upload input[type=file]{margin:12px 0 6px;width:100%}@media(max-width:850px){.settings-row.four{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:530px){.settings-row.four,.settings-row.two{grid-template-columns:1fr}}.gs-campaign-list{display:grid;gap:7px;margin-top:10px;padding:11px;background:#fafbfd;border:1px solid #DDE3E9;border-radius:8px}.gs-campaign-item{display:flex;align-items:center;gap:8px;margin:0;font-weight:400}.gs-campaign-item input{width:auto}#gsScopeField .tiny{margin-top:6px}</style></head><body><header><h1>Google Ads 廣告成效報表產生器</h1><p>V3.28｜YouTube／Demand Gen／Search／App · 共用報表面板</p></header><main class="wrap">
+</style><style>.batch-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px}.batch-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid #DDE3E9;border-radius:7px;background:#fafbfd;font-size:13px;overflow-wrap:anywhere}.batch-item input{width:auto;flex-shrink:0}.download-actions{display:flex;gap:10px;flex-wrap:wrap}.download-actions button{flex:1;min-width:180px}</style><style>.settings-layout{display:flex;flex-direction:column;gap:20px}.settings-row{display:grid;gap:18px}.settings-row.two{grid-template-columns:repeat(2,minmax(0,1fr))}.settings-row.four{grid-template-columns:repeat(4,minmax(0,1fr))}.settings-row>div{min-width:0}.settings-row input,.settings-row select{width:100%;min-width:0}.image-upload{margin-top:22px;padding:16px 18px;border:1px solid #dce2e8;border-radius:9px;background:#fafbfd}.image-upload-title{display:flex;align-items:center;gap:9px;font-weight:700;color:#263448}.image-upload input[type=file]{margin:12px 0 6px;width:100%}@media(max-width:850px){.settings-row.four{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:530px){.settings-row.four,.settings-row.two{grid-template-columns:1fr}}.gs-campaign-list{display:grid;gap:7px;margin-top:10px;padding:11px;background:#fafbfd;border:1px solid #DDE3E9;border-radius:8px}.gs-campaign-item{display:flex;align-items:center;gap:8px;margin:0;font-weight:400}.gs-campaign-item input{width:auto}#gsScopeField .tiny{margin-top:6px}</style></head><body><header><h1>Google Ads 廣告成效報表產生器</h1><p>V3.30｜YouTube／Demand Gen／GDN／Search／App · 共用報表面板</p></header><main class="wrap">
 <section class="card"><h2><span class="n">1</span>上傳資料</h2><div class="grid"><div class="mode-wrap"><label>操作模式</label><div class="mode-tabs" role="group" aria-label="操作模式"><button class="mode-tab active" id="tabNew" type="button" aria-pressed="true">建立新報表</button><button class="mode-tab" id="tabUpdate" type="button" aria-pressed="false">更新報表</button></div><input type="hidden" id="mode" value="new"><div class="tiny" id="modeNote">上傳 Google Ads Raw Data，建立全新週報</div></div><div id="oldBox" class="hidden"><label>上次由本工具產生的週報</label><input type="file" id="old" accept=".xlsx"></div></div><div style="margin-top:16px"><label>Google Ads Raw Data（CSV／XLSX）</label><input type="file" id="raw" accept=".csv,.tsv,.txt,.xlsx,.xls"></div><div class="tiny" style="margin-top:8px">自動搜尋「日期／廣告活動／廣告群組／廣告名稱／曝光／點擊／費用／轉換」表頭；支援匯出檔前兩列為報表資訊、第三列為表頭及 UTF-16 Tab 分隔 CSV。</div><div id="uploadInfo"></div><details class="advanced" style="margin-top:16px"><summary>進階：Google Search 額外 Raw Data（選填）</summary><div class="extras"><p class="tiny">依既有 GS 週報規劃的四份選填資料；GS 模式將使用；缺少資料時不會填入虛構的曝光比重。</p><div class="grid"><div><label>Campaign 曝光比重</label><input type="file" id="gsCampaignShare" accept=".csv,.xlsx,.xls"></div><div><label>Ad Group 曝光比重</label><input type="file" id="gsGroupShare" accept=".csv,.xlsx,.xls"></div><div><label>網頁連結額外資訊（Sitelink）</label><input type="file" id="gsSitelink" accept=".csv,.xlsx,.xls"></div><div><label>轉換動作明細（加入購物車／完成購買）</label><input type="file" id="gsConversions" accept=".csv,.tsv,.txt,.xlsx,.xls"><div class="tiny" id="gsConversionsStatus">未上傳；ROAS 必須有「完成購買」的轉換價值來源。</div></div></div><p class="tiny">廣告文案、AI MAX 搜尋字詞保留手動維護；兩個手動維護分頁在更新報表時保留既有內容。</p></div></details><details class="advanced" style="margin-top:12px"><summary>PMax 素材資源群組 Raw Data（選填，自動辨識版型）</summary><div class="extras"><label>素材資源群組報表（CSV／Excel）</label><input id="pmaxAssets" type="file" accept=".csv,.tsv,.xlsx,.xls"><p class="tiny">不必上傳：未上傳則只產出每日成效；上傳時自動加入素材資源群組分析，並核對數據走期。</p></div></details></div><div id="batchCampaignWrap" class="hidden"><h3 style="font-size:14px;margin:15px 0 8px">批次產出｜選擇 Campaign</h3><div id="batchCampaignList" class="batch-list"></div><p class="tiny">依需要勾選廣告活動，分別產出 Excel 並打包 ZIP；每份僅包含自身 Campaign 的數據。</p></div></section>
 <section class="card"><h2><span class="n">2</span>報表設定</h2><div id="lockInfo" class="lock"><span id="lockText">建立新報表：可自由設定</span><button type="button" class="secondary hidden" id="unlock">解鎖並修改設定</button></div><fieldset id="settings"><div class="settings-layout">
-<div class="settings-row two"><div><label>報表類型</label><select id="type"><option value="" selected disabled>請選擇報表類型</option><option value="YT 優化轉換（訂閱 CPA）">YouTube｜優化轉換（訂閱 CPA）</option><option value="YT_VIEW">YouTube｜影片觀看 CPV</option><option value="DGC_CLICK">Demand Gen｜點擊 CPC</option><option value="GS_STANDARD">Google Search｜標準版（多分頁）</option><option value="GS_SHOPPING">Google Search｜轉換版</option><option value="GS_ADVANCED">Google Search｜進階版（多分頁）</option><option value="APP_INSTALL">App｜安裝 CPI（自動分頁）</option><option value="PMAX_ORIGINAL">PMax｜原版型（每日＋素材資源群組）</option></select></div><div id="normalCampaignField"><label>行銷活動</label><select id="campaign"><option value="">請選擇行銷活動</option></select></div><div id="gsScopeField" class="hidden"><label>GS 專案資料範圍</label><select id="gsScope"><option value="custom" selected>自訂合併的廣告活動（預設）</option><option value="all">全部廣告活動</option></select><div id="gsCustomCampaigns" class="hidden gs-campaign-list"></div><div class="tiny">GS 標準版與進階版皆產出一份多分頁 Excel，不會依 Campaign 拆成多份。</div></div></div>
+<div class="settings-row two"><div><label>報表類型</label><select id="type"><option value="" selected disabled>請選擇報表類型</option><option value="YT 優化轉換（訂閱 CPA）">YouTube｜優化轉換（訂閱 CPA）</option><option value="YT_VIEW">YouTube｜影片觀看 CPV</option><option value="DGC_CLICK">Demand Gen｜點擊 CPC</option><option value="GDN_YR_CPM">GDN／YT｜曝光 CPM</option><option value="GS_STANDARD">Google Search｜標準版（多分頁）</option><option value="GS_SHOPPING">Google Search｜轉換版</option><option value="GS_ADVANCED">Google Search｜進階版（多分頁）</option><option value="APP_INSTALL">App｜安裝 CPI（自動分頁）</option><option value="PMAX_ORIGINAL">PMax｜原版型（每日＋素材資源群組）</option></select></div><div id="normalCampaignField"><label>行銷活動</label><select id="campaign"><option value="">請選擇行銷活動</option></select></div><div id="gsScopeField" class="hidden"><label>GS 專案資料範圍</label><select id="gsScope"><option value="custom" selected>自訂合併的廣告活動（預設）</option><option value="all">全部廣告活動</option></select><div id="gsCustomCampaigns" class="hidden gs-campaign-list"></div><div class="tiny">GS 標準版與進階版皆產出一份多分頁 Excel，不會依 Campaign 拆成多份。</div></div></div>
 <div class="settings-row two hidden" id="appSheetSetting" style="border:1px solid #dce2e8;border-radius:9px;background:#fafbfd;padding:14px 16px"><div><label for="appSheetMode">App CPI｜月份工作表配置</label><select id="appSheetMode"><option value="auto" selected>自動判斷（單月一張，跨月才按月份分頁）</option><option value="single">不分月份，所有日期合併單一分頁</option><option value="monthly">固定依月份分頁</option></select></div><div><label>產出範圍</label><div class="tiny" id="appSheetHint" style="padding-top:9px">App 將合併目前走期內所有 Campaign，產出一份 Excel。</div></div></div>
 <div class="settings-row four"><div><label>走期開始（選填，自動辨識）</label><input id="start" type="date"></div><div><label>走期結束（選填，自動辨識）</label><input id="end" type="date"></div><div><label>預算（TWD，選填）</label><input id="budget" type="number" min="0" placeholder="請輸入預算"></div><div><label>預設 CPC（指標，選填）</label><input id="unit" type="number" min="0" step="0.01" placeholder="例如 5.00"></div></div>
 <div class="settings-row two"><div><label>轉換指標顯示名稱（選填，自動帶入預設）</label><input id="convLabel" placeholder="例如：訂閱次數、安裝次數"></div><div><label>下載檔名（選填；留白自動命名並附加今日 _MMDD）</label><input id="filename" placeholder="例如：國泰投信_YT_週報"></div></div>
@@ -3945,5 +3945,379 @@ buildV3=async function(c,prior=null){
 };
 v328SyncProgressUI();
 /* END V3.28 */
+
+/* V3.29 — GDN / YT CPM: reuse the verified DGC CPC workbook layout.
+   Only the new report type is transformed; DGC and other seven types are unchanged.
+   In particular, CPM = fee-inclusive advertising spend / impressions * 1000. */
+formatMap.GDN_YR_CPM={name:'GDN／YT CPM',cols:['曝光次數','點擊次數','廣告費用','CTR','CPM']};
+
+function v329AdaptCpcSheetToCpm(wb){
+  const ws=wb.worksheets.find(sheet=>sheet.name!=='_google_config'&&sheet.name!=='上刊圖'&&sheet.state!=='veryHidden');
+  if(!ws)throw Error('無法找到 CPM 正式版型的每日總表');
+  // Retain all DGC section positions, fills, thick/thin borders and numeric formats.
+  // The original workbook is a dated DGC template; CPM gets an explicit sheet name.
+  ws.name='CPM';
+  ws.getCell('A3').value='預計曝光次數';
+  ws.getCell('A4').value='CPM';
+  ws.getCell('B3').value={formula:'IFERROR(B2/B4*1000,0)'};
+  ws.getCell('B3').numFmt='#,##0';
+  // Only change section-header labels, never ad/campaign text within detail rows.
+  for(const rowNo of [3,4,8,9,19,20]){
+    const row=ws.getRow(rowNo);
+    row.eachCell({includeEmpty:false},cell=>{
+      if(typeof cell.value==='string'&&/CPC/.test(cell.value)){
+        cell.value=cell.value.replace(/CPC/g,'CPM');
+      }
+    });
+  }
+  function cpmCell(row,col,spendCol,impressionCol,isPresent){
+    const cell=ws.getCell(row,col);
+    if(isPresent){
+      cell.value={formula:`IFERROR(${spendCol}${row}/${impressionCol}${row}*1000,0)`};
+      cell.numFmt='#,##0.00';
+    }else cell.value=null;
+  }
+  // A:F = daily performance. D is spend; B is impressions; E remains CTR.
+  cpmCell(10,6,'D','B',true);
+  for(let row=11;row<=69;row++){
+    const date=ws.getCell(row,1).value;
+    const spend=ws.getCell(row,4).value;
+    cpmCell(row,6,'D','B',date!=null&&date!==''&&spend!=null);
+  }
+  // H:M = audience and creative panels: K=spend, I=impressions, L=CTR.
+  for(const row of [10,11,12,13,14,15,16,21,22,23,24,25,26,27]){
+    const imp=ws.getCell(row,9).value;
+    const spend=ws.getCell(row,11).value;
+    cpmCell(row,13,'K','I',imp!=null&&spend!=null);
+  }
+  return wb;
+}
+
+const v329PriorBuildV3=buildV3;
+buildV3=async function(c,prior=null){
+  if(typeKey()!=='GDN_YR_CPM')return v329PriorBuildV3(c,prior);
+  // Build exactly as DGC first so every accumulated V3.26–V3.28 styling,
+  // update, date-row, interest and creative-panel fix remains in force.
+  const savedTypeKey=typeKey;
+  let wb;
+  try{
+    typeKey=function(){return 'DGC_CLICK'};
+    wb=await v329PriorBuildV3(c,prior);
+  }finally{
+    typeKey=savedTypeKey;
+  }
+  v329AdaptCpcSheetToCpm(wb);
+  const conf=wb.getWorksheet('_google_config');
+  if(conf){
+    let cfg={};try{cfg=JSON.parse(String(conf.getCell('A2').value||'{}'))}catch(_){}
+    conf.getCell('A1').value='Google Ads Report Generator V3.29 / config';
+    conf.getCell('A2').value=JSON.stringify({...cfg,type:'GDN_YR_CPM',_googleVersion:'3.29'});
+  }
+  wb.calcProperties.fullCalcOnLoad=true;
+  return wb;
+};
+
+// New report option and preview only. Leave other existing UI handlers intact.
+const v329PriorRefresh=refresh;
+refresh=function(){
+  const result=v329PriorRefresh();
+  const cpm=typeKey()==='GDN_YR_CPM';
+  const priceLabel=$('unit').previousElementSibling;
+  if(cpm){
+    priceLabel.textContent='預設 CPM（指標，選填）';
+    const s=sum(subset());
+    const rate=1+serviceFee();
+    const effectiveCpm=s.impr?s.spend*rate/s.impr*1000:0;
+    $('log').textContent=$('log').textContent.replace(/CPC NT\$[\d,.]+/,`CPM NT$${effectiveCpm.toFixed(2)}`);
+  }else if(priceLabel.textContent==='預設 CPM（指標，選填）'){
+    priceLabel.textContent='預設 CPC（指標，選填）';
+  }
+  // Per-campaign batch fields also describe the active pricing unit.
+  for(const label of document.querySelectorAll('#v326-r12-panel label')){
+    if(/^(預設 CPC／CPV／CPI|預設 CPM)$/.test(label.textContent))
+      label.textContent=cpm?'預設 CPM':'預設 CPC／CPV／CPI';
+  }
+  return result;
+};
+$('type').addEventListener('change',()=>refresh());
+refresh();
+/* END V3.29 */
+
+/* V3.30 — GDN/YT CPM 多 Campaign 合併：獨立多選範圍、加總一份 Excel。
+   保留 V3.29 原識別碼 GDN_YR_CPM，確保舊報表設定可還原。 */
+const V330_CPM_KEY='GDN_YR_CPM';
+const V330_CPM_VIRTUAL='__V330_CPM_COMBINED__';
+let v330CpmSelected=new Set();
+let v330CpmSelectionKnown=false;
+let v330CpmDatesManual=false;
+let v330SettingDates=false;
+let v330CpmBuildActive=false;
+const v330IsCpm=()=>typeKey()===V330_CPM_KEY;
+const v330CampaignNames=()=>[...new Set(entries.map(r=>r.campaign).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh-Hant'));
+function v330ChosenCpm(){
+ const known=new Set(v330CampaignNames());
+ return [...v330CpmSelected].filter(c=>known.has(c));
+}
+const v330CpmField=document.createElement('div');
+v330CpmField.id='v330CpmScopeField';
+v330CpmField.style.minWidth='0';
+v330CpmField.innerHTML=`
+ <label>行銷活動（可複選合併為一份 CPM 報表）</label>
+ <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 8px">
+  <button type="button" class="secondary" id="v330CpmSelectAll" style="padding:5px 12px;font-size:12px">全選</button>
+  <button type="button" class="secondary" id="v330CpmClearAll" style="padding:5px 12px;font-size:12px">清除</button>
+  <span class="tiny" id="v330CpmCount" aria-live="polite"></span>
+ </div>
+ <div class="gs-campaign-list" id="v330CpmList" style="margin-top:0;max-height:220px;overflow:auto" aria-label="CPM 合併的行銷活動"></div>
+ <div class="tiny" style="margin-top:7px">所選 Campaign 的每日曝光、點擊與花費合併，CTR／CPM 使用合計數重新計算；預算請填入所選活動的總預算。</div>`;
+$('gsScopeField').parentElement.insertBefore(v330CpmField,$('gsScopeField'));
+function v330RenderCpmList(){
+ const campaigns=v330CampaignNames();
+ if(!v330CpmSelectionKnown){v330CpmSelected=new Set(campaigns);v330CpmSelectionKnown=true;}
+ const host=$('v330CpmList');host.replaceChildren();
+ for(const campaign of campaigns){
+  const label=document.createElement('label');label.className='gs-campaign-item';label.style.overflowWrap='anywhere';
+  const input=document.createElement('input');input.type='checkbox';input.className='v330-cpm-campaign';input.value=campaign;input.checked=v330CpmSelected.has(campaign);
+  input.addEventListener('change',()=>{
+   if(input.checked)v330CpmSelected.add(campaign);else v330CpmSelected.delete(campaign);
+   v330SyncCpmDates();refresh();
+  });
+  label.append(input,document.createTextNode(campaign));host.append(label);
+ }
+ v330UpdateCpmCount();
+}
+function v330UpdateCpmCount(){
+ const count=v330ChosenCpm().length,total=v330CampaignNames().length;
+ $('v330CpmCount').textContent=`已選 ${count}／${total} 個`; 
+}
+function v330SyncCpmDates(){
+ if(!v330IsCpm()||v330CpmDatesManual)return;
+ const chosen=v330ChosenCpm();if(!chosen.length)return;
+ const ranges=chosen.map(c=>campaignDateRange(c)).filter(Boolean);
+ const starts=ranges.map(x=>x.start).filter(Boolean).sort(),ends=ranges.map(x=>x.end).filter(Boolean).sort();
+ v330SettingDates=true;
+ try{if(starts.length)$('start').value=starts[0];if(ends.length)$('end').value=ends.at(-1);}finally{v330SettingDates=false;}
+ const hint=$('dateAutoHint');if(hint)hint.textContent='CPM 合併報表：自動取所選 Campaign 最早開始日至最晚結束日；可手動修改。';
+}
+for(const id of ['start','end'])$(id).addEventListener('input',()=>{if(v330IsCpm()&&!v330SettingDates)v330CpmDatesManual=true;});
+$('v330CpmSelectAll').addEventListener('click',()=>{
+ v330CpmSelected=new Set(v330CampaignNames());v330CpmSelectionKnown=true;
+ v330RenderCpmList();v330SyncCpmDates();refresh();
+});
+$('v330CpmClearAll').addEventListener('click',()=>{
+ v330CpmSelected.clear();v330CpmSelectionKnown=true;
+ v330RenderCpmList();refresh();
+});
+function v330SyncCpmUi(){
+ const isCpm=v330IsCpm();
+ v330CpmField.classList.toggle('hidden',!isCpm);
+ if(isCpm){
+  $('normalCampaignField').classList.add('hidden');
+  $('gsScopeField').classList.add('hidden');
+  $('batchCampaignWrap').classList.add('hidden');
+  $('v326-r12-panel')?.classList.add('hidden');
+  $('start')?.closest('.settings-row')?.classList.remove('hidden');
+  $('filename')?.closest('.settings-row')?.classList.remove('hidden');
+  $('dateAutoHint')?.classList.remove('hidden');
+  v330UpdateCpmCount();
+ }
+}
+const v330PriorFields=fields;
+fields=function(){
+ const cfg=v330PriorFields();
+ if(v330IsCpm()){
+  cfg.campaign='';cfg.cpmMerge=true;cfg.cpmCampaigns=v330ChosenCpm();
+  cfg._googleVersion='3.30';
+ }
+ return cfg;
+};
+const v330PriorRestore=restore;
+restore=function(cfg){
+ const out=v330PriorRestore(cfg);
+ if(cfg&&cfg.type===V330_CPM_KEY){
+  const listed=v330CampaignNames();
+  if(Array.isArray(cfg.cpmCampaigns))v330CpmSelected=new Set(cfg.cpmCampaigns);
+  else if(cfg.campaign)v330CpmSelected=new Set([cfg.campaign]);
+  else v330CpmSelected=new Set(listed);
+  v330CpmSelectionKnown=true;
+  v330CpmDatesManual=!!cfg.cpmDatesManual;
+  v330RenderCpmList();
+ }
+ v330SyncCpmUi();
+ return out;
+};
+const v330PriorUpload=upload;
+upload=async function(file){
+ if($('mode').value==='new'){v330CpmSelectionKnown=false;v330CpmDatesManual=false;}
+ await v330PriorUpload(file);
+ if(entries.length){
+  if($('mode').value==='update'&&latestConfig?.type===V330_CPM_KEY){
+   if(Array.isArray(latestConfig.cpmCampaigns))v330CpmSelected=new Set(latestConfig.cpmCampaigns);
+   else if(latestConfig.campaign)v330CpmSelected=new Set([latestConfig.campaign]);
+   else v330CpmSelected=new Set(v330CampaignNames());
+   v330CpmSelectionKnown=true;v330CpmDatesManual=!!latestConfig.cpmDatesManual;
+  }
+  v330RenderCpmList();
+  if(v330IsCpm()&&$('mode').value==='new')v330SyncCpmDates();
+ }
+ v330SyncCpmUi();refresh();
+};
+const v330PriorSubset=subset;
+subset=function(){
+ if(!v330IsCpm()||v330CpmBuildActive)return v330PriorSubset();
+ const names=new Set(v330ChosenCpm()),start=$('start').value,end=$('end').value;
+ return entries.filter(r=>names.has(r.campaign)&&(!start||r.date>=start)&&(!end||r.date<=end));
+};
+const v330PriorRefresh=refresh;
+refresh=function(){
+ const out=v330PriorRefresh();
+ v330SyncCpmUi();
+ if(v330IsCpm()&&!v330CpmBuildActive){
+  const valid=v330ChosenCpm().length>0&&subset().length>0&&!!$('start').value&&!!$('end').value&&$('start').value<=$('end').value;
+  $('download').disabled=!valid;
+  $('batchDownload').disabled=true;
+  const cpmRows=subset();const total=sum(cpmRows);
+  if(total.impr){
+   const rate=1+serviceFee(),cpm=total.spend*rate/total.impr*1000;
+   $('log').textContent=`已合併 ${v330ChosenCpm().length} 個 Campaign；${cpmRows.length} 筆原始資料，曝光 ${total.impr.toLocaleString('zh-TW')}、點擊 ${total.click.toLocaleString('zh-TW')}，CPM NT$${cpm.toLocaleString('zh-TW',{minimumFractionDigits:2,maximumFractionDigits:2})}。`;
+  }else if(!v330ChosenCpm().length){$('log').textContent='請至少勾選一個 Campaign 才能合併產出 CPM 報表。';}
+ }
+ return out;
+};
+$('type').addEventListener('change',()=>{
+ if(v330IsCpm()){
+  if(!v330CpmSelectionKnown)v330RenderCpmList();
+  if($('mode').value==='new')v330SyncCpmDates();
+ }
+ v330SyncCpmUi();refresh();
+});
+$('tabNew').addEventListener('click',()=>{
+ v330CpmSelectionKnown=false;v330CpmDatesManual=false;
+ v330RenderCpmList();v330SyncCpmUi();
+});
+
+// 用虛擬 Campaign 讓經過驗證的 DGC 範本所有日報、受眾、素材、
+// 日期與灰底後處理都看到同一組合併資料；原始 entries 在 finally 完整還原。
+// 這比直接修改既有 DGC 的資料篩選安全，也不影響其他八種報表。
+function v330OverflowDetail(wb,data,dimension,sheetName){
+ const map=new Map();
+ for(const rec of data){
+  const key=String(rec[dimension]||'').trim()||'未命名';
+  let v=map.get(key);if(!v){v={impr:0,click:0,spend:0};map.set(key,v)}
+  v.impr+=rec.impr||0;v.click+=rec.click||0;v.spend+=rec.spend||0;
+ }
+ const rows=[...map.entries()].sort((a,b)=>b[1].spend-a[1].spend);
+ const ws=wb.addWorksheet(sheetName),cols=['分類','曝光次數','點擊次數','廣告費用','CTR','CPM'];
+ ws.getRow(1).values=cols;
+ ws.views=[{state:'frozen',ySplit:1}];
+ ws.getColumn(1).width=46;
+ for(let col=2;col<=6;col++)ws.getColumn(col).width=18;
+ const edge=(style)=>({style,color:{argb:'FF000000'}});
+ function paint(row,values,summary){
+  values.forEach((value,i)=>{
+   const cell=ws.getCell(row,i+1);cell.value=value;
+   cell.font={name:'微軟正黑體',size:11,bold:summary};
+   cell.alignment={vertical:'middle',horizontal:i===0?'left':'center'};
+   cell.border={top:edge(summary?'medium':'thin'),bottom:edge(summary?'medium':'thin'),left:edge(i===0?'medium':'thin'),right:edge(i===5?'medium':'thin')};
+   if(summary)cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFFFF2CC'}};
+   if(i===1||i===2||i===3)cell.numFmt='#,##0';
+   if(i===4)cell.numFmt='0.00%';
+   if(i===5)cell.numFmt='#,##0.00';
+  });
+ }
+ for(let i=0;i<6;i++){
+  const cell=ws.getCell(1,i+1);cell.font={name:'微軟正黑體',size:11,bold:true,color:{argb:'FFFFFFFF'}};
+  cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF475368'}};
+  cell.border={top:edge('medium'),bottom:edge('medium'),left:edge(i===0?'medium':'thin'),right:edge(i===5?'medium':'thin')};
+  cell.alignment={vertical:'middle',horizontal:'center'};
+ }
+ const rate=1+serviceFee();
+ for(let i=0;i<rows.length;i++){
+  const [name,t]=rows[i],row=i+2;
+  paint(row,[name,t.impr,t.click,+(t.spend*rate).toFixed(5),{formula:`IFERROR(C${row}/B${row},0)`},{formula:`IFERROR(D${row}/B${row}*1000,0)`}],false);
+ }
+ const sum=data.reduce((x,r)=>({impr:x.impr+(r.impr||0),click:x.click+(r.click||0),spend:x.spend+(r.spend||0)}),{impr:0,click:0,spend:0});
+ const end=rows.length+2;
+ paint(end,['總計',sum.impr,sum.click,+(sum.spend*rate).toFixed(5),{formula:`IFERROR(C${end}/B${end},0)`},{formula:`IFERROR(D${end}/B${end}*1000,0)`}],true);
+}
+const v330BeforeBuild=buildV3;
+buildV3=async function(c,prior=null){
+ if(!v330IsCpm())return v330BeforeBuild(c,prior);
+ const names=v330ChosenCpm();if(!names.length)throw Error('請先勾選至少一個要合併的 Campaign');
+ const selected=new Set(names),original=entries;
+ const start=$('start').value,end=$('end').value;
+ const data=original.filter(r=>selected.has(r.campaign)&&(!start||r.date>=start)&&(!end||r.date<=end));
+ if(!data.length)throw Error('所選 Campaign 在目前走期沒有有效資料');
+ const rankDimension=(getter)=>{
+  const m=new Map();for(const r of data){const name=getter(r);if(!name)continue;m.set(name,(m.get(name)||0)+(r.spend||0))}
+  return [...m.entries()].sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
+ };
+ const groups=rankDimension(r=>r.group||'未命名');
+ const adNames=rankDimension(r=>String(r.adOriginalName||'').trim());
+ const groupOverflow=groups.length>5,adOverflow=adNames.length>6;
+ const keptGroups=new Set(groups.slice(0,4)),keptAds=new Set(adNames.slice(0,5));
+ const otherGroup='其他受眾（合併）',otherAd='其他素材（合併）';
+ const keepCampaign=$('campaign').value;
+ const oldR6=Object.prototype.hasOwnProperty.call(v326R6CampaignCfg,V330_CPM_VIRTUAL)?v326R6CampaignCfg[V330_CPM_VIRTUAL]:undefined;
+ const oldR12=Object.prototype.hasOwnProperty.call(v326R12Settings,V330_CPM_VIRTUAL)?v326R12Settings[V330_CPM_VIRTUAL]:undefined;
+ const existedR6=Object.prototype.hasOwnProperty.call(v326R6CampaignCfg,V330_CPM_VIRTUAL),existedR12=Object.prototype.hasOwnProperty.call(v326R12Settings,V330_CPM_VIRTUAL);
+ entries=data.map(r=>({
+  ...r,campaign:V330_CPM_VIRTUAL,
+  group:groupOverflow&&!keptGroups.has(r.group||'未命名')?otherGroup:r.group,
+  adOriginalName:adOverflow&&String(r.adOriginalName||'').trim()&&!keptAds.has(String(r.adOriginalName||'').trim())?otherAd:r.adOriginalName
+ }));
+ v330CpmBuildActive=true;
+ v326R6CampaignCfg[V330_CPM_VIRTUAL]={start,end,budget:$('budget').value,unit:$('unit').value};
+ v326R12Settings[V330_CPM_VIRTUAL]={start,end,budget:$('budget').value,unit:$('unit').value,convLabel:$('convLabel').value};
+ $('campaign').value='';
+ try{
+  const wb=await v330BeforeBuild(V330_CPM_VIRTUAL,prior);
+  if(groupOverflow)v330OverflowDetail(wb,data,'group','CPM完整受眾');
+  if(adOverflow)v330OverflowDetail(wb,data,'adOriginalName','CPM完整素材');
+  const conf=wb.getWorksheet('_google_config');
+  if(conf){
+   let cfg={};try{cfg=JSON.parse(String(conf.getCell('A2').value||'{}'))}catch(_){}
+   if(cfg.campaignSettings)delete cfg.campaignSettings[V330_CPM_VIRTUAL];
+   if(cfg.campaignConfigs)delete cfg.campaignConfigs[V330_CPM_VIRTUAL];
+   cfg={...cfg,campaign:'',type:V330_CPM_KEY,cpmMerge:true,cpmCampaigns:names,cpmDatesManual:v330CpmDatesManual,
+     start,end,budget:$('budget').value,unit:$('unit').value,_googleVersion:'3.30'};
+   conf.getCell('A1').value='Google Ads Report Generator V3.30 / config';
+   conf.getCell('A2').value=JSON.stringify(cfg);
+  }
+  wb.calcProperties.fullCalcOnLoad=true;
+  return wb;
+ }finally{
+  entries=original;
+  $('campaign').value=keepCampaign;
+  if(existedR6)v326R6CampaignCfg[V330_CPM_VIRTUAL]=oldR6;else delete v326R6CampaignCfg[V330_CPM_VIRTUAL];
+  if(existedR12)v326R12Settings[V330_CPM_VIRTUAL]=oldR12;else delete v326R12Settings[V330_CPM_VIRTUAL];
+  v330CpmBuildActive=false;
+ }
+};
+const v330PriorDownload=$('download').onclick;
+$('download').onclick=async function(){
+ if(!v330IsCpm())return v330PriorDownload.call(this);
+ if($('download').disabled)return;
+ const box=$('downloadStatus'),btn=$('download');
+ btn.disabled=true;box.style.display='block';box.className='note';
+ box.textContent='正在合併所選 Campaign 的 CPM 數據…';
+ $('manualDownload').replaceChildren();
+ try{
+  if(!window.ExcelJS)throw Error('ExcelJS 尚未載入，請確認網路連線');
+  const prior=await getPrior();
+  const wb=await buildV3('',prior);
+  box.textContent='正在輸出合併 CPM Excel…';
+  const data=await wb.xlsx.writeBuffer();
+  const base=$('filename').value.trim()||'GoogleAds_GDN-YT_合併CPM週報';
+  const name=outputName(base,'xlsx');
+  await downloadData(new Blob([data],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),name);
+  box.className='note success';box.textContent=`✓ 已合併 ${v330ChosenCpm().length} 個 Campaign，產出一份 CPM Excel。`;
+ }catch(err){box.className='note error';box.textContent='合併 CPM 報表失敗：'+(err?.message||String(err));console.error(err)}
+ finally{refresh()}
+};
+v330RenderCpmList();v330SyncCpmUi();refresh();
+/* END V3.30 */
+
+
 
 </script></body></html>
