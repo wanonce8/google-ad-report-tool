@@ -133,10 +133,10 @@ $('old').addEventListener('change',async()=>{await new Promise(r=>setTimeout(r,2
 .mode-wrap{grid-column:1/-1}.mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:5px 0 10px}.mode-tab{background:#f7f8fa;border:1px solid var(--line);color:var(--dark);font-weight:700;padding:13px}.mode-tab.active{background:var(--dark);color:#fff;border-color:var(--dark)}.mode-tab:focus-visible{outline:3px solid var(--yellow)}
 </style><style>
 :root{--ink:#1F2733;--slate:#5C6B7A;--paper:#F2F4F6;--accent:#FFD23F}body{font-family:"Microsoft JhengHei","PingFang TC",sans-serif;background:#F2F4F6;color:#1F2733}header{background:#1F2733!important}header h1:before{content:"";display:inline-block;width:10px;height:19px;background:#FFD23F;margin-right:11px;vertical-align:-2px}.card{background:#fff;border:1px solid #DDE3E9;border-radius:10px;box-shadow:none}.card h2{border-bottom:1px solid #DDE3E9;padding-bottom:13px} .n{background:#1F2733!important;color:#FFD23F!important;border-radius:100%!important}button:not(.secondary):not(.mode-tab){background:#FFD23F;color:#1F2733;font-weight:700} .mode-tab.active{background:#1F2733!important;color:#fff!important;border-color:#1F2733!important}.note{border-radius:8px}.advanced{border:1px solid #dde3e9;border-radius:8px;padding:12px 15px}.advanced summary{cursor:pointer;font-weight:700}.extras{padding-top:14px}.hidden{display:none!important}select,input{font-family:inherit}
-</style><style>.batch-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px}.batch-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid #DDE3E9;border-radius:7px;background:#fafbfd;font-size:13px;overflow-wrap:anywhere}.batch-item input{width:auto;flex-shrink:0}.download-actions{display:flex;gap:10px;flex-wrap:wrap}.download-actions button{flex:1;min-width:180px}</style><style>.settings-layout{display:flex;flex-direction:column;gap:20px}.settings-row{display:grid;gap:18px}.settings-row.two{grid-template-columns:repeat(2,minmax(0,1fr))}.settings-row.four{grid-template-columns:repeat(4,minmax(0,1fr))}.settings-row>div{min-width:0}.settings-row input,.settings-row select{width:100%;min-width:0}.image-upload{margin-top:22px;padding:16px 18px;border:1px solid #dce2e8;border-radius:9px;background:#fafbfd}.image-upload-title{display:flex;align-items:center;gap:9px;font-weight:700;color:#263448}.image-upload input[type=file]{margin:12px 0 6px;width:100%}@media(max-width:850px){.settings-row.four{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:530px){.settings-row.four,.settings-row.two{grid-template-columns:1fr}}.gs-campaign-list{display:grid;gap:7px;margin-top:10px;padding:11px;background:#fafbfd;border:1px solid #DDE3E9;border-radius:8px}.gs-campaign-item{display:flex;align-items:center;gap:8px;margin:0;font-weight:400}.gs-campaign-item input{width:auto}#gsScopeField .tiny{margin-top:6px}</style></head><body><header><h1>Google Ads 廣告成效報表產生器</h1><p>V3.30｜YouTube／Demand Gen／GDN／Search／App · 共用報表面板</p></header><main class="wrap">
-<section class="card"><h2><span class="n">1</span>上傳資料</h2><div class="grid"><div class="mode-wrap"><label>操作模式</label><div class="mode-tabs" role="group" aria-label="操作模式"><button class="mode-tab active" id="tabNew" type="button" aria-pressed="true">建立新報表</button><button class="mode-tab" id="tabUpdate" type="button" aria-pressed="false">更新報表</button></div><input type="hidden" id="mode" value="new"><div class="tiny" id="modeNote">上傳 Google Ads Raw Data，建立全新週報</div></div><div id="oldBox" class="hidden"><label>上次由本工具產生的週報</label><input type="file" id="old" accept=".xlsx"></div></div><div style="margin-top:16px"><label>Google Ads Raw Data（CSV／XLSX）</label><input type="file" id="raw" accept=".csv,.tsv,.txt,.xlsx,.xls"></div><div class="tiny" style="margin-top:8px">自動搜尋「日期／廣告活動／廣告群組／廣告名稱／曝光／點擊／費用／轉換」表頭；支援匯出檔前兩列為報表資訊、第三列為表頭及 UTF-16 Tab 分隔 CSV。</div><div id="uploadInfo"></div><details class="advanced" style="margin-top:16px"><summary>進階：Google Search 額外 Raw Data（選填）</summary><div class="extras"><p class="tiny">依既有 GS 週報規劃的四份選填資料；GS 模式將使用；缺少資料時不會填入虛構的曝光比重。</p><div class="grid"><div><label>Campaign 曝光比重</label><input type="file" id="gsCampaignShare" accept=".csv,.xlsx,.xls"></div><div><label>Ad Group 曝光比重</label><input type="file" id="gsGroupShare" accept=".csv,.xlsx,.xls"></div><div><label>網頁連結額外資訊（Sitelink）</label><input type="file" id="gsSitelink" accept=".csv,.xlsx,.xls"></div><div><label>轉換動作明細（加入購物車／完成購買）</label><input type="file" id="gsConversions" accept=".csv,.tsv,.txt,.xlsx,.xls"><div class="tiny" id="gsConversionsStatus">未上傳；ROAS 必須有「完成購買」的轉換價值來源。</div></div></div><p class="tiny">廣告文案、AI MAX 搜尋字詞保留手動維護；兩個手動維護分頁在更新報表時保留既有內容。</p></div></details><details class="advanced" style="margin-top:12px"><summary>PMax 素材資源群組 Raw Data（選填，自動辨識版型）</summary><div class="extras"><label>素材資源群組報表（CSV／Excel）</label><input id="pmaxAssets" type="file" accept=".csv,.tsv,.xlsx,.xls"><p class="tiny">不必上傳：未上傳則只產出每日成效；上傳時自動加入素材資源群組分析，並核對數據走期。</p></div></details></div><div id="batchCampaignWrap" class="hidden"><h3 style="font-size:14px;margin:15px 0 8px">批次產出｜選擇 Campaign</h3><div id="batchCampaignList" class="batch-list"></div><p class="tiny">依需要勾選廣告活動，分別產出 Excel 並打包 ZIP；每份僅包含自身 Campaign 的數據。</p></div></section>
+</style><style>.batch-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px}.batch-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid #DDE3E9;border-radius:7px;background:#fafbfd;font-size:13px;overflow-wrap:anywhere}.batch-item input{width:auto;flex-shrink:0}.download-actions{display:flex;gap:10px;flex-wrap:wrap}.download-actions button{flex:1;min-width:180px}</style><style>.settings-layout{display:flex;flex-direction:column;gap:20px}.settings-row{display:grid;gap:18px}.settings-row.two{grid-template-columns:repeat(2,minmax(0,1fr))}.settings-row.four{grid-template-columns:repeat(4,minmax(0,1fr))}.settings-row>div{min-width:0}.settings-row input,.settings-row select{width:100%;min-width:0}.image-upload{margin-top:22px;padding:16px 18px;border:1px solid #dce2e8;border-radius:9px;background:#fafbfd}.image-upload-title{display:flex;align-items:center;gap:9px;font-weight:700;color:#263448}.image-upload input[type=file]{margin:12px 0 6px;width:100%}@media(max-width:850px){.settings-row.four{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:530px){.settings-row.four,.settings-row.two{grid-template-columns:1fr}}.gs-campaign-list{display:grid;gap:7px;margin-top:10px;padding:11px;background:#fafbfd;border:1px solid #DDE3E9;border-radius:8px}.gs-campaign-item{display:flex;align-items:center;gap:8px;margin:0;font-weight:400}.gs-campaign-item input{width:auto}#gsScopeField .tiny{margin-top:6px}</style></head><body><header><h1>Google Ads 廣告成效報表產生器</h1><p>V3.33｜YouTube／Demand Gen／GDN／Search／App · 共用報表面板</p></header><main class="wrap">
+<section class="card"><h2><span class="n">1</span>上傳資料</h2><div class="grid"><div class="mode-wrap"><label>操作模式</label><div class="mode-tabs" role="group" aria-label="操作模式"><button class="mode-tab active" id="tabNew" type="button" aria-pressed="true">建立新報表</button><button class="mode-tab" id="tabUpdate" type="button" aria-pressed="false">更新報表</button></div><input type="hidden" id="mode" value="new"><div class="tiny" id="modeNote">上傳 Google Ads Raw Data，建立全新週報</div></div><div id="oldBox" class="hidden"><label>上次由本工具產生的週報</label><input type="file" id="old" accept=".xlsx"></div></div><div style="margin-top:16px"><label>Google Ads Raw Data（CSV／XLSX）</label><input type="file" id="raw" accept=".csv,.tsv,.txt,.xlsx,.xls"></div><div class="tiny" style="margin-top:8px">自動搜尋「日期／廣告活動／廣告群組／廣告名稱／曝光／點擊／費用／轉換」表頭；支援匯出檔前兩列為報表資訊、第三列為表頭及 UTF-16 Tab 分隔 CSV。</div><div id="uploadInfo"></div><details class="advanced" style="margin-top:16px"><summary>進階：Google Search 額外 Raw Data（選填）</summary><div class="extras"><p class="tiny">依既有 GS 週報規劃的四份選填資料；GS 模式將使用；缺少資料時不會填入虛構的曝光比重。</p><div class="grid"><div><label>Campaign 曝光比重</label><input type="file" id="gsCampaignShare" accept=".csv,.xlsx,.xls"></div><div><label>Ad Group 曝光比重</label><input type="file" id="gsGroupShare" accept=".csv,.xlsx,.xls"></div><div><label>網頁連結額外資訊（Sitelink）</label><input type="file" id="gsSitelink" accept=".csv,.xlsx,.xls"></div><div><label>轉換動作明細（加入購物車／完成購買）</label><input type="file" id="gsConversions" accept=".csv,.tsv,.txt,.xlsx,.xls"><div class="tiny" id="gsConversionsStatus">未上傳；轉換次數與轉換價值可分開匯入，只有 ROAS 需要購買轉換價值。</div></div></div><p class="tiny">廣告文案、AI MAX 搜尋字詞保留手動維護；兩個手動維護分頁在更新報表時保留既有內容。</p></div></details><details class="advanced" style="margin-top:12px"><summary>PMax 素材資源群組 Raw Data（選填，自動辨識版型）</summary><div class="extras"><label>素材資源群組報表（CSV／Excel）</label><input id="pmaxAssets" type="file" accept=".csv,.tsv,.xlsx,.xls"><p class="tiny">不必上傳：未上傳則只產出每日成效；上傳時自動加入素材資源群組分析，並核對數據走期。</p></div></details></div><div id="batchCampaignWrap" class="hidden"><h3 style="font-size:14px;margin:15px 0 8px">批次產出｜選擇 Campaign</h3><div id="batchCampaignList" class="batch-list"></div><p class="tiny">依需要勾選廣告活動，分別產出 Excel 並打包 ZIP；每份僅包含自身 Campaign 的數據。</p></div></section>
 <section class="card"><h2><span class="n">2</span>報表設定</h2><div id="lockInfo" class="lock"><span id="lockText">建立新報表：可自由設定</span><button type="button" class="secondary hidden" id="unlock">解鎖並修改設定</button></div><fieldset id="settings"><div class="settings-layout">
-<div class="settings-row two"><div><label>報表類型</label><select id="type"><option value="" selected disabled>請選擇報表類型</option><option value="YT 優化轉換（訂閱 CPA）">YouTube｜優化轉換（訂閱 CPA）</option><option value="YT_VIEW">YouTube｜影片觀看 CPV</option><option value="DGC_CLICK">Demand Gen｜點擊 CPC</option><option value="GDN_YR_CPM">GDN／YT｜曝光 CPM</option><option value="GS_STANDARD">Google Search｜標準版（多分頁）</option><option value="GS_SHOPPING">Google Search｜轉換版</option><option value="GS_ADVANCED">Google Search｜進階版（多分頁）</option><option value="APP_INSTALL">App｜安裝 CPI（自動分頁）</option><option value="PMAX_ORIGINAL">PMax｜原版型（每日＋素材資源群組）</option></select></div><div id="normalCampaignField"><label>行銷活動</label><select id="campaign"><option value="">請選擇行銷活動</option></select></div><div id="gsScopeField" class="hidden"><label>GS 專案資料範圍</label><select id="gsScope"><option value="custom" selected>自訂合併的廣告活動（預設）</option><option value="all">全部廣告活動</option></select><div id="gsCustomCampaigns" class="hidden gs-campaign-list"></div><div class="tiny">GS 標準版與進階版皆產出一份多分頁 Excel，不會依 Campaign 拆成多份。</div></div></div>
+<div class="settings-row two"><div><label>報表類型</label><select id="type"><option value="" selected disabled>請選擇報表類型</option><option value="YT 優化轉換（訂閱 CPA）">YouTube｜優化轉換（訂閱 CPA）</option><option value="YT_VIEW">YouTube｜影片觀看 CPV</option><option value="DGC_CLICK">Demand Gen｜點擊 CPC</option><option value="GDN_YR_CPM">GDN／YT｜曝光 CPM</option><option value="GS_STANDARD">Google Search｜標準版（多分頁）</option><option value="GS_SHOPPING">Google Search｜轉換版</option><option value="GS_MULTI_COUNTRY">Google Search｜多國轉換版（依國家分頁）</option><option value="GS_ADVANCED">Google Search｜進階版（多分頁）</option><option value="APP_INSTALL">App｜安裝 CPI（自動分頁）</option><option value="PMAX_ORIGINAL">PMax｜原版型（每日＋素材資源群組）</option></select></div><div id="normalCampaignField"><label>行銷活動</label><select id="campaign"><option value="">請選擇行銷活動</option></select></div><div id="gsScopeField" class="hidden"><label>GS 專案資料範圍</label><select id="gsScope"><option value="custom" selected>自訂合併的廣告活動（預設）</option><option value="all">全部廣告活動</option></select><div id="gsCustomCampaigns" class="hidden gs-campaign-list"></div><div class="tiny">GS 標準版與進階版皆產出一份多分頁 Excel，不會依 Campaign 拆成多份。</div></div></div>
 <div class="settings-row two hidden" id="appSheetSetting" style="border:1px solid #dce2e8;border-radius:9px;background:#fafbfd;padding:14px 16px"><div><label for="appSheetMode">App CPI｜月份工作表配置</label><select id="appSheetMode"><option value="auto" selected>自動判斷（單月一張，跨月才按月份分頁）</option><option value="single">不分月份，所有日期合併單一分頁</option><option value="monthly">固定依月份分頁</option></select></div><div><label>產出範圍</label><div class="tiny" id="appSheetHint" style="padding-top:9px">App 將合併目前走期內所有 Campaign，產出一份 Excel。</div></div></div>
 <div class="settings-row four"><div><label>走期開始（選填，自動辨識）</label><input id="start" type="date"></div><div><label>走期結束（選填，自動辨識）</label><input id="end" type="date"></div><div><label>預算（TWD，選填）</label><input id="budget" type="number" min="0" placeholder="請輸入預算"></div><div><label>預設 CPC（指標，選填）</label><input id="unit" type="number" min="0" step="0.01" placeholder="例如 5.00"></div></div>
 <div class="settings-row two"><div><label>轉換指標顯示名稱（選填，自動帶入預設）</label><input id="convLabel" placeholder="例如：訂閱次數、安裝次數"></div><div><label>下載檔名（選填；留白自動命名並附加今日 _MMDD）</label><input id="filename" placeholder="例如：國泰投信_YT_週報"></div></div>
@@ -341,27 +341,62 @@ $('gsROAS').addEventListener('change',refresh);
 $('tabNew').addEventListener('click',()=>{applyMetricDefaults();$('convLabel').value='';updateGsOptions();refresh();});
 const gsOldUpload=upload;
 upload=async function(f){await gsOldUpload(f);if(!f||!entries.length)return;try{const grid=await readGrid(f);const headIdx=grid.findIndex((r,i)=>i<20&&['日期','廣告活動','曝光','點擊','費用'].every(k=>r.map(x=>String(x).trim()).includes(k)));if(headIdx<0)return;const headers=grid[headIdx].map(x=>String(x).trim());const valueIdx=headers.findIndex(k=>/^(轉換價值|所有轉換價值|轉換價值（.*）|Conv\. value|Conversion value|Conversions value)$/i.test(k));const mapRows=grid.slice(headIdx+1).filter(r=>dateIso(r[headers.indexOf('日期')]));entries.forEach((item,i)=>{if(valueIdx>=0 && mapRows[i])item.convValue=numeric(mapRows[i][valueIdx]);});window.__gsHasValue=valueIdx>=0;}catch(e){window.__gsHasValue=false;console.warn('轉換價值欄位偵測失敗',e)}refresh();};
+/* V3.31 共用 GS 轉換明細解析：不依賴固定匯出語言、欄位順序或表頭列數。 */
+let gsConvSchema={date:false,campaign:false,group:false,keyword:false,action:false,count:false,value:false,hasPurchase:false};
+const gsConvAliases={
+ date:['日期','日','day','date','日期 (日)'],
+ campaign:['廣告活動','廣告活動名稱','campaign','campaign name'],
+ group:['廣告群組','廣告群組名稱','ad group','ad group name'],
+ keyword:['搜尋關鍵字','關鍵字','keyword','search keyword'],
+ action:['轉換動作','轉換動作名稱','轉換名稱','conversion action','conversion action name','conversion action category'],
+ count:['所有轉換','所有轉換次數','all conv.','all conv','all conversions','所有轉換 (按轉換時間)','轉換','轉換次數','conversions','conv.'],
+ value:['所有轉換價值','所有轉換價值 (按轉換時間)','all conv. value','all conversion value','all conversions value','轉換價值','轉換價值 (按轉換時間)','conv. value','conversion value','conversions value']
+};
+function gsConvNormalizeHeader(v){return String(v??'').trim().toLowerCase().normalize('NFKC').replace(/[\u200b\ufeff]/g,'').replace(/[（(]\s*[^）)]*(?:幣別|currency|ntd|twd|usd)[^）)]*[）)]/ig,'').replace(/\s+/g,' ').replace(/[。．]/g,'.').replace(/\s*[:：]\s*$/,'')}
+function gsConvFindColumn(row,aliases){const norm=row.map(gsConvNormalizeHeader);for(const a of aliases){const k=gsConvNormalizeHeader(a),i=norm.indexOf(k);if(i>=0)return i;}return -1}
+function gsIsPurchaseAction(v){return ['完成購買','purchase','購買完成','購買','purchases','purchase completed'].includes(gsConvKey(v))}
+function gsIsCartAction(v){return ['加入購物車','add_to_cart','add to cart','addtocart'].includes(gsConvKey(v))}
 async function loadGsConversions(file){
  const status=$('gsConversionsStatus');gsConversionRows=[];gsConversionFileLoaded=false;
+ gsConvSchema={date:false,campaign:false,group:false,keyword:false,action:false,count:false,value:false,hasPurchase:false};
  if(!file){status.textContent='未上傳轉換明細';refresh();return}
  try{
   const grid=await readGrid(file);
-  const needed=['日期','廣告活動','轉換動作','所有轉換','所有轉換價值'];
-  const idx=grid.findIndex((r,i)=>i<20&&needed.every(k=>r.map(x=>String(x).trim()).includes(k)));
-  if(idx<0)throw Error('缺少欄位：'+needed.join('、'));
-  const headers=grid[idx].map(v=>String(v).trim());const col=Object.fromEntries(headers.map((h,i)=>[h,i]));
-  const at=(r,k)=>col[k]===undefined?'':r[col[k]];
-  gsConversionRows=grid.slice(idx+1).filter(r=>dateIso(at(r,'日期'))).map(r=>({
-    date:dateIso(at(r,'日期')),campaign:gsCampaignKey(at(r,'廣告活動')),
-    group:gsConvKey(at(r,'廣告群組')),keyword:gsConvKey(at(r,'搜尋關鍵字')),
-    action:gsConvKey(at(r,'轉換動作')),count:numeric(at(r,'所有轉換')),value:numeric(at(r,'所有轉換價值'))
-  }));
-  if(!gsConversionRows.length)throw Error('找不到有效轉換明細');
-  if(!gsConversionRows.some(r=>['完成購買','purchase','購買完成'].includes(r.action)))throw Error('找不到「完成購買」轉換動作，請檢查名稱與資料');
-  gsConversionFileLoaded=true;
-  const purchases=gsConversionRows.filter(r=>['完成購買','purchase','購買完成'].includes(r.action));
-  const carts=gsConversionRows.filter(r=>['加入購物車','add_to_cart','add to cart'].includes(r.action));
-  status.textContent=`✓ 讀取 ${gsConversionRows.length} 筆；完成購買 ${purchases.reduce((v,r)=>v+r.count,0)} 次／購買價值 NT$${purchases.reduce((v,r)=>v+r.value,0).toLocaleString('zh-TW')}；加入購物車 ${carts.reduce((v,r)=>v+r.count,0)} 次。只把完成購買的價值用於 ROAS。`;
+  const candidates=grid.slice(0,60).map((r,i)=>({i,cols:Object.fromEntries(Object.entries(gsConvAliases).map(([key,aliases])=>[key,gsConvFindColumn(r,aliases)]))}));
+  const valid=candidates.filter(o=>o.cols.action>=0&&(o.cols.count>=0||o.cols.value>=0));
+  if(!valid.length)throw Error('無法辨識「轉換動作」及「轉換次數／轉換價值」欄位；請檢查 CSV 表頭');
+  valid.sort((a,b)=>(Object.values(b.cols).filter(v=>v>=0).length-Object.values(a.cols).filter(v=>v>=0).length)||a.i-b.i);
+  const {i,cols}=valid[0],at=(r,k)=>cols[k]<0?'':r[cols[k]];
+  gsConvSchema=Object.fromEntries(Object.keys(gsConvAliases).map(k=>[k,cols[k]>=0]));
+  const parsed=[];
+  for(const r of grid.slice(i+1)){
+   const action=gsConvKey(at(r,'action'));
+   if(!action||/^(總計|合計|小計|total|subtotal)\b/i.test(action))continue;
+   if(!r.some(v=>String(v??'').trim()))continue;
+   const rawDate=String(at(r,'date')??'').trim();
+   const date=gsConvSchema.date?dateIso(at(r,'date')):'';
+   if(gsConvSchema.date&&!date)continue;
+   const rawCount=String(at(r,'count')??'').trim(),rawValue=String(at(r,'value')??'').trim();
+   if(gsConvSchema.count&&!rawCount&&(!gsConvSchema.value||!rawValue))continue;
+   parsed.push({date,campaign:gsConvSchema.campaign?gsCampaignKey(at(r,'campaign')):'',
+    group:gsConvKey(at(r,'group')),keyword:gsConvKey(at(r,'keyword')),
+    action,count:gsConvSchema.count?numeric(at(r,'count')):null,
+    value:gsConvSchema.value?numeric(at(r,'value')):null});
+  }
+  if(!parsed.length)throw Error('表頭已辨識，但沒有有效轉換明細資料列');
+  gsConversionRows=parsed;gsConversionFileLoaded=true;
+  const purchases=parsed.filter(r=>gsIsPurchaseAction(r.action)),carts=parsed.filter(r=>gsIsCartAction(r.action));
+  gsConvSchema.hasPurchase=purchases.length>0;
+  const sum=(rs,k)=>rs.reduce((v,r)=>v+(r[k]||0),0);
+  let msg=`✓ 已辨識表頭第 ${i+1} 列，讀取 ${parsed.length} 筆轉換明細`;
+  if(gsConvSchema.count)msg+=`；完成購買 ${sum(purchases,'count').toLocaleString('zh-TW')} 次、加入購物車 ${sum(carts,'count').toLocaleString('zh-TW')} 次`;
+  if(gsConvSchema.value)msg+=`；完成購買價值 NT$${sum(purchases,'value').toLocaleString('zh-TW')}`;
+  if(!gsConvSchema.hasPurchase)msg+='。提醒：尚未辨識「完成購買」動作，購買 CPA/ROAS 無法計算';
+  if(!gsConvSchema.date||!gsConvSchema.campaign)msg+='。提醒：缺少'+[!gsConvSchema.date?'日期':null,!gsConvSchema.campaign?'廣告活動':null].filter(Boolean).join('、')+'，僅在可唯一對應時才能分配轉換';
+  if(!gsConvSchema.count)msg+='。提醒：未提供轉換次數，無法計算購買 CPA';
+  if(!gsConvSchema.value)msg+='。未提供轉換價值：仍可顯示加入購物車／完成購買次數與 CPA；ROAS 顯示 —';
+  if(!gsConvSchema.group||!gsConvSchema.keyword)msg+='。提醒：缺少'+[!gsConvSchema.group?'廣告群組':null,!gsConvSchema.keyword?'搜尋關鍵字':null].filter(Boolean).join('、')+'，無法將購買轉換準確分配至對應的明細分頁';
+  status.textContent=msg;
  }catch(e){gsConversionRows=[];gsConversionFileLoaded=false;status.textContent='⚠ 轉換明細讀取失敗：'+e.message;}
  refresh();
 }
@@ -371,14 +406,26 @@ function gsActionValues(z,key,selected){
  const campaigns=new Set(selected.map(r=>gsCampaignKey(r.campaign)));
  const dates=new Set(selected.map(r=>r.date));
  const keyNorm=z===1?gsCampaignKey(key):z===2?gsCampaignKey(String(key).split('／')[0])+'／'+gsConvKey(String(key).split('／').slice(1).join('／')):gsConvKey(key);
- const filtered=gsConversionRows.filter(r=>campaigns.has(r.campaign)&&r.date>=$('start').value&&r.date<=$('end').value);
+ const availableCampaigns=new Set(scopeRows('').map(r=>gsCampaignKey(r.campaign)));
+ const availableDates=new Set(scopeRows('').map(r=>r.date));
+ const filtered=gsConversionRows.filter(r=>{
+  const matchingCampaign=gsConvSchema.campaign?campaigns.has(r.campaign):(availableCampaigns.size===1);
+  const matchingDate=gsConvSchema.date?(!$('start').value||r.date>=$('start').value)&&(!$('end').value||r.date<=$('end').value):(availableDates.size===1);
+  return matchingCampaign&&matchingDate;
+ });
  let result={cart:0,cartValue:0,purchase:0,value:0};
  for(const a of filtered){
   const dim=[a.date,a.campaign,a.campaign+'／'+a.group,a.keyword][z];
-  if(key!=='總計'&&gsConvKey(dim)!==keyNorm)continue;
+  if(key!=='總計'){
+   if(z===0&&!gsConvSchema.date&&availableDates.size===1){} // 單日資料唯一可對應
+   else if(z===1&&!gsConvSchema.campaign&&availableCampaigns.size===1){}
+   else if(z===2&&(!gsConvSchema.campaign||!gsConvSchema.group))continue;
+   else if(z===3&&!gsConvSchema.keyword)continue;
+   else if(gsConvKey(dim)!==keyNorm)continue;
+  }
   if(z===3&&key!=='總計'&&!selected.some(r=>gsCampaignKey(r.campaign)===a.campaign&&gsConvKey(r.group)===a.group&&gsConvKey(r.keyword)===a.keyword))continue;
-  if(['完成購買','purchase','購買完成'].includes(a.action)){result.purchase+=a.count;result.value+=a.value;}
-  if(['加入購物車','add_to_cart','add to cart'].includes(a.action)){result.cart+=a.count;result.cartValue+=a.value;}
+  if(gsIsPurchaseAction(a.action)){result.purchase+=a.count||0;result.value+=a.value||0;}
+  if(gsIsCartAction(a.action)){result.cart+=a.count||0;result.cartValue+=a.value||0;}
  }
  return result;
 }
@@ -387,9 +434,18 @@ const gsPriorBuildOther=buildOther;
 buildOther=async function(c,oldWb=null){
  if(!isGsReport())return gsPriorBuildOther(c,oldWb);
  const selected=scopeRows(c),wantCPA=$('gsCPA').checked,wantROAS=$('gsROAS').checked;
- if(gsConversionFileLoaded){const camps=new Set(selected.map(r=>gsCampaignKey(r.campaign)));if(!gsConversionRows.some(r=>camps.has(r.campaign)&&r.date>=$('start').value&&r.date<=$('end').value))throw Error('轉換明細與目前選取的 GS Campaign／走期沒有交集，請確認上傳了同一專案的資料');}
+ if(gsConversionFileLoaded){
+  const camps=new Set(selected.map(r=>gsCampaignKey(r.campaign)));
+  const dates=new Set(selected.map(r=>r.date));
+  if(!gsConvSchema.date&&dates.size>1)throw Error('轉換明細缺少日期，無法準確分配多日轉換；請匯出含日期的明細');
+  if(!gsConvSchema.campaign&&camps.size>1)throw Error('轉換明細缺少廣告活動，無法準確分配多個 Campaign；請匯出含廣告活動的明細');
+  if(!gsConversionRows.some(r=>(!gsConvSchema.campaign||camps.has(r.campaign))&&(!gsConvSchema.date||r.date>=$('start').value&&r.date<=$('end').value)))throw Error('轉換明細與選取的 GS Campaign／走期沒有交集');
+  if((wantCPA||wantROAS)&&!gsConvSchema.hasPurchase)throw Error('轉換明細找不到「完成購買」動作，無法準確計算購買 CPA／ROAS');
+  if(wantCPA&&!gsConvSchema.count)throw Error('計算購買 CPA 必須提供轉換次數（所有轉換／轉換）');
+  // 未提供價值仍允許產出轉換次數；ROAS 以空白／— 表示，避免誤填 0。
+ }
  if(wantCPA&&!gsConversionFileLoaded&&!heads.includes('轉換'))throw Error('勾選 CPA 時，請上傳轉換明細，或提供主要 Raw Data 的「轉換」欄位');
- if(wantROAS&&!gsConversionFileLoaded)throw Error('GS 購物 ROAS 必須上傳「轉換動作明細」，才能確保只計入完成購買的價值');
+ // 未上傳明細時不強制阻擋轉換次數報表；ROAS 不得使用未核對的主要 Raw Data 價值。
  const wb=await gsPriorBuildOther(c,oldWb);
  const names=['GS日報表','GS廣告活動','GS群組','GS關鍵字'];
  const dimensions=[r=>r.date,r=>r.campaign,r=>r.campaign+'／'+r.group,r=>r.keyword||'未提供關鍵字'];
@@ -407,7 +463,7 @@ buildOther=async function(c,oldWb=null){
     let arr=[t.impr,t.click,sp,t.impr?t.click/t.impr:0,t.click?sp/t.click:0];
     if(gsConversionFileLoaded)arr.push(act.cart,act.purchase);else if(wantCPA)arr.push(t.conv);
     if(wantCPA){const count=gsConversionFileLoaded?act.purchase:t.conv;arr.push(count?sp/count:null)}
-    if(wantROAS)arr.push(act.value,sp?act.value/sp:null);
+    if(wantROAS)arr.push(gsConversionFileLoaded&&gsConvSchema.value?act.value:null,gsConversionFileLoaded&&gsConvSchema.value&&sp?act.value/sp:null);
     ws.getRow(rowNum).getCell(1).value=key;
     arr.forEach((n,i)=>{let cell=ws.getRow(rowNum).getCell(i+2);cell.value=n;cell.numFmt=cols[i]==='CTR'?'0.00%':cols[i]==='ROAS'?'0.00':'#,##0.00';if(key==='總計'){cell.font={bold:true};cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFFFFF00'}}}});
     rowNum++;
@@ -434,7 +490,7 @@ function gsDisplayCampaign(name){const raw=String(name||'').trim();const clean=r
 function gsShortDate(iso){const a=String(iso||'').split('-');return a.length===3?`${Number(a[1])}/${Number(a[2])}`:iso;}
 function gsIsolateStyle(cell){const old=cell.style||{};cell.style={...old,font:old.font?{...old.font}:undefined,alignment:old.alignment?{...old.alignment}:undefined,border:old.border?{...old.border}:undefined,fill:old.fill?{...old.fill}:undefined,protection:old.protection?{...old.protection}:undefined};return cell;}
 function gsPutMetric(ws,addr,val,kind='integer'){const c=gsIsolateStyle(ws.getCell(addr));c.value=(val===null||val===undefined||!Number.isFinite(val))?'-':val;c.numFmt=kind==='cpc'? '"$"#,##0.00':kind==='ctr'?'0.00%':kind==='cash'?'"$"#,##0':kind==='roas'?'0.00':'#,##0';}
-function gsMetricRow(ws,row,kind,t,sp,actions){const mapping=kind==='daily'?{cpa:'G',roas:'H',cpc:'I',ctr:'J'}:kind==='campaign'?{cpa:'H',roas:'I',cpc:'J',ctr:'K'}:{cpa:'I',cpc:'J',ctr:'K',roas:'L'};gsPutMetric(ws,mapping.cpa+row,actions.purchase>0?sp/actions.purchase:null,'cash');gsPutMetric(ws,mapping.roas+row,actions.purchase>0&&sp>0?actions.value/sp:null,'roas');gsPutMetric(ws,mapping.cpc+row,t.click>0?sp/t.click:null,'cpc');gsPutMetric(ws,mapping.ctr+row,t.impr>0?t.click/t.impr:null,'ctr');}
+function gsMetricRow(ws,row,kind,t,sp,actions){const mapping=kind==='daily'?{cpa:'G',roas:'H',cpc:'I',ctr:'J'}:kind==='campaign'?{cpa:'H',roas:'I',cpc:'J',ctr:'K'}:{cpa:'I',cpc:'J',ctr:'K',roas:'L'};gsPutMetric(ws,mapping.cpa+row,actions.purchase>0?sp/actions.purchase:null,'cash');gsPutMetric(ws,mapping.roas+row,gsConvSchema.value&&actions.purchase>0&&sp>0?actions.value/sp:null,'roas');gsPutMetric(ws,mapping.cpc+row,t.click>0?sp/t.click:null,'cpc');gsPutMetric(ws,mapping.ctr+row,t.impr>0?t.click/t.impr:null,'ctr');}
 function gsSummaryMetricFmt(ws,row,kind){const map=kind==='daily'?{counts:[2,3,5,6],money:[4],cpc:[9],ctr:[10],cpa:[7],roas:[8]}:kind==='campaign'?{counts:[3,4,6,7],money:[5],cpc:[10],ctr:[11],cpa:[8],roas:[9]}:{counts:[4,5,7,8],money:[6],cpc:[10],ctr:[11],cpa:[9],roas:[12]};for(const i of map.counts)gsIsolateStyle(ws.getRow(row).getCell(i)).numFmt='#,##0';for(const i of map.money)gsIsolateStyle(ws.getRow(row).getCell(i)).numFmt='"$"#,##0';}
 
 /* V3.26.2: ExcelJS 4.4.0 note = undefined CREATES an empty Note.
@@ -479,7 +535,7 @@ async function makeShoppingTemplate(c){
  for(let i=0;i<days.length;i++){
   let row=startRow+i,[date,rs]=days[i],t=totals(rs),sp=templateMoney(t.spend),act=gsActionValues(0,date,selected);
   d.getCell(`A${row}`).value=new Date(date+'T00:00:00Z');gsIsolateStyle(d.getCell(`A${row}`)).numFmt='m/d';
-  [t.impr,t.click,sp,act.purchase||'-',act.purchase?act.value:'-'].forEach((v,j)=>d.getRow(row).getCell(j+2).value=(rs.length||act.purchase||act.cart)?v:null);
+  [t.impr,t.click,sp,act.purchase||'-',act.purchase&&gsConvSchema.value?act.value:'-'].forEach((v,j)=>d.getRow(row).getCell(j+2).value=(rs.length||act.purchase||act.cart)?v:null);
   if(rs.length||act.purchase||act.cart)gsMetricRow(d,row,'daily',t,sp,act);else for(let col=7;col<=10;col++)d.getRow(row).getCell(col).value=null;
   gsSummaryMetricFmt(d,row,'daily');
  }
@@ -494,12 +550,12 @@ async function makeShoppingTemplate(c){
 
  [sumRows.impr,sumRows.click,sumSpend,0,0].forEach((v,i)=>gsPutMetric(d,String.fromCharCode(66+i)+'7',v,i===2?'cash':'integer'));
  const overall=gsActionValues(0,'總計',selected);
- gsPutMetric(d,'E7',overall.purchase);gsPutMetric(d,'F7',overall.value);
+ gsPutMetric(d,'E7',overall.purchase);gsPutMetric(d,'F7',gsConvSchema.value?overall.value:null);
  gsMetricRow(d,7,'daily',sumRows,sumSpend,overall);gsSummaryMetricFmt(d,7,'daily');
  d.getCell('L8').value='轉換動作';d.getCell('M8').value='轉換次數';d.getCell('N8').value='轉換價值';
  d.getCell('L9').value='加入購物車';d.getCell('L10').value='完成購買';d.getCell('L11').value='總計';
- d.getCell('M9').value=overall.cart;d.getCell('M10').value=overall.purchase;d.getCell('N9').value=overall.cartValue;d.getCell('N10').value=overall.value;
- safeFormula(d.getCell('M11'),'SUM(M9:M10)');safeFormula(d.getCell('N11'),'SUM(N9:N10)');
+ d.getCell('M9').value=overall.cart;d.getCell('M10').value=overall.purchase;d.getCell('N9').value=gsConvSchema.value?overall.cartValue:null;d.getCell('N10').value=gsConvSchema.value?overall.value:null;
+ safeFormula(d.getCell('M11'),'SUM(M9:M10)');if(gsConvSchema.value)safeFormula(d.getCell('N11'),'SUM(N9:N10)');else d.getCell('N11').value='-';
  // Campaign/ad group detail: preserve original column positions and column formats.
  const gGroups=groupedBy(selected,r=>r.campaign+'\u0001'+r.group).sort((a,b)=>{const ca=gsDisplayCampaign(a[1][0].campaign),cb=gsDisplayCampaign(b[1][0].campaign);return ca.localeCompare(cb,'zh-Hant')||totals(b[1]).impr-totals(a[1]).impr;});
  // The report expands beyond the original sample's six rows when more ad groups exist.
@@ -508,11 +564,11 @@ async function makeShoppingTemplate(c){
  for(let i=0;i<gGroups.length;i++){
   const row=3+i,rs=gGroups[i][1],t=totals(rs),sp=templateMoney(t.spend),a=gsActionValues(2,rs[0].campaign+'／'+rs[0].group,rs);
   const visibleCampaign=gsDisplayCampaign(rs[0].campaign);
-  [visibleCampaign===lastCampaign?'':visibleCampaign,rs[0].group,t.impr,t.click,sp,a.purchase||'-',a.purchase?a.value:'-'].forEach((v,j)=>cg.getRow(row).getCell(j+1).value=v);
+  [visibleCampaign===lastCampaign?'':visibleCampaign,rs[0].group,t.impr,t.click,sp,a.purchase||'-',a.purchase&&gsConvSchema.value?a.value:'-'].forEach((v,j)=>cg.getRow(row).getCell(j+1).value=v);
   lastCampaign=visibleCampaign;gsMetricRow(cg,row,'campaign',t,sp,a);gsSummaryMetricFmt(cg,row,'campaign');
  }
  const cgActions=gsActionValues(0,'總計',selected);
- [sumRows.impr,sumRows.click,sumSpend,cgActions.purchase,cgActions.value].forEach((v,i)=>gsPutMetric(cg,String.fromCharCode(67+i)+'2',v,i===2?'cash':'integer'));
+ [sumRows.impr,sumRows.click,sumSpend,cgActions.purchase,gsConvSchema.value?cgActions.value:null].forEach((v,i)=>gsPutMetric(cg,String.fromCharCode(67+i)+'2',v,i===2?'cash':'integer'));
  gsMetricRow(cg,2,'campaign',sumRows,sumSpend,cgActions);gsSummaryMetricFmt(cg,2,'campaign');
  // Remove original-template surplus rows; do not leave styled blank data blocks below actual groups.
  if(cg.rowCount>2+gGroups.length)cg.spliceRows(3+gGroups.length,cg.rowCount-(2+gGroups.length));
@@ -524,11 +580,11 @@ async function makeShoppingTemplate(c){
  for(let i=0;i<keywordGroups.length;i++){
   const rs=keywordGroups[i][1],row=4+i,t=totals(rs),sp=templateMoney(t.spend),a=gsActionValues(3,rs[0].keyword,rs);
   const campaign=gsDisplayCampaign(rs[0].campaign),group=String(rs[0].group||'');
-  [campaign===prevCampaign?'':campaign,(campaign===prevCampaign&&group===prevGroup)?'':group,rs[0].keyword,t.impr,t.click,sp,a.purchase||'-',a.purchase?a.value:'-'].forEach((v,j)=>kw.getRow(row).getCell(j+1).value=v);
+  [campaign===prevCampaign?'':campaign,(campaign===prevCampaign&&group===prevGroup)?'':group,rs[0].keyword,t.impr,t.click,sp,a.purchase||'-',a.purchase&&gsConvSchema.value?a.value:'-'].forEach((v,j)=>kw.getRow(row).getCell(j+1).value=v);
   prevCampaign=campaign;prevGroup=group;gsMetricRow(kw,row,'keyword',t,sp,a);gsSummaryMetricFmt(kw,row,'keyword');
  }
  const kwActions=gsActionValues(0,'總計',selected);
- [sumRows.impr,sumRows.click,sumSpend,kwActions.purchase,kwActions.value].forEach((v,i)=>gsPutMetric(kw,String.fromCharCode(68+i)+'3',v,i===2?'cash':'integer'));
+ [sumRows.impr,sumRows.click,sumSpend,kwActions.purchase,gsConvSchema.value?kwActions.value:null].forEach((v,i)=>gsPutMetric(kw,String.fromCharCode(68+i)+'3',v,i===2?'cash':'integer'));
  gsMetricRow(kw,3,'keyword',sumRows,sumSpend,kwActions);gsSummaryMetricFmt(kw,3,'keyword');
  // Trim all unused template keyword rows; merely clearing values leaves hundreds of bordered blank rows.
  if(kw.rowCount>3+keywordGroups.length){for(let rr=4+keywordGroups.length;rr<=kw.rowCount;rr++)for(let cc=1;cc<=12;cc++){const cell=kw.getRow(rr).getCell(cc);cell.border={};cell.value=null;}kw.spliceRows(4+keywordGroups.length,kw.rowCount-(3+keywordGroups.length));}
@@ -598,8 +654,8 @@ async function makeShoppingTemplate(c){
  d.getCell('L8').value='轉換動作';d.getCell('M8').value='轉換次數';d.getCell('N8').value='轉換價值';
  d.getCell('L9').value='加入購物車';d.getCell('L10').value='完成購買';d.getCell('L11').value='總計';
  d.getCell('M9').value=overall.cart;d.getCell('M10').value=overall.purchase;
- d.getCell('N9').value=overall.cartValue;d.getCell('N10').value=overall.value;
- d.getCell('M11').value=overall.cart+overall.purchase;d.getCell('N11').value=overall.cartValue+overall.value;
+ d.getCell('N9').value=gsConvSchema.value?overall.cartValue:null;d.getCell('N10').value=gsConvSchema.value?overall.value:null;
+ d.getCell('M11').value=overall.cart+overall.purchase;d.getCell('N11').value=gsConvSchema.value?overall.cartValue+overall.value:'-';
  for(let row=8;row<=11;row++)for(let col=12;col<=14;col++){const cell=gsIsolateStyle(d.getRow(row).getCell(col));cell.font={...(cell.font||{}),name:'微軟正黑體',bold:row===8||row===11||col===12,color:{argb:(row===8&&col>12||row===11)?'FF0070C0':'FF000000'}};cell.alignment={horizontal:col===12?'center':'right',vertical:'middle'};if(row===9||row===10)cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFE7E6E6'}};if(col>12)cell.numFmt='#,##0';}
  // Re-apply the exact visible tables from the user's reference.
  paintFrame(d,6,dailyEnd,1,10);
@@ -681,7 +737,7 @@ async function makeShoppingTemplate(c){
  return wb;
 }
 buildOther=async function(c,oldWb=null){
- if(typeKey()==='GS_SHOPPING'&&gsShoppingTemplateData){if(!gsConversionFileLoaded)throw Error('喜餅範本的 CPA/ROAS 請先上傳「完成購買／加入購物車」轉換明細，避免把所有轉換誤算成購買');return await makeShoppingTemplate(c)}
+ if(typeKey()==='GS_SHOPPING'&&gsShoppingTemplateData){if(!gsConversionFileLoaded)throw Error('喜餅範本的 CPA/ROAS 請先上傳轉換動作明細');if(!gsConvSchema.hasPurchase||!gsConvSchema.count)throw Error('喜餅範本需要完成購買動作及轉換次數，才能計算 CPA；轉換價值選填');return await makeShoppingTemplate(c)}
  return oldGsTemplateBuildOther(c,oldWb);
 };
 
@@ -874,7 +930,7 @@ refresh=function(){
  let count=0,value=0,available=false,description='';
  if(gsDetail){
    const stats=gsActionValues(0,'總計',rows);
-   count=stats.purchase;value=stats.value;available=true;
+   count=gsConvSchema.count&&gsConvSchema.hasPurchase?stats.purchase:null;value=gsConvSchema.value&&gsConvSchema.hasPurchase?stats.value:null;available=value!==null;
    description='來源：轉換動作明細的完成購買（加入購物車不計入購買 ROAS）';
  }else if(gsShopping){
    description='請於步驟 1 上傳「轉換動作明細」，才能顯示完成購買及購買轉換價值';
@@ -884,14 +940,14 @@ refresh=function(){
    count=rows.reduce((a,r)=>a+(Number(r.conv)||0),0);
    value=rows.reduce((a,r)=>a+(Number(r.convValue)||0),0);
    available=haveConv&&haveValue;
-   if(!haveValue) description='目前主要 Raw Data 缺少轉換價值欄位；請重新匯出包含轉換價值的資料';
+   if(!haveValue) description='主要 Raw Data 未提供轉換價值：轉換次數仍可正常顯示；轉換價值與 ROAS 顯示 —。如需計算 ROAS，再提供轉換價值即可。';
  }
  const cards=$('kpis');
  if(!cards)return;
  const existing=cards.querySelectorAll('.kpi');
  if(existing[3]){
    existing[3].querySelector('small').textContent=gsDetail||gsShopping?'完成購買':'轉換';
-   existing[3].querySelector('b').textContent=(gsShopping&&!gsDetail)?'—':previewMoney(count);
+   existing[3].querySelector('b').textContent=(gsShopping&&!gsDetail)?'—':count===null?'—':previewMoney(count);
  }
  let vcard=$('previewConvValue');
  if(!vcard){
@@ -4319,5 +4375,511 @@ v330RenderCpmList();v330SyncCpmUi();refresh();
 /* END V3.30 */
 
 
+
+
+/* V3.31 — Independent multi-country GS conversion report; existing modes untouched. */
+const V331_MULTI='GS_MULTI_COUNTRY';
+const v331Active=()=>typeKey()===V331_MULTI;
+let v331Countries=[{name:'Germany',campaigns:[]},{name:'India',campaigns:[]}];
+let v331Known=false;
+const v331Panel=document.createElement('section');
+v331Panel.className='card hidden';v331Panel.id='v331CountryPanel';
+v331Panel.innerHTML=`<h2>GS 多國轉換版｜標準格式＋轉換事件明細</h2>
+ <p class="tiny">每個國家各自輸出 4 張標準格式報表。A6:H6 為成效欄位，I6:K13 為轉換事件明細；兩區塊表頭都在第 6 列。</p>
+ <div id="v331CountryRows"></div>
+ <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button type="button" class="secondary" id="v331AddCountry">＋ 新增國家</button><button type="button" class="secondary" id="v331ResetCountries">還原 Germany／India</button></div>
+ <p id="v331CountryHint" class="tiny" style="margin-top:10px"></p>`;
+$('settings').parentElement.insertBefore(v331Panel,$('settings'));
+const v331CampaignNames=()=>[...new Set(entries.map(r=>r.campaign).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh-Hant'));
+function v331Render(){
+ const root=$('v331CountryRows');root.replaceChildren();const names=v331CampaignNames();
+ v331Countries.forEach((country,index)=>{
+  const wrap=document.createElement('div');wrap.style.cssText='background:#fafbfd;border:1px solid #dce2e8;border-radius:9px;padding:14px;margin:12px 0';
+  const top=document.createElement('div');top.style.cssText='display:flex;align-items:end;gap:12px;flex-wrap:wrap';
+  const label=document.createElement('label');label.style.cssText='flex:1;min-width:190px';label.textContent=`國家 ${index+1}｜分頁名稱前綴`;
+  const inp=document.createElement('input');inp.value=country.name;inp.placeholder='例如：Germany';inp.style.marginTop='6px';
+  inp.addEventListener('input',()=>{country.name=inp.value;v331Validate();});label.appendChild(inp);top.appendChild(label);
+  if(index>1){const del=document.createElement('button');del.type='button';del.className='secondary';del.textContent='移除此國家';del.onclick=()=>{v331Countries.splice(index,1);v331Render();refresh()};top.appendChild(del)}
+  wrap.appendChild(top);
+  const action=document.createElement('div');action.style.cssText='display:flex;gap:8px;align-items:center;margin:12px 0 6px;flex-wrap:wrap';
+  const caption=document.createElement('span');caption.className='tiny';caption.textContent='選取屬於此國家的 Campaign（可複選）';action.appendChild(caption);
+  const all=document.createElement('button');all.type='button';all.className='secondary';all.style.cssText='padding:4px 10px;font-size:12px';all.textContent='全選尚未分配';
+  all.onclick=()=>{const taken=new Set(v331Countries.filter((_,i)=>i!==index).flatMap(c=>c.campaigns));country.campaigns=names.filter(n=>!taken.has(n));v331Render();refresh()};action.appendChild(all);wrap.appendChild(action);
+  const list=document.createElement('div');list.className='gs-campaign-list';list.style.cssText='max-height:180px;overflow:auto;margin-top:0';
+  for(const name of names){const line=document.createElement('label');line.className='gs-campaign-item';const cb=document.createElement('input');cb.type='checkbox';cb.checked=country.campaigns.includes(name);cb.onchange=()=>{country.campaigns=cb.checked?[...country.campaigns,name]:country.campaigns.filter(n=>n!==name);v331Validate();refresh()};line.append(cb,document.createTextNode(name));list.appendChild(line)}
+  if(!names.length){const empty=document.createElement('div');empty.className='tiny';empty.textContent='上傳 Google Ads Raw Data 後，這裡會列出 Campaign';list.appendChild(empty)}
+  wrap.appendChild(list);root.appendChild(wrap);
+ });v331Validate();
+}
+function v331Issues(){
+ if(!entries.length)return ['請先上傳 Google Ads Raw Data'];
+ const names=v331Countries.map(c=>c.name.trim());
+ if(names.some(n=>!n))return ['國家名稱不能留白'];
+ if(new Set(names.map(n=>n.toLowerCase())).size!==names.length)return ['國家名稱不能重複'];
+ if(names.some(n=>/[\\/?*\[\]:]/.test(n)||n.length>20))return ['國家名稱不可包含 Excel 工作表禁用符號，且最多 20 字'];
+ if(v331Countries.some(c=>!c.campaigns.length))return ['每個國家至少要勾選一個 Campaign'];
+ const assigned=v331Countries.flatMap(c=>c.campaigns);
+ if(new Set(assigned).size!==assigned.length)return ['同一 Campaign 不可同時分配給兩個國家'];
+ if(!$('start').value||!$('end').value||$('start').value>$('end').value)return ['請確認走期日期'];
+ const start=$('start').value,end=$('end').value;
+ if(v331Countries.some(c=>!entries.some(r=>c.campaigns.includes(r.campaign)&&r.date>=start&&r.date<=end)))return ['部分國家的 Campaign 在所選走期內沒有資料'];
+ if(!gsConversionFileLoaded)return ['請先上傳「轉換動作明細」'];
+ if(!gsConvSchema.campaign)return ['多國轉換版需要廣告活動欄位，才能辨識各國的轉換資料'];
+ if(!gsConvSchema.date&&new Set(entries.filter(r=>assigned.includes(r.campaign)&&r.date>=start&&r.date<=end).map(r=>r.date)).size>1)return ['轉換明細缺少日期，無法分配跨日轉換'];
+ if(!gsConvSchema.hasPurchase)return ['轉換明細找不到完成購買動作，無法準確計算購買成效'];
+ if(!gsConvSchema.count)return ['多國轉換版需有轉換次數，以計算 CPA；轉換價值選填'];
+ return [];
+}
+function v331Validate(){const errors=v331Issues();$('v331CountryHint').textContent=errors[0]?'⚠ '+errors[0]:`✓ 將產生 ${v331Countries.length*4} 個分頁（${v331Countries.map(c=>c.name.trim()).join('、')}）`;return !errors.length}
+$('v331AddCountry').onclick=()=>{v331Countries.push({name:'Country'+(v331Countries.length+1),campaigns:[]});v331Render();refresh()};
+$('v331ResetCountries').onclick=()=>{v331Countries=[{name:'Germany',campaigns:[]},{name:'India',campaigns:[]}];v331Render();refresh()};
+function v331CopySheet(source,targetWb,newName){
+ const target=targetWb.addWorksheet(newName);
+ target.properties={...source.properties};target.pageSetup={...source.pageSetup};
+ target.views=JSON.parse(JSON.stringify(source.views||[]));
+ source.columns.forEach((col,i)=>{const dst=target.getColumn(i+1);dst.width=col.width;dst.hidden=!!col.hidden;if(col.style)dst.style=JSON.parse(JSON.stringify(col.style))});
+ source.eachRow({includeEmpty:true},(row,ri)=>{
+  const to=target.getRow(ri);to.height=row.height;if(row.hidden)to.hidden=true;
+  row.eachCell({includeEmpty:true},(cell,ci)=>{
+   const dst=to.getCell(ci);
+   if(cell.value!==null&&cell.value!==undefined){
+    const value=cell.value;
+    if(value instanceof Date)dst.value=new Date(value.getTime());
+    else if(typeof value==='object'){
+     if(value.sharedFormula){try{dst.value={formula:cell.formula,result:cell.result}}catch(_){dst.value=null}}
+     else dst.value=JSON.parse(JSON.stringify(value));
+    }else dst.value=value;
+   }
+   if(cell.style)dst.style=JSON.parse(JSON.stringify(cell.style));
+  });
+ });
+ if(source.model?.merges)for(const range of source.model.merges){try{target.mergeCells(range)}catch(_){}}
+ if(source.autoFilter)target.autoFilter=JSON.parse(JSON.stringify(source.autoFilter));
+ return target;
+}
+function v331CampaignPage(wb,groupSheet,selected,name){
+ const ws=v331CopySheet(groupSheet,wb,name);
+ const grouped=new Map();for(const r of selected){if(!grouped.has(r.campaign))grouped.set(r.campaign,[]);grouped.get(r.campaign).push(r)}
+ const campaigns=[...grouped.entries()].sort((a,b)=>totals(b[1]).spend-totals(a[1]).spend);
+ const max=Math.max(ws.rowCount,3+campaigns.length);
+ for(let row=3;row<=max;row++)for(let col=1;col<=11;col++){ws.getRow(row).getCell(col).value=null;}
+ ws.getCell('A1').value='GS廣告活動';
+ ws.getCell('A2').value='總計';ws.getCell('A2').font={...(ws.getCell('A2').font||{}),bold:true};
+ let i=0;for(const [campaign,records] of campaigns){
+  const row=3+i++,t=totals(records),sp=templateMoney(t.spend),actions=gsActionValues(1,campaign,records);
+  [gsDisplayCampaign(campaign),'',t.impr,t.click,sp,actions.purchase||'-',actions.purchase&&gsConvSchema.value?actions.value:'-'].forEach((v,j)=>ws.getRow(row).getCell(j+1).value=v);
+  gsMetricRow(ws,row,'campaign',t,sp,actions);gsSummaryMetricFmt(ws,row,'campaign');
+ }
+ const total=totals(selected),act=gsActionValues(0,'總計',selected),sp=templateMoney(total.spend);
+ [total.impr,total.click,sp,act.purchase,gsConvSchema.value?act.value:null].forEach((v,i)=>gsPutMetric(ws,String.fromCharCode(67+i)+'2',v,i===2?'cash':'integer'));
+ gsMetricRow(ws,2,'campaign',total,sp,act);gsSummaryMetricFmt(ws,2,'campaign');
+ if(ws.rowCount>2+campaigns.length){for(let row=3+campaigns.length;row<=ws.rowCount;row++)for(let c=1;c<=11;c++){const cell=ws.getRow(row).getCell(c);cell.value=null;cell.border={}}ws.spliceRows(3+campaigns.length,ws.rowCount-(2+campaigns.length))}
+ return ws;
+}
+async function v331BuildWorkbook(){
+ const issue=v331Issues();if(issue.length)throw Error(issue[0]);
+ const result=new ExcelJS.Workbook();result.creator='cacaFly';
+ const oldScope=scopeRows;
+ try{
+  for(let index=0;index<v331Countries.length;index++){
+   const country=v331Countries[index],prefix=country.name.trim(),campaigns=new Set(country.campaigns);
+   const selected=oldScope('').filter(r=>campaigns.has(r.campaign));
+   scopeRows=function(){return selected};
+   const partial=await makeShoppingTemplate('');
+   scopeRows=oldScope;
+   const daily=partial.getWorksheet('GS日報表'),groups=partial.getWorksheet('GS廣告活動'),keywords=partial.getWorksheet('GS關鍵字報表');
+   if(!daily||!groups||!keywords)throw Error(prefix+' 缺少 GS 轉換版範本工作表');
+   const dailyOut=v331CopySheet(daily,result,prefix+'-GS日報表');
+   if(index>0)dailyOut.properties.tabColor={argb:'FFFFBF00'};
+   v331CampaignPage(result,groups,selected,prefix+'-GS廣告活動');
+   v331CopySheet(groups,result,prefix+'-GS群組');
+   v331CopySheet(keywords,result,prefix+'-GS關鍵字報表');
+  }
+ }finally{scopeRows=oldScope;}
+ const cfg=result.addWorksheet('_google_config');cfg.state='veryHidden';
+ cfg.getCell('A1').value='Google Ads Report Generator V3.31 / config';
+ cfg.getCell('A2').value=JSON.stringify({...fields(),type:V331_MULTI,multiCountries:v331Countries.map(c=>({name:c.name.trim(),campaigns:[...c.campaigns]})),_googleVersion:'3.31'});
+ result.calcProperties.fullCalcOnLoad=true;return result;
+}
+const v331PriorFields=fields;
+fields=function(){const cfg=v331PriorFields();if(v331Active())cfg.multiCountries=v331Countries.map(c=>({name:c.name.trim(),campaigns:[...c.campaigns]}));return cfg};
+const v331PriorRestore=restore;
+restore=function(cfg){const output=v331PriorRestore(cfg);if(cfg?.type===V331_MULTI&&Array.isArray(cfg.multiCountries)&&cfg.multiCountries.length>=2){v331Countries=cfg.multiCountries.map(c=>({name:String(c.name||''),campaigns:Array.isArray(c.campaigns)?[...c.campaigns]:[]}));v331Known=true;v331Render()}return output};
+const v331PriorUpload=upload;
+upload=async function(file){await v331PriorUpload(file);if($('mode').value==='update'&&latestConfig?.type===V331_MULTI&&Array.isArray(latestConfig.multiCountries)){v331Countries=latestConfig.multiCountries.map(c=>({name:c.name,campaigns:[...c.campaigns]}));v331Known=true}v331Render();refresh()};
+const v331PriorRefresh=refresh;
+refresh=function(){const out=v331PriorRefresh();const enabled=v331Active();v331Panel.classList.toggle('hidden',!enabled);if(enabled){$('normalCampaignField').classList.add('hidden');$('gsScopeField').classList.add('hidden');$('v330CpmScopeField')?.classList.add('hidden');$('batchCampaignWrap').classList.add('hidden');$('v326-r12-panel')?.classList.add('hidden');$('gsMetricOpts').classList.add('hidden');$('download').disabled=!v331Validate();$('batchDownload').disabled=true;const chosen=new Set(v331Countries.flatMap(c=>c.campaigns));const start=$('start').value,end=$('end').value;const data=entries.filter(r=>chosen.has(r.campaign)&&(!start||r.date>=start)&&(!end||r.date<=end));const t=totals(data);$('log').textContent=`多國轉換版｜${v331Countries.length} 個國家、${chosen.size} 個 Campaign，${data.length} 筆資料；曝光 ${t.impr.toLocaleString('zh-TW')}、點擊 ${t.click.toLocaleString('zh-TW')}。`;}return out};
+$('type').addEventListener('change',()=>{if(v331Active()&&!v331Known){v331Known=true;v331Render()}refresh()});
+$('tabNew').addEventListener('click',()=>{if(v331Active()){v331Countries=[{name:'Germany',campaigns:[]},{name:'India',campaigns:[]}];v331Render();refresh()}});
+const v331PriorDownload=$('download').onclick;
+$('download').onclick=async function(){
+ if(!v331Active())return v331PriorDownload.call(this);
+ const box=$('downloadStatus');box.style.display='block';box.className='note';
+ $('download').disabled=true;box.textContent='正在整理多國 GS 轉換資料…';
+ try{
+  if(!window.ExcelJS)throw Error('ExcelJS 尚未載入，請檢查網路連線');
+  const wb=await v331BuildWorkbook();const buffer=await wb.xlsx.writeBuffer();
+  const filename=outputName($('filename').value.trim()||'GoogleAds_GS多國轉換週報','xlsx');
+  await downloadData(new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),filename);
+  box.className='note success';box.textContent=`✓ 成功產出 ${v331Countries.length} 個國家、${v331Countries.length*4} 個工作表：${filename}`;
+ }catch(e){box.className='note error';box.textContent='多國轉換報表失敗：'+(e?.message||String(e));console.error('GS multi country',e)}finally{refresh()}
+};
+v331Render();refresh();
+/* END V3.34: conversion count independent of value, optional ROAS and corrected preview hint */
+
+
+
+/* V3.37 — multi-country preview uses the selected countries, not the single-campaign selector.
+   Preserve strict action-detail requirements for purchase-specific reports. */
+const v335PreviousRefresh = refresh;
+refresh = function () {
+  const result = v335PreviousRefresh();
+  if (!v331Active()) return result;
+  const selectedCampaigns = new Set(v331Countries.flatMap(country => country.campaigns));
+  const from = $('start').value, to = $('end').value;
+  const selected = entries.filter(r => selectedCampaigns.has(r.campaign) && (!from || r.date >= from) && (!to || r.date <= to));
+  const total = totals(selected);
+  const money = total.spend * (1 + serviceFee());
+  const hasRawConv = heads.some(h => ['轉換', '所有轉換', '轉換次數', 'Conversions'].includes(String(h).trim()));
+  const actionInfo = gsConversionFileLoaded ? gsActionValues(0, '總計', selected) : null;
+  const purchaseAvailable = !!(actionInfo && gsConvSchema.count && gsConvSchema.hasPurchase);
+  const count = purchaseAvailable ? actionInfo.purchase : (hasRawConv ? total.conv : null);
+  const valueAvailable = !!(purchaseAvailable && gsConvSchema.value);
+  const value = valueAvailable ? actionInfo.value : null;
+  const fmt = n => Number(n).toLocaleString('zh-TW', {maximumFractionDigits:2});
+  const cards = $('kpis');
+  if (cards) {
+    const cardData = [
+      ['曝光', fmt(total.impr)], ['點擊', fmt(total.click)],
+      [purchaseAvailable ? '完成購買' : '轉換（Raw Data）', count === null ? '—' : fmt(count)],
+      ['轉換價值 NT$', value === null ? '—' : fmt(value)],
+      ['含服務費費用 NT$', fmt(money)]
+    ];
+    cards.innerHTML = cardData.map(([name, number]) => '<div class="kpi"><small>'+name+'</small><b>'+number+'</b></div>').join('');
+  }
+  const hint = $('previewConversionHint');
+  if (hint) hint.textContent = purchaseAvailable
+    ? (valueAvailable ? '轉換及轉換價值來源：已上傳的轉換動作明細（僅完成購買）。' : '完成購買來源：轉換動作明細；未提供轉換價值，ROAS 顯示 —。')
+    : (hasRawConv ? '目前顯示主要 Raw Data 的「轉換」總數；不代表全部都是完成購買。要分開顯示加入購物車／完成購買，請上傳轉換動作明細。' : '目前 Raw Data 缺少轉換次數；若要顯示完成購買，請上傳轉換動作明細。');
+  const issues = v331Issues();
+  const box = $('downloadStatus');
+  if (issues.length) {
+    box.style.display = 'block';box.className = 'note';
+    box.textContent = '多國轉換版尚無法下載：' + issues[0] + '。轉換價值不是必填欄位；但完成購買的 CPA 需要可辨識的購買轉換次數。';
+  } else if (box.textContent.startsWith('多國轉換版尚無法下載：')) {
+    box.style.display = 'none';box.textContent = '';
+  }
+  return result;
+};
+refresh();
+/* END V3.35 */
+
+
+/* V3.37 — GS 多國：標準格式 + I6:K13 同列轉換事件表；價值欄非必要。 */
+let v336EventRows=[];
+let v336EventSchema={hasConv:false,hasAll:false,hasDate:false,hasCampaign:false};
+async function v336LoadEvents(file){
+ v336EventRows=[];v336EventSchema={hasConv:false,hasAll:false,hasDate:false,hasCampaign:false};
+ if(!file){refresh();return;}
+ try{
+  const grid=await readGrid(file);
+  const exact=(row,alias)=>gsConvFindColumn(row,alias);
+  let best=null;
+  for(let i=0;i<Math.min(60,grid.length);i++){
+   const head=grid[i],action=exact(head,gsConvAliases.action);
+   const conv=exact(head,['轉換','轉換次數','conversions','conv.']);
+   const all=exact(head,['所有轉換','所有轉換次數','all conv.','all conv','all conversions']);
+   const date=exact(head,gsConvAliases.date),campaign=exact(head,gsConvAliases.campaign);
+   if(action<0||(conv<0&&all<0))continue;
+   const score=(date>=0?2:0)+(campaign>=0?2:0)+(conv>=0?1:0)+(all>=0?1:0);
+   if(!best||score>best.score)best={i,action,conv,all,date,campaign,score};
+  }
+  if(best){
+   v336EventSchema={hasConv:best.conv>=0,hasAll:best.all>=0,hasDate:best.date>=0,hasCampaign:best.campaign>=0};
+   for(const row of grid.slice(best.i+1)){
+    const action=String(row[best.action]??'').trim();
+    if(!action||/^(總計|合計|小計|total|subtotal)\b/i.test(action))continue;
+    let date=best.date>=0?dateIso(row[best.date]):'';
+    if(best.date>=0&&!date)continue;
+    v336EventRows.push({action,date,campaign:best.campaign>=0?gsCampaignKey(row[best.campaign]):'',
+     conv:best.conv>=0?numeric(row[best.conv]):null,all:best.all>=0?numeric(row[best.all]):null});
+   }
+  }
+ }catch(e){console.warn('轉換事件摘要讀取失敗',e);}
+ refresh();
+}
+$('gsConversions').addEventListener('change',e=>v336LoadEvents(e.target.files?.[0]));
+// 多國不再強制要求明細，僅要求國家及 Campaign 範圍有效。
+v331Issues=function(){
+ if(!entries.length)return ['請先上傳 Google Ads Raw Data'];
+ const names=v331Countries.map(c=>c.name.trim());
+ if(names.some(n=>!n))return ['國家名稱不能留白'];
+ if(new Set(names.map(n=>n.toLowerCase())).size!==names.length)return ['國家名稱不能重複'];
+ if(names.some(n=>/[\\/?*\[\]:]/.test(n)||n.length>20))return ['國家名稱不可包含 Excel 工作表禁用符號，且最多 20 字'];
+ if(v331Countries.some(c=>!c.campaigns.length))return ['每個國家至少選取一個 Campaign'];
+ const assigned=v331Countries.flatMap(c=>c.campaigns);
+ if(new Set(assigned).size!==assigned.length)return ['Campaign 不可重複分配'];
+ if(!$('start').value||!$('end').value||$('start').value>$('end').value)return ['請確認走期'];
+ if(v331Countries.some(c=>!entries.some(r=>c.campaigns.includes(r.campaign)&&r.date>=$('start').value&&r.date<=$('end').value)))return ['部分國家在走期內沒有資料'];
+ return [];
+};
+v331Panel.querySelector('p.tiny').textContent='每個國家 4 個分頁：GS日報表、GS廣告活動、GS群組、GS關鍵字報表。A6:H6 與 I6:K6 標題同列；事件明細可選填。';
+const v337Preview=document.createElement('div');
+v337Preview.id='v337Preview';
+v337Preview.style.cssText='overflow-x:auto;border:1px solid #dde3e9;border-radius:8px;margin:14px 0;padding:12px;background:#fff';
+v337Preview.innerHTML=`<strong style="display:block;margin-bottom:10px">V3.37｜Excel 欄位配置預覽（第 6–13 列）</strong>
+<table style="border-collapse:collapse;min-width:1000px;width:100%;font-size:12px;text-align:center">
+<thead><tr style="background:#002d67;color:white">${['日期','曝光次數','點擊次數','廣告費用','轉換次數','CTR','CPC','CPA','轉換事件','轉換次數','所有轉換次數'].map(x=>'<th style="padding:8px 5px;border:1px solid #b6c4d5">'+x+'</th>').join('')}</tr></thead>
+<tbody><tr style="background:#ffbf00;font-weight:bold">${['總計','—','—','—','—','—','—','—','總計','—','—'].map(x=>'<td style="padding:8px 5px;border:1px solid #b6c4d5">'+x+'</td>').join('')}</tr>
+<tr>${['每日日期','—','—','—','—','—','—','—','File Download','—','—'].map(x=>'<td style="padding:8px 5px;border:1px solid #b6c4d5">'+x+'</td>').join('')}</tr>
+<tr>${['…','','','','','','','','其他轉換事件','—','—'].map(x=>'<td style="padding:8px 5px;border:1px solid #b6c4d5">'+x+'</td>').join('')}</tr></tbody></table>
+<div style="font-size:12px;color:#617184;margin-top:8px">左側 A:H 使用主要 Raw Data；右側 I:K 使用「轉換動作明細」，沒有上傳時顯示 —，不影響下載。每個國家的四張分頁皆套用。</div>`;
+v331Panel.insertBefore(v337Preview,$('v331CountryRows'));
+
+function v336Actions(selected){
+ const campaigns=new Set(selected.map(r=>gsCampaignKey(r.campaign))),dates=new Set(selected.map(r=>r.date));
+ const globalCampaigns=new Set(entries.map(r=>gsCampaignKey(r.campaign)));
+ const globalDates=new Set(entries.map(r=>r.date));
+ const filtered=v336EventRows.filter(r=>{
+  const c=v336EventSchema.hasCampaign?campaigns.has(r.campaign):globalCampaigns.size===1;
+  const d=v336EventSchema.hasDate?dates.has(r.date):globalDates.size===1;
+  return c&&d;
+ });
+ const grouped=new Map();for(const r of filtered){if(!grouped.has(r.action))grouped.set(r.action,[]);grouped.get(r.action).push(r)}
+ return [...grouped].map(([name,rows])=>({name,conv:v336EventSchema.hasConv?rows.reduce((a,r)=>a+(r.conv||0),0):null,all:v336EventSchema.hasAll?rows.reduce((a,r)=>a+(r.all||0),0):null})).sort((a,b)=>(b.all??b.conv??0)-(a.all??a.conv??0));
+}
+function v336Style(cell,bg,bold=false){cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:bg}};cell.font={name:'微軟正黑體',size:11,bold,color:{argb:bold?'FF001A36':'FF1F2733'}};cell.alignment={horizontal:'center',vertical:'middle'};cell.border={top:{style:'thin',color:{argb:'FFBEC8D5'}},bottom:{style:'thin',color:{argb:'FFBEC8D5'}},left:{style:'thin',color:{argb:'FFBEC8D5'}},right:{style:'thin',color:{argb:'FFBEC8D5'}}};}
+function v336Table(wb,name,records,dimension,caption,selected,index){
+ const ws=wb.addWorksheet(name);ws.views=[{state:'frozen',ySplit:6}];
+ ws.getCell('A1').value=caption+'｜標準格式＋轉換事件';ws.getCell('A1').font={name:'微軟正黑體',size:17,bold:true,color:{argb:'FF475368'}};
+ ws.getCell('A2').value='走期';ws.getCell('B2').value=$('start').value+' ～ '+$('end').value;
+ ws.getCell('A3').value='預算';ws.getCell('B3').value=$('budget').value!==''?numeric($('budget').value):null;
+ ws.getCell('D3').value='廣告費用含服務費';
+ ws.getCell('A4').value='計價單價';ws.getCell('B4').value=numeric($('unit').value);
+ const columns=[dimension.label,'曝光次數','點擊次數','廣告費用','轉換次數','CTR','CPC','CPA'];
+ columns.forEach((v,i)=>{const c=ws.getCell(6,i+1);c.value=v;v336Style(c,'FF002D67');c.font={name:'微軟正黑體',size:11,bold:true,color:{argb:'FFFFFFFF'}}});
+ const groups=new Map();for(const r of records){const k=dimension.fn(r)||'未命名';if(!groups.has(k))groups.set(k,[]);groups.get(k).push(r)}
+ const pairs=[...groups].sort((a,b)=>dimension.date?String(a[0]).localeCompare(String(b[0])):totals(b[1]).spend-totals(a[1]).spend);
+ const append=(rnum,key,rs,isTotal)=>{
+  const t=totals(rs),sp=t.spend*(1+serviceFee());
+  const hasConv=heads.some(h=>['轉換','轉換次數','Conversions'].includes(String(h).trim()));
+  const vals=[key,t.impr,t.click,sp,hasConv?t.conv:'—',t.impr?t.click/t.impr:0,t.click?sp/t.click:null,hasConv&&t.conv?sp/t.conv:null];
+  vals.forEach((v,i)=>{const c=ws.getCell(rnum,i+1);c.value=v;if(i===5)c.numFmt='0.00%';else if(i>0)c.numFmt='#,##0.00';if(isTotal)v336Style(c,'FFFFBF00',true)});
+ };
+ append(7,'總計',records,true);
+ pairs.forEach(([key,rs],i)=>append(i+8,key,rs,false));
+ // I6:K13：與日期/曝光/點擊等標題同一列（第 6 列）。
+ const evHead=['轉換事件','轉換次數','所有轉換次數'];
+ evHead.forEach((x,i)=>{const c=ws.getCell(6,9+i);c.value=x;v336Style(c,'FF002D67');c.font={name:'微軟正黑體',size:11,bold:true,color:{argb:'FFFFFFFF'}}});
+ const actions=v336Actions(selected);
+ const sum=(field)=>actions.length&&actions.some(a=>a[field]!==null)?actions.reduce((n,a)=>n+(a[field]||0),0):null;
+ const fmt=v=>v===null?'—':v;
+ const entries=[['總計',fmt(sum('conv')),fmt(sum('all'))],...actions.map(a=>[a.name,fmt(a.conv),fmt(a.all)])];
+ if(!actions.length)entries.push(['未提供可對應的轉換事件明細','—','—']);
+ entries.forEach((values,ri)=>{const row=7+ri;values.forEach((v,i)=>{const c=ws.getCell(row,9+i);c.value=v;v336Style(c,ri===0?'FFFFBF00':'FFFFFFFF',ri===0);if(i>0&&typeof v==='number')c.numFmt='#,##0.##'})});
+ // 一般事件在 I6:K13 內；事件超過六項時自動向下延伸，避免遺漏。
+ for(let r=7+entries.length;r<=13;r++)for(let c=9;c<=11;c++)v336Style(ws.getRow(r).getCell(c),'FFFFFFFF');
+ for(let c=1;c<=8;c++)ws.getColumn(c).width=c===1?38:18;
+ ws.getColumn(9).width=48;ws.getColumn(10).width=19;ws.getColumn(11).width=22;
+ ws.autoFilter={from:{row:6,column:1},to:{row:6,column:8}};
+ if(index>0&&dimension.date)ws.properties.tabColor={argb:'FFFFBF00'};
+ return ws;
+}
+v331BuildWorkbook=async function(){
+ const issues=v331Issues();if(issues.length)throw Error(issues[0]);
+ const wb=new ExcelJS.Workbook();wb.creator='cacaFly';
+ for(let i=0;i<v331Countries.length;i++){
+  const country=v331Countries[i],name=country.name.trim(),wanted=new Set(country.campaigns);
+  const selected=scopeRows('').filter(r=>wanted.has(r.campaign));
+  const specs=[
+   ['GS日報表',{label:'日期',date:true,fn:r=>r.date}],
+   ['GS廣告活動',{label:'廣告活動',fn:r=>r.campaign}],
+   ['GS群組',{label:'廣告群組',fn:r=>r.campaign+'／'+r.group}],
+   ['GS關鍵字報表',{label:'搜尋關鍵字',fn:r=>r.keyword||'未提供關鍵字'}]
+  ];
+  for(const [suffix,dimension] of specs)v336Table(wb,name+'-'+suffix,selected,dimension,name+'｜'+suffix,selected,i);
+ }
+ const config=wb.addWorksheet('_google_config');config.state='veryHidden';
+ config.getCell('A1').value='Google Ads Report Generator V3.37 / config';
+ config.getCell('A2').value=JSON.stringify({...fields(),type:V331_MULTI,multiCountries:v331Countries.map(c=>({name:c.name.trim(),campaigns:[...c.campaigns]})),_googleVersion:'3.37'});
+ return wb;
+};
+v331Render();refresh();
+/* END V3.37 */
+
+
+/* V3.38 — GS multi-country uses the existing V3.26 GS STANDARD embedded workbook, not a recreated layout. */
+const v338OldPreview=$('v337Preview');
+if(v338OldPreview){
+ v338OldPreview.querySelector('strong').textContent='V3.41｜GS 標準範本・外框統一';
+ v338OldPreview.querySelector('thead').innerHTML='<tr style="background:#002d67;color:#fff">'+['日期','曝光','點擊','費用(未稅)','CPC','CTR','','','轉換事件','轉換次數','所有轉換次數'].map((x,i)=>'<th style="padding:8px 5px;border:1px solid #b6c4d5">'+(x||'　')+'</th>').join('')+'</tr>';
+ v338OldPreview.querySelector('tbody').innerHTML='<tr style="background:#ffbf00;font-weight:bold">'+['總計','—','—','—','—','—','','','總計','—','—'].map(x=>'<td style="border:1px solid #b6c4d5;padding:8px 5px">'+(x||'　')+'</td>').join('')+'</tr>';
+ v338OldPreview.querySelector('div').textContent='A:F 沿用原 GS 標準版的欄位與樣式；G:H 保留空白；I6:K14 新增轉換事件、與 A6:F38 相同粗細外框、總計公式；CPC／CTR／CPA 使用除法公式而非加總。其他國家分頁使用原本 GS 標準版範本，不額外新增轉換、CPA 欄。';
+}
+v331Panel.querySelector('p.tiny').textContent='每個國家依原 GS 標準版範本分別產出日報表、廣告活動、關鍵字報表及廣告分頁；日報表 I6:K14 新增轉換事件，總計列採 Excel 公式。';
+function v338AddEventBlock(ws, selected){
+ const headers=['轉換事件','轉換次數','所有轉換次數'];
+ const edge={top:{style:'thin',color:{argb:'FF000000'}},bottom:{style:'thin',color:{argb:'FF000000'}},left:{style:'thin',color:{argb:'FF000000'}},right:{style:'thin',color:{argb:'FF000000'}}};
+ for(let i=0;i<3;i++){
+  const c=ws.getCell(6,9+i);c.value=headers[i];c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF002060'}};
+  c.font={name:'微軟正黑體',size:12,bold:true,color:{argb:'FFFFFFFF'}};
+  c.alignment={horizontal:'center',vertical:'middle'};c.border=structuredClone(edge);
+ }
+ const actions=v336Actions(selected);
+ const sum=key=>actions.some(a=>a[key]!==null)?actions.reduce((n,a)=>n+(a[key]||0),0):'—';
+ const cellValue=v=>v===null?'—':v;
+ const rows=[['總計',sum('conv'),sum('all')],...actions.map(a=>[a.name,cellValue(a.conv),cellValue(a.all)])];
+ if(!actions.length)rows.push(['未提供可對應的轉換事件明細','—','—']);
+ for(let i=0;i<Math.max(8,rows.length);i++){
+  const data=rows[i]||[null,null,null],r=7+i;
+  for(let j=0;j<3;j++){
+   const c=ws.getCell(r,9+j);c.value=data[j];c.border=structuredClone(edge);
+   c.fill={type:'pattern',pattern:'solid',fgColor:{argb:i===0?'FFFFBF00':'FFFFFFFF'}};
+   c.font={name:'微軟正黑體',size:11,bold:i===0,color:{argb:'FF111111'}};
+   c.alignment={horizontal:j===0?'left':'center',vertical:'middle'};
+   if(j>0&&typeof data[j]==='number')c.numFmt='#,##0.##';
+  }
+ }
+ ws.getColumn(9).width=49;ws.getColumn(10).width=19;ws.getColumn(11).width=22;
+ // Sum the actual event rows (at least rows 8-14); preserve missing-data as a dash.
+ const eventEnd=Math.max(14,7+actions.length);
+ for(const [letter,field,col] of [['J','conv',10],['K','all',11]]){
+  const numericValues=actions.map(a=>a[field]).filter(x=>typeof x==='number'&&Number.isFinite(x));
+  ws.getCell(7,col).value=numericValues.length?{formula:`SUM(${letter}8:${letter}${eventEnd})`,result:numericValues.reduce((a,b)=>a+b,0)}:'—';
+ }
+ // Match the original GS standard table A6:F38 perimeter weight; no extra-thick borders.
+ // Copy each edge's actual border style from the existing template, keeping the event grid's thin internal borders.
+ const end=Math.max(14,7+actions.length);
+ const borderSample=(address,side)=>{
+  const source=ws.getCell(address).border?.[side];
+  return source?.style?structuredClone(source):{style:'medium',color:{argb:'FF000000'}};
+ };
+ const perimeter={top:borderSample('A6','top'),bottom:borderSample('A38','bottom'),left:borderSample('A6','left'),right:borderSample('F6','right')};
+ for(let r=6;r<=end;r++)for(let c=9;c<=11;c++){
+  const cell=ws.getCell(r,c),b={...(cell.border||{})};
+  if(r===6)b.top=structuredClone(perimeter.top);
+  if(r===end)b.bottom=structuredClone(perimeter.bottom);
+  if(c===9)b.left=structuredClone(perimeter.left);
+  if(c===11)b.right=structuredClone(perimeter.right);
+  cell.border=b;
+ }
+}
+// V3.40 — Excel formulas for every derivable metric in the multi-country GS export.
+function v340CellNumber(cell){
+ const v=cell.value;
+ if(typeof v==='number'&&Number.isFinite(v))return v;
+ if(v&&typeof v==='object'&&typeof v.result==='number'&&Number.isFinite(v.result))return v.result;
+ return 0;
+}
+function v340Formula(ws,address,formula,cached,numberFormat){
+ const cell=ws.getCell(address);
+ cell.value={formula,result:Number.isFinite(cached)?cached:0};
+ if(numberFormat)cell.numFmt=numberFormat;
+}
+function v340Ratio(ws,r,numerator,denominator,destination,format,scale=1){
+ const a=v340CellNumber(ws.getCell(`${numerator}${r}`));
+ const b=v340CellNumber(ws.getCell(`${denominator}${r}`));
+ const result=b?a/b*scale:0;
+ v340Formula(ws,`${destination}${r}`,`IFERROR(${numerator}${r}/${denominator}${r}${scale===1?'':`*${scale}`},0)`,result,format);
+}
+function v340ColumnTotals(ws,first,last,columns){
+ for(const col of columns){
+  let total=0;
+  for(let r=first;r<=last;r++)total+=v340CellNumber(ws.getCell(`${col}${r}`));
+  v340Formula(ws,`${col}${first-1}`,`SUM(${col}${first}:${col}${last})`,total);
+ }
+}
+function v339FinalSheetFormatting(ws,isDaily,sheetType){
+ // Original format and values remain unchanged, except numeric cells that are calculated.
+ if(isDaily){
+  // Only the real date rows receive calculated metrics; preserve the 31-row
+  // template and do not sum over decorative empty rows.
+  const dated=[];
+  for(let r=8;r<=ws.rowCount;r++){
+   const v=ws.getCell(`A${r}`).value;
+   if(v instanceof Date || (typeof v==='string'&&/^\d{4}[-/]\d/.test(v)))dated.push(r);
+  }
+  const last=Math.max(38,dated.length?Math.max(...dated):8);
+  for(const r of dated){
+   v340Ratio(ws,r,'D','C','E','#,##0.00'); // CPC = cost / clicks
+   v340Ratio(ws,r,'C','B','F','0.00%');     // CTR = clicks / impressions
+  }
+  v340ColumnTotals(ws,8,last,['B','C','D']);
+  v340Ratio(ws,7,'D','C','E','#,##0.00');
+  v340Ratio(ws,7,'C','B','F','0.00%');
+ }else if(sheetType==='GS廣告活動'){
+  // C=impressions D=clicks E=cost F=CPC G=CTR; total row 2.
+  const last=Math.max(3,ws.rowCount);
+  for(let r=3;r<=last;r++)if(ws.getCell(`B${r}`).value!==null){
+   v340Ratio(ws,r,'E','D','F','#,##0.00');
+   v340Ratio(ws,r,'D','C','G','0.00%');
+  }
+  v340ColumnTotals(ws,3,last,['C','D','E']);
+  v340Ratio(ws,2,'E','D','F','#,##0.00');
+  v340Ratio(ws,2,'D','C','G','0.00%');
+ }else if(sheetType==='GS關鍵字報表'){
+  // D=impressions E=clicks F=cost G=CPC H=CTR; total row 3.
+  const last=Math.max(4,ws.rowCount);
+  for(let r=4;r<=last;r++)if(ws.getCell(`C${r}`).value!==null){
+   v340Ratio(ws,r,'F','E','G','#,##0.00');
+   v340Ratio(ws,r,'E','D','H','0.00%');
+  }
+  v340ColumnTotals(ws,4,last,['D','E','F']);
+  v340Ratio(ws,3,'F','E','G','#,##0.00');
+  v340Ratio(ws,3,'E','D','H','0.00%');
+ }else if(sheetType==='廣告'){
+  // C=impressions D=clicks E=conversions F=value G=cost,
+  // H=CPA I=CPC J=CTR; total row 2.
+  const last=Math.max(3,ws.rowCount);
+  for(let r=3;r<=last;r++)if(ws.getCell(`B${r}`).value!==null){
+   v340Ratio(ws,r,'G','E','H','#,##0.00');
+   v340Ratio(ws,r,'G','D','I','#,##0.00');
+   v340Ratio(ws,r,'D','C','J','0.00%');
+  }
+  v340ColumnTotals(ws,3,last,['C','D','E','G']);
+  // Do not fabricate conversion value if the imported Raw Data has no values.
+  const hasValue=[...Array(Math.max(0,last-2))].some((_,i)=>ws.getCell(`F${i+3}`).value!==null);
+  if(hasValue)v340ColumnTotals(ws,3,last,['F']);
+  v340Ratio(ws,2,'G','E','H','#,##0.00');
+  v340Ratio(ws,2,'G','D','I','#,##0.00');
+  v340Ratio(ws,2,'D','C','J','0.00%');
+ }
+ ws.eachRow({includeEmpty:true},row=>row.eachCell({includeEmpty:true},cell=>{
+  const previous=cell.font||{};
+  cell.font={...previous,name:'微軟正黑體',size:12};
+ }));
+}
+
+v331BuildWorkbook=async function(){
+ const issues=v331Issues();if(issues.length)throw Error(issues[0]);
+ const wb=new ExcelJS.Workbook();wb.creator='cacaFly';
+ const oldScope=scopeRows;
+ try{
+  for(let i=0;i<v331Countries.length;i++){
+   const country=v331Countries[i],prefix=country.name.trim(),wanted=new Set(country.campaigns);
+   const selected=oldScope('').filter(r=>wanted.has(r.campaign));
+   scopeRows=function(){return selected};
+   let source;
+   try{source=await v326GsStandardWorkbook('');}finally{scopeRows=oldScope;}
+   const mapping=[['GS日報表','GS日報表'],['GS廣告活動','GS廣告活動'],['GS關鍵字報表','GS關鍵字報表'],['廣告','廣告']];
+   for(const [oldName,newName] of mapping){
+    const src=source.getWorksheet(oldName);if(!src)throw Error('GS 標準範本缺少 '+oldName);
+    const dest=v331CopySheet(src,wb,prefix+'-'+newName);
+    if(oldName==='GS日報表'){
+     // Original standard template: E=CPC, F=CTR. E must never be replaced by conversions, H never by CPA.
+     v338AddEventBlock(dest,selected);
+     if(i>0)dest.properties.tabColor={argb:'FFFFBF00'};
+    }
+    v339FinalSheetFormatting(dest,oldName==='GS日報表',oldName);
+   }
+  }
+ }finally{scopeRows=oldScope;}
+ const cfg=wb.addWorksheet('_google_config');cfg.state='veryHidden';
+ cfg.getCell('A1').value='Google Ads Report Generator V3.40 / config';
+ cfg.getCell('A2').value=JSON.stringify({...fields(),type:V331_MULTI,multiCountries:v331Countries.map(c=>({name:c.name.trim(),campaigns:[...c.campaigns]})),_googleVersion:'3.40'});
+ return wb;
+};
+v331Render();refresh();
+/* END V3.39 */
 
 </script></body></html>
