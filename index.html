@@ -133,8 +133,8 @@ $('old').addEventListener('change',async()=>{await new Promise(r=>setTimeout(r,2
 .mode-wrap{grid-column:1/-1}.mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:5px 0 10px}.mode-tab{background:#f7f8fa;border:1px solid var(--line);color:var(--dark);font-weight:700;padding:13px}.mode-tab.active{background:var(--dark);color:#fff;border-color:var(--dark)}.mode-tab:focus-visible{outline:3px solid var(--yellow)}
 </style><style>
 :root{--ink:#1F2733;--slate:#5C6B7A;--paper:#F2F4F6;--accent:#FFD23F}body{font-family:"Microsoft JhengHei","PingFang TC",sans-serif;background:#F2F4F6;color:#1F2733}header{background:#FF5511!important}header h1:before{content:"";display:inline-block;width:10px;height:19px;background:#FFD23F;margin-right:11px;vertical-align:-2px}.card{background:#fff;border:1px solid #DDE3E9;border-radius:10px;box-shadow:none}.card h2{border-bottom:1px solid #DDE3E9;padding-bottom:13px} .n{background:#1F2733!important;color:#FFD23F!important;border-radius:100%!important}button:not(.secondary):not(.mode-tab){background:#FFD23F;color:#1F2733;font-weight:700} .mode-tab.active{background:#1F2733!important;color:#fff!important;border-color:#1F2733!important}.note{border-radius:8px}.advanced{border:1px solid #dde3e9;border-radius:8px;padding:12px 15px}.advanced summary{cursor:pointer;font-weight:700}.extras{padding-top:14px}.hidden{display:none!important}select,input{font-family:inherit}
-</style><style>.batch-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px}.batch-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid #DDE3E9;border-radius:7px;background:#fafbfd;font-size:13px;overflow-wrap:anywhere}.batch-item input{width:auto;flex-shrink:0}.download-actions{display:flex;gap:10px;flex-wrap:wrap}.download-actions button{flex:1;min-width:180px}</style><style>.settings-layout{display:flex;flex-direction:column;gap:20px}.settings-row{display:grid;gap:18px}.settings-row.two{grid-template-columns:repeat(2,minmax(0,1fr))}.settings-row.four{grid-template-columns:repeat(4,minmax(0,1fr))}.settings-row>div{min-width:0}.settings-row input,.settings-row select{width:100%;min-width:0}.image-upload{margin-top:22px;padding:16px 18px;border:1px solid #dce2e8;border-radius:9px;background:#fafbfd}.image-upload-title{display:flex;align-items:center;gap:9px;font-weight:700;color:#263448}.image-upload input[type=file]{margin:12px 0 6px;width:100%}@media(max-width:850px){.settings-row.four{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:530px){.settings-row.four,.settings-row.two{grid-template-columns:1fr}}.gs-campaign-list{display:grid;gap:7px;margin-top:10px;padding:11px;background:#fafbfd;border:1px solid #DDE3E9;border-radius:8px}.gs-campaign-item{display:flex;align-items:center;gap:8px;margin:0;font-weight:400}.gs-campaign-item input{width:auto}#gsScopeField .tiny{margin-top:6px}</style></head><body><header><h1>Google Ads 廣告成效報表產生器</h1><p>V3.42｜YouTube／Demand Gen／GDN／Search／App · 共用報表面板</p></header><main class="wrap">
-<section class="card"><h2><span class="n">1</span>上傳資料</h2><div class="grid"><div class="mode-wrap"><label>操作模式</label><div class="mode-tabs" role="group" aria-label="操作模式"><button class="mode-tab active" id="tabNew" type="button" aria-pressed="true">建立新報表</button><button class="mode-tab" id="tabUpdate" type="button" aria-pressed="false">更新報表</button></div><input type="hidden" id="mode" value="new"><div class="tiny" id="modeNote">上傳 Google Ads Raw Data，建立全新週報</div></div><div id="oldBox" class="hidden"><label>上次由本工具產生的週報</label><input type="file" id="old" accept=".xlsx"></div></div><div style="margin-top:16px"><label>Google Ads Raw Data（CSV／XLSX）</label><input type="file" id="raw" accept=".csv,.tsv,.txt,.xlsx,.xls"></div><div class="tiny" style="margin-top:8px">自動搜尋「日期／廣告活動／廣告群組／廣告名稱／曝光／點擊／費用／轉換」表頭；支援匯出檔前兩列為報表資訊、第三列為表頭及 UTF-16 Tab 分隔 CSV。</div><div id="uploadInfo"></div><details class="advanced" style="margin-top:16px"><summary>進階：Google Search 額外 Raw Data（選填）</summary><div class="extras"><p class="tiny">依既有 GS 週報規劃的四份選填資料；GS 模式將使用；缺少資料時不會填入虛構的曝光比重。</p><div class="grid"><div><label>Campaign 曝光比重</label><input type="file" id="gsCampaignShare" accept=".csv,.xlsx,.xls"></div><div><label>Ad Group 曝光比重</label><input type="file" id="gsGroupShare" accept=".csv,.xlsx,.xls"></div><div><label>網頁連結額外資訊（Sitelink）</label><input type="file" id="gsSitelink" accept=".csv,.xlsx,.xls"></div><div><label>轉換動作明細（加入購物車／完成購買）</label><input type="file" id="gsConversions" accept=".csv,.tsv,.txt,.xlsx,.xls"><div class="tiny" id="gsConversionsStatus">未上傳；轉換次數與轉換價值可分開匯入，只有 ROAS 需要購買轉換價值。</div></div></div><p class="tiny">廣告文案、AI MAX 搜尋字詞保留手動維護；兩個手動維護分頁在更新報表時保留既有內容。</p></div></details><details class="advanced" style="margin-top:12px"><summary>PMax 素材資源群組 Raw Data（選填，自動辨識版型）</summary><div class="extras"><label>素材資源群組報表（CSV／Excel）</label><input id="pmaxAssets" type="file" accept=".csv,.tsv,.xlsx,.xls"><p class="tiny">不必上傳：未上傳則只產出每日成效；上傳時自動加入素材資源群組分析，並核對數據走期。</p></div></details></div><div id="batchCampaignWrap" class="hidden"><h3 style="font-size:14px;margin:15px 0 8px">批次產出｜選擇 Campaign</h3><div id="batchCampaignList" class="batch-list"></div><p class="tiny">依需要勾選廣告活動，分別產出 Excel 並打包 ZIP；每份僅包含自身 Campaign 的數據。</p></div></section>
+</style><style>.batch-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px}.batch-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid #DDE3E9;border-radius:7px;background:#fafbfd;font-size:13px;overflow-wrap:anywhere}.batch-item input{width:auto;flex-shrink:0}.download-actions{display:flex;gap:10px;flex-wrap:wrap}.download-actions button{flex:1;min-width:180px}</style><style>.settings-layout{display:flex;flex-direction:column;gap:20px}.settings-row{display:grid;gap:18px}.settings-row.two{grid-template-columns:repeat(2,minmax(0,1fr))}.settings-row.four{grid-template-columns:repeat(4,minmax(0,1fr))}.settings-row>div{min-width:0}.settings-row input,.settings-row select{width:100%;min-width:0}.image-upload{margin-top:22px;padding:16px 18px;border:1px solid #dce2e8;border-radius:9px;background:#fafbfd}.image-upload-title{display:flex;align-items:center;gap:9px;font-weight:700;color:#263448}.image-upload input[type=file]{margin:12px 0 6px;width:100%}@media(max-width:850px){.settings-row.four{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:530px){.settings-row.four,.settings-row.two{grid-template-columns:1fr}}.gs-campaign-list{display:grid;gap:7px;margin-top:10px;padding:11px;background:#fafbfd;border:1px solid #DDE3E9;border-radius:8px}.gs-campaign-item{display:flex;align-items:center;gap:8px;margin:0;font-weight:400}.gs-campaign-item input{width:auto}#gsScopeField .tiny{margin-top:6px}</style></head><body><header><h1>Google Ads 廣告成效報表產生器</h1><p>V3.46｜YouTube／Demand Gen／GDN／Search／App · 共用報表面板</p></header><main class="wrap">
+<section class="card"><h2><span class="n">1</span>上傳資料</h2><div class="grid"><div class="mode-wrap"><label>操作模式</label><div class="mode-tabs" role="group" aria-label="操作模式"><button class="mode-tab active" id="tabNew" type="button" aria-pressed="true">建立新報表</button><button class="mode-tab" id="tabUpdate" type="button" aria-pressed="false">更新報表</button></div><input type="hidden" id="mode" value="new"><div class="tiny" id="modeNote">上傳 Google Ads Raw Data，建立全新週報</div></div><div id="oldBox" class="hidden"><label>上次由本工具產生的週報</label><input type="file" id="old" accept=".xlsx"></div></div><div style="margin-top:16px"><label>Google Ads Raw Data（CSV／XLSX）</label><input type="file" id="raw" accept=".csv,.tsv,.txt,.xlsx,.xls"></div><div class="tiny" style="margin-top:8px">自動搜尋「日期／廣告活動／廣告群組／廣告名稱／曝光／點擊／費用／轉換」表頭；支援匯出檔前兩列為報表資訊、第三列為表頭及 UTF-16 Tab 分隔 CSV。</div><div id="uploadInfo"></div><details class="advanced" style="margin-top:16px"><summary>進階：Google Search／PMax 額外 Raw Data（選填）</summary><div class="extras"><p class="tiny">依既有 GS 週報規劃的四份選填資料；GS 模式將使用；缺少資料時不會填入虛構的曝光比重。</p><div class="grid"><div><label>Campaign 曝光比重</label><input type="file" id="gsCampaignShare" accept=".csv,.xlsx,.xls"></div><div><label>Ad Group 曝光比重</label><input type="file" id="gsGroupShare" accept=".csv,.xlsx,.xls"></div><div><label>網頁連結額外資訊（Sitelink）</label><input type="file" id="gsSitelink" accept=".csv,.xlsx,.xls"></div><div><label>轉換動作明細（加入購物車／完成購買）</label><input type="file" id="gsConversions" accept=".csv,.tsv,.txt,.xlsx,.xls"><div class="tiny" id="gsConversionsStatus">未上傳；轉換次數與轉換價值可分開匯入，只有 ROAS 需要購買轉換價值；PMax 右側「轉換成效」只會從這份明細抓轉換動作及次數。</div></div></div><p class="tiny">廣告文案、AI MAX 搜尋字詞保留手動維護；兩個手動維護分頁在更新報表時保留既有內容。</p></div></details><details class="advanced" style="margin-top:12px"><summary>PMax 素材資源群組 Raw Data（選填，自動辨識版型）</summary><div class="extras"><label>素材資源群組報表（CSV／Excel）</label><input id="pmaxAssets" type="file" accept=".csv,.tsv,.xlsx,.xls"><p class="tiny">不必上傳：未上傳則只產出每日成效；上傳時自動加入素材資源群組分析，並核對數據走期。</p></div></details></div><div id="batchCampaignWrap" class="hidden"><h3 style="font-size:14px;margin:15px 0 8px">批次產出｜選擇 Campaign</h3><div id="batchCampaignList" class="batch-list"></div><p class="tiny">依需要勾選廣告活動，分別產出 Excel 並打包 ZIP；每份僅包含自身 Campaign 的數據。</p></div></section>
 <section class="card"><h2><span class="n">2</span>報表設定</h2><div id="lockInfo" class="lock"><span id="lockText">建立新報表：可自由設定</span><button type="button" class="secondary hidden" id="unlock">解鎖並修改設定</button></div><fieldset id="settings"><div class="settings-layout">
 <div class="settings-row two"><div><label>報表類型</label><select id="type"><option value="" selected disabled>請選擇報表類型</option><option value="YT 優化轉換（訂閱 CPA）">YouTube｜優化轉換（訂閱 CPA）</option><option value="YT_VIEW">YouTube｜影片觀看 CPV</option><option value="DGC_CLICK">Demand Gen｜點擊 CPC</option><option value="GDN_YR_CPM">GDN／YT｜曝光 CPM</option><option value="GS_STANDARD">Google Search｜標準版（多分頁）</option><option value="GS_SHOPPING">Google Search｜轉換版</option><option value="GS_MULTI_COUNTRY">Google Search｜多國轉換版（依國家分頁）</option><option value="GS_ADVANCED">Google Search｜進階版（多分頁）</option><option value="APP_INSTALL">App｜安裝 CPI（自動分頁）</option><option value="PMAX_ORIGINAL">PMax｜原版型（每日＋素材資源群組）</option></select></div><div id="normalCampaignField"><label>行銷活動</label><select id="campaign"><option value="">請選擇行銷活動</option></select></div><div id="gsScopeField" class="hidden"><label>GS 專案資料範圍</label><select id="gsScope"><option value="custom" selected>自訂合併的廣告活動（預設）</option><option value="all">全部廣告活動</option></select><div id="gsCustomCampaigns" class="hidden gs-campaign-list"></div><div class="tiny">GS 標準版與進階版皆產出一份多分頁 Excel，不會依 Campaign 拆成多份。</div></div></div>
 <div class="settings-row two hidden" id="appSheetSetting" style="border:1px solid #dce2e8;border-radius:9px;background:#fafbfd;padding:14px 16px"><div><label for="appSheetMode">App CPI｜月份工作表配置</label><select id="appSheetMode"><option value="auto" selected>自動判斷（單月一張，跨月才按月份分頁）</option><option value="single">不分月份，所有日期合併單一分頁</option><option value="monthly">固定依月份分頁</option></select></div><div><label>產出範圍</label><div class="tiny" id="appSheetHint" style="padding-top:9px">App 將合併目前走期內所有 Campaign，產出一份 Excel。</div></div></div>
@@ -3141,7 +3141,14 @@ async function v326BuildPmaxOnly(c,prior){
  }
  const fee=1+serviceFee();
  const whole=v326PmaxTotal(dailyRows);
- const dailyValue=main.valueProvided;
+ // V3.43: Use true conversion-value evidence, not just presence of a header.
+ // Auto = value/ROAS only if the selected PMax campaign actually reports a non-zero value.
+ const requestedValueMode=($('pmaxConversionMode')?.value||'auto');
+ const rawHasValue=main.valueProvided;
+ const nonzeroValue=dailyRows.some(r=>r.value!=null&&Number.isFinite(r.value)&&Math.abs(r.value)>1e-9);
+ if(requestedValueMode==='value'&&!rawHasValue)
+  throw Error('已選擇轉換價值版，但 PMax 主要 Raw Data 沒有「轉換價值」欄位；請補上後再產出。');
+ const dailyValue=requestedValueMode==='value'?true:requestedValueMode==='conversion'?false:(rawHasValue&&nonzeroValue);
  v326PmaxFormatMetrics(ws,9,2,whole,dailyValue,fee);
  for(let i=0;i<dates.length;i++){
   const row=10+i,date=dates[i],data=byDate.get(date);
@@ -3150,7 +3157,8 @@ async function v326BuildPmaxOnly(c,prior){
   if(data)v326PmaxFormatMetrics(ws,row,2,v326PmaxTotal(data),dailyValue,fee);
   else for(let col=1;col<=10;col++)ws.getRow(row).getCell(col).fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFE7E6E6'}};
  }
- const assetValue=assetInfo?assetInfo.valueProvided:false;
+ // 素材群組可缺轉換價值：不會以其餘資料的轉換價值冒充該群組的數據。
+ const assetValue=!!(dailyValue&&assetInfo&&assetInfo.valueProvided);
  if(hasAssets){
   v326PmaxFormatMetrics(ws,9,14,v326PmaxTotal(assets),assetValue,fee);
   groups.forEach(([name,list],i)=>{
@@ -3187,13 +3195,39 @@ async function v326BuildPmaxOnly(c,prior){
  const showCPA=$('gsCPA').checked;
  ws.getColumn('I').hidden=!showCPA;
  if(hasAssets)ws.getColumn('U').hidden=!showCPA;
+ // Pure-conversion export never shows conversion value or ROAS in either existing table.
+ ws.getColumn('F').hidden=!dailyValue;
+ ws.getColumn('J').hidden=!dailyValue;
+ if(hasAssets){ws.getColumn('R').hidden=!assetValue;ws.getColumn('V').hidden=!assetValue;}
+ // Keep the visible right edge thick after optional metric columns are hidden.
+ const thickEdge={style:'medium',color:{argb:'FF000000'}};
+ for(const [edge,finish] of [[dailyValue?'J':(showCPA?'I':'H'),finalDaily],
+                              ...(hasAssets?[[assetValue?'V':(showCPA?'U':'T'),finalAssets]]:[])]){
+   for(let r=7;r<=finish;r++){
+     const cell=ws.getCell(edge+r);
+     cell.border={...(cell.border||{}),right:{...thickEdge}};
+   }
+ }
+ // The conversion panel is placed after TWO unformatted separator columns.
+ // Without an asset report it starts at M (K/L blank); with an asset report at Y (W/X blank).
+ // V3.44: the action table comes ONLY from the separately uploaded conversion-action export.
+ // Never copy daily PMax conversion counts into the action breakdown.
+ let actionData=null;
+ const actionFile=$('gsConversions').files?.[0];
+ if(actionFile){
+  actionData=await v344ReadPmaxActionDetails(actionFile,{campaign:chosenCampaign,start:first,end:end||lastRaw});
+  window.__v344PmaxPanelMessage=actionData.scopeWarning||'✓ 右側轉換成效已使用「轉換動作明細」';
+ }else{
+  window.__v344PmaxPanelMessage='⚠ 未上傳「轉換動作明細」，右側轉換成效表不產生（主 PMax 成效仍正常）。';
+ }
+ v343AddPmaxConversionPanel(ws,{hasAssets,actionData});
 
  // No excel notes or old template metadata are imported into the clean workbook.
  if(prior&&$('mode').value==='update')v326PreserveUpdateSheets(wb,prior);
  if($('includeImages').checked&&uploadedCreativeImages.length)insertImageSheet(wb,chosenCampaign);
  const cfg=wb.addWorksheet('_google_config');cfg.state='veryHidden';
  cfg.getCell('A1').value='Google Ads Report Generator V3.26 / config';
- cfg.getCell('A2').value=JSON.stringify(v326MigrateConfig({...fields(),campaign:chosenCampaign,type:'PMAX_ORIGINAL',pmaxAssetsIncluded:hasAssets,pmaxDateCap:'last_raw_data_date',pmaxPatch:'pmax-colors-units-optional-cpa-default-off-20261027-v4'}));
+ cfg.getCell('A2').value=JSON.stringify(v326MigrateConfig({...fields(),campaign:chosenCampaign,type:'PMAX_ORIGINAL',pmaxAssetsIncluded:hasAssets,pmaxConversionMode:requestedValueMode,pmaxValueDisplayed:dailyValue,pmaxDateCap:'last_raw_data_date',pmaxPatch:'pmax-colors-units-optional-cpa-default-off-20261027-v4'}));
  // Publish aggregate difference as a gentle check, not a blocking false-positive.
  const right=hasAssets?v326PmaxTotal(assets):null;
  window.__v326PmaxDiff=right&&((Math.abs(whole.click-right.click)>0.1)||(Math.abs(whole.conv-right.conv)>0.1))?
@@ -3243,7 +3277,7 @@ $('download').onclick=async function(){
   document.body.appendChild(a);
   try{a.click();}finally{a.remove();}
   box.className='note success';
-  box.textContent='✓ PMax XLSX 已建立並檢查完成：'+name+'。若瀏覽器沒有自動下載，請使用下方黃色備用下載連結。'+(window.__v326PmaxDiff?' ⚠ '+window.__v326PmaxDiff:'');
+  box.textContent='✓ PMax XLSX 已建立並檢查完成：'+name+'。若瀏覽器沒有自動下載，請使用下方黃色備用下載連結。'+(window.__v326PmaxDiff?' ⚠ '+window.__v326PmaxDiff:'')+(window.__v344PmaxPanelMessage?' '+window.__v344PmaxPanelMessage:'');
  }catch(e){
   box.className='note error';
   box.textContent='PMax 下載失敗（'+stage+'）：'+(e?.message||String(e))+'。可直接複製此訊息回報，無須重新截圖表格。';
@@ -5011,5 +5045,326 @@ v331BuildWorkbook = async function(){
   return wb;
 };
 /* END V3.42 */
+
+
+
+/* V3.43 | PMax conversion-only or value/ROAS automatic mode; separate conversion panel. */
+(function v343InitializePmaxConversionOptions(){
+ const box=document.createElement('div');
+ box.id='pmaxConversionSettings';box.className='hidden';
+ box.style.cssText='margin:12px 0 16px;border:1px solid #DDE3E9;border-radius:9px;background:#FAFBFC;padding:14px 18px';
+ box.innerHTML='<label for="pmaxConversionMode" style="font-weight:700">PMax 轉換報表模式</label>'+
+ '<select id="pmaxConversionMode" style="width:100%;max-width:450px">'+
+ '<option value="auto" selected>自動辨識（建議）</option>'+
+ '<option value="conversion">純轉換版｜只顯示轉換，無 ROAS</option>'+
+ '<option value="value">轉換價值版｜轉換＋轉換價值＋ROAS</option>'+
+ '</select><p class="tiny" style="margin-top:8px">自動辨識會檢查本次 Campaign／走期的轉換價值是否確實有非零數據；沒有就僅顯示轉換。若強制選擇價值版，主要 Raw Data 必須含「轉換價值」欄。</p>';
+ $('gsMetricOpts').insertAdjacentElement('afterend',box);
+ function render(){
+  const isPmax=typeKey()==='PMAX_ORIGINAL';
+  box.classList.toggle('hidden',!isPmax);
+  const oldRoasOption=$('gsROAS')?.closest('label');
+  if(oldRoasOption)oldRoasOption.style.display=isPmax?'none':'';
+ }
+ $('pmaxConversionMode').addEventListener('change',()=>refresh());
+ $('type').addEventListener('change',render);
+ $('tabNew').addEventListener('click',()=>{$('pmaxConversionMode').value='auto';render();});
+ const beforeRestore=restore;
+ restore=function(config){const result=beforeRestore(config);
+  const val=config?.pmaxConversionMode;
+  $('pmaxConversionMode').value=['auto','conversion','value'].includes(val)?val:'auto';
+  render();return result;
+ };
+ const beforeFields=fields;
+ fields=function(){const config=beforeFields();if(typeKey()==='PMAX_ORIGINAL')config.pmaxConversionMode=$('pmaxConversionMode').value;return config;};
+ render();
+})();
+
+/* V3.44: independently parse the conversion-action export; do NOT use PMax daily data. */
+async function v344ReadPmaxActionDetails(file,options={}){
+ const rows=await readGrid(file);
+ const normalized=(v)=>gsConvNormalizeHeader(v).replace(/\s+/g,' ');
+ const find=(head,choices,excluded=[])=>{
+  const norm=head.map(normalized);
+  const blocked=new Set(excluded.filter(v=>v>=0));
+  for(const choice of choices){const idx=norm.findIndex((v,i)=>!blocked.has(i)&&v===normalized(choice));if(idx>=0)return idx;}
+  return -1;
+ };
+ const candidates=[];
+ for(let i=0;i<Math.min(60,rows.length);i++){
+  const h=(rows[i]||[]).map(v=>String(v??'').trim());
+  const action=find(h,['轉換動作','轉換動作名稱','轉換名稱','conversion action','conversion action name','conversion name','轉換','conversion']);
+  if(action<0)continue;
+  const count=find(h,['轉換次數','轉換次數 (按轉換時間)','conversions','conv.','轉換'],[action]);
+  const all=find(h,['所有轉換','所有轉換次數','所有轉換 (按轉換時間)','all conversions','all conv.','all conv'],[action,count]);
+  if(count<0&&all<0)continue;
+  const campaign=find(h,['廣告活動','廣告活動名稱','campaign','campaign name']);
+  const date=find(h,['日期','日期 (日)','day','date']);
+  candidates.push({i,action,count,all,campaign,date,score:(count>=0?4:0)+(all>=0?4:0)+(campaign>=0?1:0)+(date>=0?1:0)});
+ }
+ if(!candidates.length)throw Error('轉換動作明細找不到「轉換動作／轉換」及「轉換次數／所有轉換」表頭，請檢查所上傳的 CSV／Excel。');
+ candidates.sort((a,b)=>b.score-a.score||a.i-b.i);
+ const schema=candidates[0];
+ const read=(r,j)=>j>=0?r[j]:null;
+ const parseNumber=v=>{
+  if(v==null||String(v).trim()==='')return null;
+  if(typeof v==='number')return Number.isFinite(v)?v:null;
+  const clean=String(v).trim().replace(/[,，\s$NT$]/g,'');
+  if(!clean||!/^[-+]?(?:\d+\.?\d*|\.\d+)$/.test(clean))return null;
+  const value=Number(clean);return Number.isFinite(value)?value:null;
+ };
+ const map=new Map();
+ let mismatched=0;
+ for(const r of rows.slice(schema.i+1)){
+  const name=String(read(r,schema.action)??'').trim();
+  // Grand totals in exported reports are not conversion actions; avoid double counting.
+  if(!name||/^(?:總計|合計|小計|總覽|total|subtotal)(?:$|[\s:：_])/i.test(name))continue;
+  if(schema.campaign>=0&&options.campaign){
+   const rc=String(read(r,schema.campaign)??'').trim();
+   if(!rc||!(rc===options.campaign||gsCampaignKey(rc)===gsCampaignKey(options.campaign))){mismatched++;continue;}
+  }
+  if(schema.date>=0){
+   const d=dateIso(read(r,schema.date));
+   if(!d){mismatched++;continue;}
+   if((options.start&&d<options.start)||(options.end&&d>options.end)){mismatched++;continue;}
+  }
+  const count=parseNumber(read(r,schema.count)),all=parseNumber(read(r,schema.all));
+  if(count==null&&all==null)continue;
+  if(!map.has(name))map.set(name,{name,count:null,all:null});
+  const entry=map.get(name);
+  if(count!=null)entry.count=(entry.count??0)+count;
+  if(all!=null)entry.all=(entry.all??0)+all;
+ }
+ if(!map.size)throw Error('轉換動作明細沒有符合目前 PMax Campaign／走期的有效轉換動作，請確認資料範圍與欄位。');
+ const actions=[...map.values()];
+ const sum=(field)=>actions.some(a=>a[field]!=null)?actions.reduce((x,a)=>x+(a[field]??0),0):null;
+ const missing=[];
+ if(schema.campaign<0)missing.push('廣告活動');
+ if(schema.date<0)missing.push('日期');
+ return {actions,totalCount:sum('count'),totalAll:sum('all'),hasCount:schema.count>=0,hasAll:schema.all>=0,
+  hasCampaign:schema.campaign>=0,hasDate:schema.date>=0,
+  scopeWarning:missing.length?'⚠ 轉換動作明細未提供「'+missing.join('、')+'」，右側表採用檔案內整體彙總，請確認匯出範圍與本次 PMax 相符。':'✓ 右側轉換成效已依 PMax Campaign／走期篩選轉換動作明細。'};
+}
+
+function v343AddPmaxConversionPanel(ws,{hasAssets,actionData}){
+ // No action export: do not draw a panel or substitute numbers from daily Raw Data.
+ if(!actionData)return;
+ const first=hasAssets?25:13; // Y or M: always separated from the preceding panel by two empty columns.
+ const last=first+2;
+ const headerRow=7;
+ const totalRow=8; // Directly below the header; no empty second header row.
+ const firstActionRow=9;
+ const finalRow=Math.max(totalRow,firstActionRow+actionData.actions.length-1);
+ const fillColor=hex=>({type:'pattern',pattern:'solid',fgColor:{argb:'FF'+hex}});
+ const ink={argb:'FF000000'};
+ const medium={style:'medium',color:ink};
+ const thin={style:'thin',color:ink};
+ const headers=['轉換','轉換次數','所有轉換'];
+ const title=ws.getRow(6).getCell(first);
+ title.value='轉換成效';title.font={name:'微軟正黑體',size:12,bold:true};
+ for(let j=0;j<3;j++){
+  const col=first+j;
+  ws.getColumn(col).width=j===0?30:18;
+  ws.getRow(6).getCell(col).border={bottom:{...medium}};
+  const head=ws.getRow(headerRow).getCell(col);
+  head.value=headers[j];head.fill=fillColor('44536A');
+  head.font={name:'微軟正黑體',color:{argb:'FFFFFFFF'},bold:true};
+  head.alignment={horizontal:'center',vertical:'middle',wrapText:true};
+  const total=ws.getRow(totalRow).getCell(col);
+  total.fill=fillColor('FFF3CC');
+  total.font={name:'微軟正黑體',bold:true};
+ }
+ const write=(row,name,count,all)=>{
+  const label=ws.getRow(row).getCell(first);
+  label.value=name;label.font={name:'微軟正黑體'};
+  if(count!=null){const cell=ws.getRow(row).getCell(first+1);cell.value=count;cell.numFmt='#,##0';}
+  if(all!=null){const cell=ws.getRow(row).getCell(first+2);cell.value=all;cell.numFmt='#,##0';}
+ };
+ write(totalRow,'',actionData.totalCount,actionData.totalAll);
+ actionData.actions.forEach((action,i)=>write(firstActionRow+i,action.name,action.count,action.all));
+ // Only draw through the last actual action. No predefined minimum or bordered empty rows.
+ // In particular, two actions produce header row 7, total row 8 and action rows 9-10.
+ for(let row=headerRow;row<=finalRow;row++)for(let col=first;col<=last;col++){
+  const cell=ws.getRow(row).getCell(col);
+  cell.border={
+   top:row===headerRow?{...medium}:undefined,
+   bottom:row===finalRow?{...medium}:{...thin},
+   left:col===first?{...medium}:{...thin},
+   right:col===last?{...medium}:{...thin}
+  };
+  cell.alignment={...(cell.alignment||{}),vertical:'middle'};
+ }
+ // Keep the existing source-scope warning below, with no table border.
+ if(!actionData.hasCampaign||!actionData.hasDate){
+  const note=ws.getRow(finalRow+2).getCell(first);
+  note.value='註：轉換動作明細缺少'+[!actionData.hasCampaign?'廣告活動':null,!actionData.hasDate?'日期':null].filter(Boolean).join('、')+'欄；請核對原始匯出範圍。';
+  note.font={name:'微軟正黑體',size:9,color:{argb:'FF5C6B7A'}};
+ }
+ // K:L or W:X remain blank and unformatted.
+}
+
+const v343PreviousBuildV3=buildV3;
+buildV3=async function(c,prior=null){
+ const wb=await v343PreviousBuildV3(c,prior);
+ if(typeKey()==='PMAX_ORIGINAL'){
+  const config=wb.getWorksheet('_google_config');
+  if(config){let saved={};try{saved=JSON.parse(String(config.getCell('A2').value||'{}'));}catch(e){}
+   config.getCell('A1').value='Google Ads Report Generator V3.45 / config';
+   config.getCell('A2').value=JSON.stringify({...saved,pmaxConversionMode:$('pmaxConversionMode').value,_googleVersion:'3.45'});
+  }
+ }
+ return wb;
+};
+
+/* V3.44 UI: reuse the existing conversion-action upload, with PMax-specific parsing. */
+const v344OriginalLoadGsConversions=loadGsConversions;
+loadGsConversions=async function(file){
+ if(typeKey()!=='PMAX_ORIGINAL')return v344OriginalLoadGsConversions(file);
+ const el=$('gsConversionsStatus');
+ if(!file){el.textContent='PMax 右側轉換成效：請上傳轉換動作明細；未上傳仍可產生主報表，但不會產出右側明細表。';return;}
+ try{
+  const probe=await v344ReadPmaxActionDetails(file,{});
+  el.textContent='✓ PMax 已讀取 '+probe.actions.length+' 個轉換動作；實際產出時會依有提供的日期／廣告活動欄位篩選。'+(!probe.hasCampaign||!probe.hasDate?' 注意：明細未含完整日期／活動欄位，請確認該匯出檔已篩選正確範圍。':'');
+ }catch(e){el.textContent='⚠ PMax 轉換動作明細有誤：'+e.message;}
+};
+$('type').addEventListener('change',()=>{
+ const file=$('gsConversions').files?.[0];
+ if(file)loadGsConversions(file);
+ else if(typeKey()==='PMAX_ORIGINAL')$('gsConversionsStatus').textContent='PMax 右側轉換成效需要上傳「轉換動作明細」；未上傳將不產生右側表格。';
+});
+
+/* V3.45: right-hand action table is compact; outline ends after the last action. */
+
+
+/* V3.46 — GDN／YT CPM: restore complete CTR/CPM formulas and merge K19:K20.
+   The V3.42 integer-format pass runs after CPM adaptation, so final format
+   corrections must be applied after every existing builder has finished.
+   All changes in this adapter are limited to the GDN_YR_CPM report. */
+function v346FixCpmWorkbook(wb){
+  const ws=wb.getWorksheet('CPM')||wb.worksheets.find(x=>x.name!=='_google_config'&&x.name!=='上刊圖'&&x.state!=='veryHidden');
+  if(!ws)throw Error('GDN／YT CPM 缺少主要報表工作表');
+  const hasValue = cell => cell && cell.value!==null && cell.value!==undefined && cell.value!=='';
+  const putFormula = (row,col,formula,format) => {
+    const cell=ws.getCell(row,col);
+    cell.value={formula};
+    cell.numFmt=format;
+  };
+  const ctrFormula = (row,clicks,impressions)=>`IFERROR(${clicks}${row}/${impressions}${row},0)`;
+  const cpmFormula = (row,spend,impressions)=>`IFERROR(${spend}${row}/${impressions}${row}*1000,0)`;
+  // A:F: summary row 10 + all live daily rows. No formulas in unused date rows.
+  const topNumbers=[ws.getCell('B10'),ws.getCell('C10'),ws.getCell('D10')];
+  if(topNumbers.some(hasValue)){
+    putFormula(10,5,ctrFormula(10,'C','B'),'0.00%');
+    putFormula(10,6,cpmFormula(10,'D','B'),'#,##0.00');
+  }
+  for(let row=11;row<=69;row++){
+    const date=ws.getCell(row,1).value;
+    const validDate=typeof v326R12ExcelDate==='function'&&!!v326R12ExcelDate(date);
+    if(!validDate)continue;
+    const impr=ws.getCell(row,2),click=ws.getCell(row,3),spend=ws.getCell(row,4);
+    if(hasValue(impr)&&hasValue(click))putFormula(row,5,ctrFormula(row,'C','B'),'0.00%');
+    if(hasValue(impr)&&hasValue(spend))putFormula(row,6,cpmFormula(row,'D','B'),'#,##0.00');
+  }
+  // H:M: two independent tables (audience 8:16, creative 19:27).
+  // Rows 10 and 21 are totals; 11:16 and 22:27 are detailed records.
+  // Data may legitimately be missing: never create pretend 0s in empty rows.
+  for(const [from,to] of [[10,16],[21,27]]){
+    for(let row=from;row<=to;row++){
+      const impr=ws.getCell(row,9),click=ws.getCell(row,10),spend=ws.getCell(row,11);
+      if(hasValue(impr)&&hasValue(click))putFormula(row,12,ctrFormula(row,'J','I'),'0.00%');
+      if(hasValue(impr)&&hasValue(spend))putFormula(row,13,cpmFormula(row,'K','I'),'#,##0.00');
+    }
+  }
+  // Header K19 is the two-row 'advertising spend' label.  K20 must not be
+  // a separate cell.  Preserve other headers (L19:L20 and M19:M20).
+  const head=ws.getCell('K19'),lower=ws.getCell('K20');
+  if(!head.isMerged&&!lower.isMerged){
+    lower.value=null;
+    ws.mergeCells('K19:K20');
+  }
+  const master=ws.getCell('K19');
+  master.value='廣告費用';
+  master.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF475368'}};
+  master.font={name:'微軟正黑體',bold:true,color:{argb:'FFFFFFFF'}};
+  master.alignment={horizontal:'center',vertical:'middle',wrapText:true};
+  const ink={argb:'FF000000'};
+  master.border={top:{style:'medium',color:ink},bottom:{style:'thin',color:ink},
+    left:{style:'thin',color:ink},right:{style:'thin',color:ink}};
+  // The report's actual metric is CPM, not the template's CPC; keep 2 decimals.
+  for(const col of [5,12]){
+    for(let row=10;row<=(col===5?69:27);row++){
+      const cell=ws.getCell(row,col),v=cell.value;
+      if((typeof v==='number'||(v&&typeof v==='object'&&typeof v.formula==='string')) &&
+         (col===5|| (row>=10&&row<=16)||(row>=21&&row<=27)))cell.numFmt='0.00%';
+    }
+  }
+  for(const other of wb.worksheets){
+    if(!['CPM完整受眾','CPM完整素材'].includes(other.name))continue;
+    for(let row=2;row<=other.rowCount;row++){
+      if(hasValue(other.getCell(row,5)))other.getCell(row,5).numFmt='0.00%';
+      if(hasValue(other.getCell(row,6)))other.getCell(row,6).numFmt='#,##0.00';
+    }
+  }
+  ws.getCell('B4').numFmt='#,##0.00';
+  wb.calcProperties.fullCalcOnLoad=true;
+  const config=wb.getWorksheet('_google_config');
+  if(config){
+    let saved={};try{saved=JSON.parse(String(config.getCell('A2').value||'{}'))}catch(e){}
+    config.getCell('A1').value='Google Ads Report Generator V3.46 / config';
+    config.getCell('A2').value=JSON.stringify({...saved,_googleVersion:'3.46'});
+  }
+  return wb;
+}
+
+// V3.46 precision override: CPC and CTR are now always displayed with two
+// decimal places wherever their genuine metric headers appear. This only
+// alters Excel formats, never the stored amounts, percentages or formulas.
+function v346RestoreClickPrecision(wb){
+  const isNumber=(v)=>typeof v==='number'||!!(v&&typeof v==='object'&&typeof v.formula==='string');
+  for(const ws of wb.worksheets){
+    if(ws.name.startsWith('_')||ws.state==='veryHidden'||ws.name==='上刊圖')continue;
+    // Find real CPC/CTR header cells (skip title and setting rows). The same
+    // column can belong to different panels; each new metric header ends the
+    // preceding panel's range.
+    const markers=new Map();
+    for(let row=5;row<=Math.min(35,ws.rowCount);row++){
+      const rr=ws.getRow(row);
+      rr.eachCell({includeEmpty:false},cell=>{
+        const label=typeof cell.value==='string'?cell.value.trim().replace(/\s+/g,''):'';
+        if(!label)return;
+        const kind=/^(?:廣告)?CPC$/i.test(label)?'cpc':
+          /^(?:廣告)?(?:CTR|點擊率)$/i.test(label)?'ctr':
+          /^(?:廣告)?(?:CPM|CPV|CPI|CPA|ROAS|VTR)$/i.test(label)?'other':'';
+        if(!kind)return;
+        if(!markers.has(cell.col))markers.set(cell.col,[]);
+        markers.get(cell.col).push({row,kind});
+      });
+    }
+    for(const [col, list] of markers){
+      list.sort((a,b)=>a.row-b.row);
+      for(let i=0;i<list.length;i++){
+        const {row,kind}=list[i];
+        if(kind==='other')continue;
+        const next=list[i+1]?.row||Math.min(ws.rowCount+1,1801);
+        for(let r=row+1;r<next;r++){
+          const cell=ws.getCell(r,col);
+          if(!isNumber(cell.value))continue;
+          const existing=String(cell.numFmt||'General');
+          if(kind==='ctr') cell.numFmt='0.00%';
+          else if(!existing.includes('%'))cell.numFmt=typeof v342DecimalFormat==='function'
+            ?v342DecimalFormat(existing):'#,##0.00';
+        }
+      }
+    }
+  }
+}
+const v346PriorBuildV3=buildV3;
+buildV3=async function(c,prior=null){
+  const wb=await v346PriorBuildV3(c,prior);
+  if(typeKey()==='GDN_YR_CPM')v346FixCpmWorkbook(wb);
+  v346RestoreClickPrecision(wb);
+  return wb;
+};
+/* END V3.46 */
 
 </script></body></html>
