@@ -133,7 +133,13 @@ $('old').addEventListener('change',async()=>{await new Promise(r=>setTimeout(r,2
 .mode-wrap{grid-column:1/-1}.mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:5px 0 10px}.mode-tab{background:#f7f8fa;border:1px solid var(--line);color:var(--dark);font-weight:700;padding:13px}.mode-tab.active{background:var(--dark);color:#fff;border-color:var(--dark)}.mode-tab:focus-visible{outline:3px solid var(--yellow)}
 </style><style>
 :root{--ink:#1F2733;--slate:#5C6B7A;--paper:#F2F4F6;--accent:#FFD23F}body{font-family:"Microsoft JhengHei","PingFang TC",sans-serif;background:#F2F4F6;color:#1F2733}header{background:#FF5511!important}header h1:before{content:"";display:inline-block;width:10px;height:19px;background:#FFD23F;margin-right:11px;vertical-align:-2px}.card{background:#fff;border:1px solid #DDE3E9;border-radius:10px;box-shadow:none}.card h2{border-bottom:1px solid #DDE3E9;padding-bottom:13px} .n{background:#1F2733!important;color:#FFD23F!important;border-radius:100%!important}button:not(.secondary):not(.mode-tab){background:#FFD23F;color:#1F2733;font-weight:700} .mode-tab.active{background:#1F2733!important;color:#fff!important;border-color:#1F2733!important}.note{border-radius:8px}.advanced{border:1px solid #dde3e9;border-radius:8px;padding:12px 15px}.advanced summary{cursor:pointer;font-weight:700}.extras{padding-top:14px}.hidden{display:none!important}select,input{font-family:inherit}
-</style><style>.batch-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px}.batch-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid #DDE3E9;border-radius:7px;background:#fafbfd;font-size:13px;overflow-wrap:anywhere}.batch-item input{width:auto;flex-shrink:0}.download-actions{display:flex;gap:10px;flex-wrap:wrap}.download-actions button{flex:1;min-width:180px}</style><style>.settings-layout{display:flex;flex-direction:column;gap:20px}.settings-row{display:grid;gap:18px}.settings-row.two{grid-template-columns:repeat(2,minmax(0,1fr))}.settings-row.four{grid-template-columns:repeat(4,minmax(0,1fr))}.settings-row>div{min-width:0}.settings-row input,.settings-row select{width:100%;min-width:0}.image-upload{margin-top:22px;padding:16px 18px;border:1px solid #dce2e8;border-radius:9px;background:#fafbfd}.image-upload-title{display:flex;align-items:center;gap:9px;font-weight:700;color:#263448}.image-upload input[type=file]{margin:12px 0 6px;width:100%}@media(max-width:850px){.settings-row.four{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:530px){.settings-row.four,.settings-row.two{grid-template-columns:1fr}}.gs-campaign-list{display:grid;gap:7px;margin-top:10px;padding:11px;background:#fafbfd;border:1px solid #DDE3E9;border-radius:8px}.gs-campaign-item{display:flex;align-items:center;gap:8px;margin:0;font-weight:400}.gs-campaign-item input{width:auto}#gsScopeField .tiny{margin-top:6px}</style></head><body><header><h1>Google Ads 廣告成效報表產生器</h1><p>V3.47｜YouTube／Demand Gen／GDN／Search／App · 共用報表面板</p></header><main class="wrap">
+</style><style>.batch-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px}.batch-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid #DDE3E9;border-radius:7px;background:#fafbfd;font-size:13px;overflow-wrap:anywhere}.batch-item input{width:auto;flex-shrink:0}.download-actions{display:flex;gap:10px;flex-wrap:wrap}.download-actions button{flex:1;min-width:180px}</style><style>.settings-layout{display:flex;flex-direction:column;gap:20px}.settings-row{display:grid;gap:18px}.settings-row.two{grid-template-columns:repeat(2,minmax(0,1fr))}.settings-row.four{grid-template-columns:repeat(4,minmax(0,1fr))}.settings-row>div{min-width:0}.settings-row input,.settings-row select{width:100%;min-width:0}.image-upload{margin-top:22px;padding:16px 18px;border:1px solid #dce2e8;border-radius:9px;background:#fafbfd}.image-upload-title{display:flex;align-items:center;gap:9px;font-weight:700;color:#263448}.image-upload input[type=file]{margin:12px 0 6px;width:100%}@media(max-width:850px){.settings-row.four{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:530px){.settings-row.four,.settings-row.two{grid-template-columns:1fr}}.gs-campaign-list{display:grid;gap:7px;margin-top:10px;padding:11px;background:#fafbfd;border:1px solid #DDE3E9;border-radius:8px}.gs-campaign-item{display:flex;align-items:center;gap:8px;margin:0;font-weight:400}.gs-campaign-item input{width:auto}#gsScopeField .tiny{margin-top:6px}</style><style>
+/* 統一介面字型：優先使用系統安裝的 Microsoft JhengHei（微軟正黑體）。 */
+body, body *, body *::before, body *::after {
+  font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif !important;
+}
+</style>
+</head><body><header><h1>Google Ads 廣告成效報表產生器</h1><p>V3.48｜YouTube／Demand Gen／GDN／Search／App · 共用報表面板</p></header><main class="wrap">
 <section class="card"><h2><span class="n">1</span>上傳資料</h2><div class="grid"><div class="mode-wrap"><label>操作模式</label><div class="mode-tabs" role="group" aria-label="操作模式"><button class="mode-tab active" id="tabNew" type="button" aria-pressed="true">建立新報表</button><button class="mode-tab" id="tabUpdate" type="button" aria-pressed="false">更新報表</button></div><input type="hidden" id="mode" value="new"><div class="tiny" id="modeNote">上傳 Google Ads Raw Data，建立全新週報</div></div><div id="oldBox" class="hidden"><label>上次由本工具產生的週報</label><input type="file" id="old" accept=".xlsx"></div></div><div style="margin-top:16px"><label>Google Ads Raw Data（CSV／XLSX）</label><input type="file" id="raw" accept=".csv,.tsv,.txt,.xlsx,.xls"></div><div class="tiny" style="margin-top:8px">自動搜尋「日期／廣告活動／廣告群組／廣告名稱／曝光／點擊／費用／轉換」表頭；支援匯出檔前兩列為報表資訊、第三列為表頭及 UTF-16 Tab 分隔 CSV。</div><div id="uploadInfo"></div><details class="advanced" style="margin-top:16px"><summary>進階：Google Search／PMax 額外 Raw Data（選填）</summary><div class="extras"><p class="tiny">依既有 GS 週報規劃的四份選填資料；GS 模式將使用；缺少資料時不會填入虛構的曝光比重。</p><div class="grid"><div><label>Campaign 曝光比重</label><input type="file" id="gsCampaignShare" accept=".csv,.xlsx,.xls"></div><div><label>Ad Group 曝光比重</label><input type="file" id="gsGroupShare" accept=".csv,.xlsx,.xls"></div><div><label>網頁連結額外資訊（Sitelink）</label><input type="file" id="gsSitelink" accept=".csv,.xlsx,.xls"></div><div><label>轉換動作明細（加入購物車／完成購買）</label><input type="file" id="gsConversions" accept=".csv,.tsv,.txt,.xlsx,.xls"><div class="tiny" id="gsConversionsStatus">未上傳；轉換次數與轉換價值可分開匯入，只有 ROAS 需要購買轉換價值；PMax 右側「轉換成效」只會從這份明細抓轉換動作及次數。</div></div></div><p class="tiny">廣告文案、AI MAX 搜尋字詞保留手動維護；兩個手動維護分頁在更新報表時保留既有內容。</p></div></details><details class="advanced" style="margin-top:12px"><summary>PMax 素材資源群組 Raw Data（選填，自動辨識版型）</summary><div class="extras"><label>素材資源群組報表（CSV／Excel）</label><input id="pmaxAssets" type="file" accept=".csv,.tsv,.xlsx,.xls"><p class="tiny">不必上傳：未上傳則只產出每日成效；上傳時自動加入素材資源群組分析，並核對數據走期。</p></div></details></div><div id="batchCampaignWrap" class="hidden"><h3 style="font-size:14px;margin:15px 0 8px">批次產出｜選擇 Campaign</h3><div id="batchCampaignList" class="batch-list"></div><p class="tiny">依需要勾選廣告活動，分別產出 Excel 並打包 ZIP；每份僅包含自身 Campaign 的數據。</p></div></section>
 <section class="card"><h2><span class="n">2</span>報表設定</h2><div id="lockInfo" class="lock"><span id="lockText">建立新報表：可自由設定</span><button type="button" class="secondary hidden" id="unlock">解鎖並修改設定</button></div><fieldset id="settings"><div class="settings-layout">
 <div class="settings-row two"><div><label>報表類型</label><select id="type"><option value="" selected disabled>請選擇報表類型</option><option value="YT 優化轉換（訂閱 CPA）">YouTube｜優化轉換（訂閱 CPA）</option><option value="YT_VIEW">YouTube｜影片觀看 CPV</option><option value="DGC_CLICK">Demand Gen｜點擊 CPC</option><option value="GDN_YR_CPM">GDN／YT｜曝光 CPM</option><option value="GS_STANDARD">Google Search｜標準版（多分頁）</option><option value="GS_SHOPPING">Google Search｜轉換版</option><option value="GS_MULTI_COUNTRY">Google Search｜多國轉換版（依國家分頁）</option><option value="GS_ADVANCED">Google Search｜進階版（多分頁）</option><option value="APP_INSTALL">App｜安裝 CPI（自動分頁）</option><option value="PMAX_ORIGINAL">PMax｜原版型（每日＋素材資源群組）</option></select></div><div id="normalCampaignField"><label>行銷活動</label><select id="campaign"><option value="">請選擇行銷活動</option></select></div><div id="gsScopeField" class="hidden"><label>GS 專案資料範圍</label><select id="gsScope"><option value="custom" selected>自訂合併的廣告活動（預設）</option><option value="all">全部廣告活動</option></select><div id="gsCustomCampaigns" class="hidden gs-campaign-list"></div><div class="tiny">GS 標準版與進階版皆產出一份多分頁 Excel，不會依 Campaign 拆成多份。</div></div></div>
@@ -211,8 +217,8 @@ let maxi=Math.max(5,gr.length);for(let k=0;k<maxi;k++){let rr=11+k,entry=gr[k];w
 let maxa=Math.max(6,ads.length);for(let k=0;k<maxa;k++){let rr=21+k,entry=ads[k];ws.getCell(rr,10).value=entry?entry[0]:null;for(let c=11;c<=17;c++)ws.getCell(rr,c).value=null;if(entry)patchMetrics(ws,rr,11,entry[1])}
 ws.getCell('G7').value={formula:'SUM(D11:D'+bottom+')'};
 let config=wb.getWorksheet('_google_config')||wb.addWorksheet('_google_config');config.getCell('A1').value='Google Ads Report Generator v1.6 / config';config.getCell('A2').value=JSON.stringify(fields());config.state='veryHidden';
-$('downloadStatus').textContent='成效資料已寫入，正在封裝 Excel 檔案…';await new Promise(resolve=>setTimeout(resolve,30));let out=await wb.xlsx.writeBuffer(),blob=new Blob([out],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=(f.filename||'GoogleAds_YT訂閱_週報').replace(/\.xlsx$/i,'')+'.xlsx';document.body.appendChild(link);link.click();link.remove();$('downloadStatus').className='note success';$('downloadStatus').textContent='✓ Excel 已產生。若瀏覽器沒有自動下載，請使用下方的備用下載連結。';const backup=document.createElement('a');backup.href=url;backup.download=link.download;backup.textContent='⬇ 點這裡下載 '+link.download;backup.style.cssText='display:inline-block;background:#ffcf3a;color:#192330;font-weight:700;padding:12px 18px;border-radius:8px;text-decoration:none;';$('manualDownload').appendChild(backup);$('log').textContent+='\nExcel 已產生：'+link.download;
-}catch(e){$('log').textContent='產出失敗：'+e.message;$('downloadStatus').style.display='block';$('downloadStatus').className='note error';$('downloadStatus').textContent='Excel 產生失敗：'+e.message+'。請確認網路連線及瀏覽器是否允許下載，或將此訊息截圖給我。';console.error(e)}finally{clearTimeout(downloadTimer);b.textContent='下載 Excel 週報';refresh()}};$('batchDownload').onclick=async()=>{const btn=$('batchDownload');const chosen=[...document.querySelectorAll('.batch-campaign-check:checked')].map(x=>x.value);if(chosen.length<2)return;const box=$('downloadStatus');btn.disabled=true;box.style.display='block';box.className='note';$('manualDownload').innerHTML='';try{if(!window.ExcelJS||!window.JSZip)throw Error('ExcelJS 或 JSZip 尚未載入，請確認網路連線');const zip=new JSZip();for(let i=0;i<chosen.length;i++){const c=chosen[i];box.textContent='批次產出中：'+(i+1)+' / '+chosen.length+'｜'+c;await new Promise(r=>setTimeout(r,30));let wb=await buildWorkbookForCampaign(c);const data=await wb.xlsx.writeBuffer();const safe=c.replace(/[\\/:*?"<>|\x00-\x1f]/g,'_').slice(0,90)||('Campaign_'+(i+1));const n=(String(i+1).padStart(2,'0'))+'_'+safe+'.xlsx';zip.file(n,data)}box.textContent='所有 Excel 已完成，正在打包 ZIP…';const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:5}});const url=URL.createObjectURL(blob);const name=($('filename').value||'GoogleAds_週報').replace(/\.xlsx$/i,'')+'_多Campaign.zip';const a=document.createElement('a');a.href=url;a.download=name;a.click();const backup=document.createElement('a');backup.href=url;backup.download=name;backup.textContent='⬇ 備用下載 ZIP：'+name;backup.style.cssText='display:inline-block;background:#ffd23f;color:#1f2733;font-weight:700;padding:12px 18px;border-radius:8px;text-decoration:none';$('manualDownload').append(backup);box.className='note success';box.textContent='✓ 已完成 '+chosen.length+' 份獨立 Excel，並打包 ZIP。'}catch(e){box.className='note error';box.textContent='ZIP 產生失敗：'+e.message;console.error(e)}finally{refresh()}};
+$('downloadStatus').textContent='成效資料已寫入，正在封裝 Excel 檔案…';await new Promise(resolve=>setTimeout(resolve,30));let out=(enforceMicrosoftJhengHeiWorkbook(wb), await wb.xlsx.writeBuffer()),blob=new Blob([out],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=(f.filename||'GoogleAds_YT訂閱_週報').replace(/\.xlsx$/i,'')+'.xlsx';document.body.appendChild(link);link.click();link.remove();$('downloadStatus').className='note success';$('downloadStatus').textContent='✓ Excel 已產生。若瀏覽器沒有自動下載，請使用下方的備用下載連結。';const backup=document.createElement('a');backup.href=url;backup.download=link.download;backup.textContent='⬇ 點這裡下載 '+link.download;backup.style.cssText='display:inline-block;background:#ffcf3a;color:#192330;font-weight:700;padding:12px 18px;border-radius:8px;text-decoration:none;';$('manualDownload').appendChild(backup);$('log').textContent+='\nExcel 已產生：'+link.download;
+}catch(e){$('log').textContent='產出失敗：'+e.message;$('downloadStatus').style.display='block';$('downloadStatus').className='note error';$('downloadStatus').textContent='Excel 產生失敗：'+e.message+'。請確認網路連線及瀏覽器是否允許下載，或將此訊息截圖給我。';console.error(e)}finally{clearTimeout(downloadTimer);b.textContent='下載 Excel 週報';refresh()}};$('batchDownload').onclick=async()=>{const btn=$('batchDownload');const chosen=[...document.querySelectorAll('.batch-campaign-check:checked')].map(x=>x.value);if(chosen.length<2)return;const box=$('downloadStatus');btn.disabled=true;box.style.display='block';box.className='note';$('manualDownload').innerHTML='';try{if(!window.ExcelJS||!window.JSZip)throw Error('ExcelJS 或 JSZip 尚未載入，請確認網路連線');const zip=new JSZip();for(let i=0;i<chosen.length;i++){const c=chosen[i];box.textContent='批次產出中：'+(i+1)+' / '+chosen.length+'｜'+c;await new Promise(r=>setTimeout(r,30));let wb=await buildWorkbookForCampaign(c);const data=(enforceMicrosoftJhengHeiWorkbook(wb), await wb.xlsx.writeBuffer());const safe=c.replace(/[\\/:*?"<>|\x00-\x1f]/g,'_').slice(0,90)||('Campaign_'+(i+1));const n=(String(i+1).padStart(2,'0'))+'_'+safe+'.xlsx';zip.file(n,data)}box.textContent='所有 Excel 已完成，正在打包 ZIP…';const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:5}});const url=URL.createObjectURL(blob);const name=($('filename').value||'GoogleAds_週報').replace(/\.xlsx$/i,'')+'_多Campaign.zip';const a=document.createElement('a');a.href=url;a.download=name;a.click();const backup=document.createElement('a');backup.href=url;backup.download=name;backup.textContent='⬇ 備用下載 ZIP：'+name;backup.style.cssText='display:inline-block;background:#ffd23f;color:#1f2733;font-weight:700;padding:12px 18px;border-radius:8px;text-decoration:none';$('manualDownload').append(backup);box.className='note success';box.textContent='✓ 已完成 '+chosen.length+' 份獨立 Excel，並打包 ZIP。'}catch(e){box.className='note error';box.textContent='ZIP 產生失敗：'+e.message;console.error(e)}finally{refresh()}};
 refresh();
 /* V3: independent verified-format builders; V1.6 template remains for YT subscribe. */
 const formatMap={YT_VIEW:{name:'YT影片觀看',cols:['曝光次數','TrueView觀看','點擊次數','廣告費用','觀看率','CTR','CPV']},DGC_CLICK:{name:'DGC點擊',cols:['曝光次數','點擊次數','廣告費用','CTR','CPC']},GS_STANDARD:{name:'GS標準版',cols:['曝光次數','點擊次數','廣告費用','轉換次數','CTR','CPC','CPA']},GS_ADVANCED:{name:'GS進階版',cols:['曝光次數','點擊次數','廣告費用','轉換次數','CTR','CPC','CPA']},APP_INSTALL:{name:'APP安裝',cols:['曝光次數','點擊次數','廣告費用','安裝次數','CTR','CPC','CPI']}};
@@ -249,7 +255,7 @@ if(typ==='APP_INSTALL'){
 async function getPrior(){if($('mode').value!=='update'||!$('old').files?.[0])return null;const wb=new ExcelJS.Workbook();await wb.xlsx.load(await $('old').files[0].arrayBuffer());return wb}
 async function buildV3(c,prior=null){if(typeKey()==='YT 優化轉換（訂閱 CPA）'){return await buildWorkbookForCampaign(c)}return buildOther(c,prior)}
 async function downloadData(blob,name){let u=URL.createObjectURL(blob);let a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();$('manualDownload').replaceChildren();let back=document.createElement('a');back.href=u;back.download=name;back.textContent='⬇ 備用下載：'+name;back.style.cssText='display:inline-block;padding:12px;background:#FFD23F;color:#1F2733;border-radius:8px;font-weight:bold';$('manualDownload').append(back)}
-async function executeV3(isBatch){const b=$(isBatch?'batchDownload':'download'),box=$('downloadStatus');if(!entries.length)return;const chosen=isBatch?[...document.querySelectorAll('.batch-campaign-check:checked')].map(x=>x.value):[$('campaign').value];if(!chosen.length)throw Error('請先選擇 Campaign');b.disabled=true;box.style.display='block';box.className='note';box.textContent='正在建立 Excel…';await new Promise(r=>setTimeout(r,40));try{if(!window.ExcelJS)throw Error('ExcelJS 未載入');const prior=await getPrior();const zip=isBatch?new JSZip():null;for(let i=0;i<chosen.length;i++){let c=chosen[i],wb=await buildV3(c,prior);box.textContent=`正在寫入 ${i+1}/${chosen.length}｜${c}`;const bytes=await wb.xlsx.writeBuffer();let safe=c.replace(/[\\/:*?"<>|\x00-\x1f]/g,'_').slice(0,72);let fname=`${safe}_${formatMap[typeKey()]?.name||'YT訂閱'}.xlsx`;if(zip)zip.file(fname,bytes);else await downloadData(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),$('filename').value?.trim()?$('filename').value.replace(/\.xlsx$/i,'')+'.xlsx':fname)}if(zip){box.textContent='正在封裝 ZIP…';await downloadData(await zip.generateAsync({type:'blob'}),($('filename').value||'GoogleAds_週報')+'_批次.zip')}box.textContent='✓ 已建立 '+chosen.length+' 份 Excel'+(isBatch?' 並打包 ZIP':'')+'。';box.className='note success'}catch(e){box.textContent='產出失敗：'+e.message;box.className='note error';console.error(e)}finally{refresh()}}
+async function executeV3(isBatch){const b=$(isBatch?'batchDownload':'download'),box=$('downloadStatus');if(!entries.length)return;const chosen=isBatch?[...document.querySelectorAll('.batch-campaign-check:checked')].map(x=>x.value):[$('campaign').value];if(!chosen.length)throw Error('請先選擇 Campaign');b.disabled=true;box.style.display='block';box.className='note';box.textContent='正在建立 Excel…';await new Promise(r=>setTimeout(r,40));try{if(!window.ExcelJS)throw Error('ExcelJS 未載入');const prior=await getPrior();const zip=isBatch?new JSZip():null;for(let i=0;i<chosen.length;i++){let c=chosen[i],wb=await buildV3(c,prior);box.textContent=`正在寫入 ${i+1}/${chosen.length}｜${c}`;const bytes=(enforceMicrosoftJhengHeiWorkbook(wb), await wb.xlsx.writeBuffer());let safe=c.replace(/[\\/:*?"<>|\x00-\x1f]/g,'_').slice(0,72);let fname=`${safe}_${formatMap[typeKey()]?.name||'YT訂閱'}.xlsx`;if(zip)zip.file(fname,bytes);else await downloadData(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),$('filename').value?.trim()?$('filename').value.replace(/\.xlsx$/i,'')+'.xlsx':fname)}if(zip){box.textContent='正在封裝 ZIP…';await downloadData(await zip.generateAsync({type:'blob'}),($('filename').value||'GoogleAds_週報')+'_批次.zip')}box.textContent='✓ 已建立 '+chosen.length+' 份 Excel'+(isBatch?' 並打包 ZIP':'')+'。';box.className='note success'}catch(e){box.textContent='產出失敗：'+e.message;box.className='note error';console.error(e)}finally{refresh()}}
 $('download').onclick=()=>executeV3(false);
 $('batchDownload').onclick=()=>executeV3(true);
 $('type').addEventListener('change',()=>{let t=typeKey();$('unit').previousElementSibling.textContent=t==='YT_VIEW'?'預設 CPV':t==='APP_INSTALL'?'預設 CPI':t.startsWith('GS')?'預設 CPC':'預設 CPC／CPA';$('convLabel').value='';refresh()});
@@ -265,7 +271,7 @@ function compatibleImages(c,selected){if(!selected.length)return selected;const 
 function insertImageSheet(wb,c){if(!$('includeImages').checked||!uploadedCreativeImages.length)return;let selected=compatibleImages(c,uploadedCreativeImages);if(!selected.length)return;let name='上刊圖';let ws=wb.getWorksheet(name)||wb.addWorksheet(name);ws.getColumn(1).width=38;for(let i=2;i<=8;i++)ws.getColumn(i).width=13;ws.getCell('A1').value='上刊圖';ws.getCell('A1').font={name:'微軟正黑體',size:17,bold:true};let r=3;for(const im of selected){ws.getCell(r,1).value=im.name;ws.getCell(r,1).font={name:'微軟正黑體',size:11,bold:true};const id=wb.addImage({buffer:im.data,extension:im.type==='image/png'?'png':'jpeg'});ws.addImage(id,{tl:{col:1,row:r-1},br:{col:7,row:r+7},editAs:'oneCell'});for(let q=r;q<r+8;q++)ws.getRow(q).height=22;r+=10;}}
 const previousBuildV3=buildV3;
 buildV3=async function(c,prior=null){const wb=await previousBuildV3(c,prior);insertImageSheet(wb,c);return wb;};
-async function executeV31(isBatch){const btn=$(isBatch?'batchDownload':'download'),box=$('downloadStatus');if(!entries.length)return;let chosen=isBatch?[...document.querySelectorAll('.batch-campaign-check:checked')].map(x=>x.value):[$('campaign').value];if(!chosen.length){box.textContent='請先選擇行銷活動';return;}btn.disabled=true;box.style.display='block';box.className='note';box.textContent='正在建立 Excel…';await new Promise(r=>setTimeout(r,40));try{if(!window.ExcelJS)throw Error('ExcelJS 尚未載入');if(isBatch&&!window.JSZip)throw Error('JSZip 尚未載入');const prior=await getPrior(),zip=isBatch?new JSZip():null;for(let i=0;i<chosen.length;i++){let c=chosen[i];box.textContent=`正在產出 ${i+1}/${chosen.length}：${c||'所有活動'}`;let wb=await buildV3(c,prior),bytes=await wb.xlsx.writeBuffer();let safe=String(c||'所有活動').replace(/[\\/:*?"<>|\x00-\x1f]/g,'_').slice(0,72);let base=$('filename').value.trim()||`${safe}_${formatMap[typeKey()]?.name||'週報'}`;let customBatch=(typeof v326R11BatchName==='function'?v326R11BatchName(c):'');let fname=isBatch?outputName(customBatch||safe+'_'+(formatMap[typeKey()]?.name||'週報'),'xlsx'):outputName(base,'xlsx');if(zip)zip.file(fname,bytes);else await downloadData(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),fname);}if(zip){box.textContent='正在封裝 ZIP…';await downloadData(await zip.generateAsync({type:'blob'}),outputName($('filename').value.trim()||'GoogleAds_週報','zip'));}box.textContent='✓ 已完成 '+chosen.length+' 份 Excel'+(isBatch?'，已封裝 ZIP':'')+'。';box.className='note success';}catch(e){box.className='note error';box.textContent='Excel 產出失敗：'+e.message;console.error(e);}finally{refresh();}}
+async function executeV31(isBatch){const btn=$(isBatch?'batchDownload':'download'),box=$('downloadStatus');if(!entries.length)return;let chosen=isBatch?[...document.querySelectorAll('.batch-campaign-check:checked')].map(x=>x.value):[$('campaign').value];if(!chosen.length){box.textContent='請先選擇行銷活動';return;}btn.disabled=true;box.style.display='block';box.className='note';box.textContent='正在建立 Excel…';await new Promise(r=>setTimeout(r,40));try{if(!window.ExcelJS)throw Error('ExcelJS 尚未載入');if(isBatch&&!window.JSZip)throw Error('JSZip 尚未載入');const prior=await getPrior(),zip=isBatch?new JSZip():null;for(let i=0;i<chosen.length;i++){let c=chosen[i];box.textContent=`正在產出 ${i+1}/${chosen.length}：${c||'所有活動'}`;let wb=await buildV3(c,prior),bytes=(enforceMicrosoftJhengHeiWorkbook(wb), await wb.xlsx.writeBuffer());let safe=String(c||'所有活動').replace(/[\\/:*?"<>|\x00-\x1f]/g,'_').slice(0,72);let base=$('filename').value.trim()||`${safe}_${formatMap[typeKey()]?.name||'週報'}`;let customBatch=(typeof v326R11BatchName==='function'?v326R11BatchName(c):'');let fname=isBatch?outputName(customBatch||safe+'_'+(formatMap[typeKey()]?.name||'週報'),'xlsx'):outputName(base,'xlsx');if(zip)zip.file(fname,bytes);else await downloadData(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),fname);}if(zip){box.textContent='正在封裝 ZIP…';await downloadData(await zip.generateAsync({type:'blob'}),outputName($('filename').value.trim()||'GoogleAds_週報','zip'));}box.textContent='✓ 已完成 '+chosen.length+' 份 Excel'+(isBatch?'，已封裝 ZIP':'')+'。';box.className='note success';}catch(e){box.className='note error';box.textContent='Excel 產出失敗：'+e.message;console.error(e);}finally{refresh();}}
 $('download').onclick=()=>executeV31(false);
 $('batchDownload').onclick=()=>executeV31(true);
 
@@ -316,7 +322,7 @@ $('download').onclick=async()=>{if(!isGsReport())return executeV31(false);
  const box=$('downloadStatus'),b=$('download');box.style.display='block';box.className='note';
  if(!subset().length){box.className='note error';box.textContent='所選期間與資料範圍沒有符合的 GS 數據';return}
  b.disabled=true;box.textContent='正在產出 GS 多分頁 Excel…';await new Promise(r=>setTimeout(r,35));
- try{if(!window.ExcelJS)throw Error('ExcelJS 尚未載入');const prior=await getPrior();const wb=await buildV3('',prior);const bytes=await wb.xlsx.writeBuffer();const base=$('filename').value.trim()||`GoogleAds_${typeKey()==='GS_STANDARD'?'GS標準版':'GS進階版'}_週報`;
+ try{if(!window.ExcelJS)throw Error('ExcelJS 尚未載入');const prior=await getPrior();const wb=await buildV3('',prior);const bytes=(enforceMicrosoftJhengHeiWorkbook(wb), await wb.xlsx.writeBuffer());const base=$('filename').value.trim()||`GoogleAds_${typeKey()==='GS_STANDARD'?'GS標準版':'GS進階版'}_週報`;
  await downloadData(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),outputName(base,'xlsx'));box.className='note success';box.textContent='✓ 已產出一份 GS 多分頁 Excel，包含 '+new Set(subset().map(x=>x.campaign)).size+' 個 Campaign。';
  }catch(err){box.className='note error';box.textContent='GS Excel 產出失敗：'+err.message;console.error(err)}finally{refresh()}
 };
@@ -1291,7 +1297,7 @@ $('download').onclick=async function(){
     btn.disabled=true;box.style.display='block';box.className='note';box.textContent='V3.26：正在產出 GS Excel…';
     try{
       const prior=await getPrior();const wb=await buildV3('',prior);
-      const bytes=await wb.xlsx.writeBuffer();
+      const bytes=(enforceMicrosoftJhengHeiWorkbook(wb), await wb.xlsx.writeBuffer());
       await downloadData(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),outputName($('filename').value,'xlsx'));
       box.className='note success';box.textContent='✓ 已建立 GS Excel；設定版本 V3.26';
     }catch(e){box.className='note error';box.textContent='GS 產出失敗：'+e.message;console.error(e);}finally{refresh();}
@@ -2175,7 +2181,7 @@ async function v326R12DownloadBatch(){
   const prior=await getPrior(),zip=new JSZip();
   for(let i=0;i<chosen.length;i++){
    const c=chosen[i];box.textContent=`正在產出 ${i+1}/${chosen.length}：${c}`;
-   const wb=await v326R12BuildFor(c,prior),bytes=await wb.xlsx.writeBuffer();
+   const wb=await v326R12BuildFor(c,prior),bytes=(enforceMicrosoftJhengHeiWorkbook(wb), await wb.xlsx.writeBuffer());
    const base=v326R11BatchName(c)||c.replace(/[\\/:*?"<>|\x00-\x1f]/g,'_').slice(0,65);
    zip.file(outputName(base,'xlsx'),bytes);
   }
@@ -2234,7 +2240,7 @@ async function v326R14DownloadBatch(){
    const campaign=selected[i];box.textContent=`正在產出 ${i+1}/${selected.length}：${campaign}`;
    const wb=await v326R12BuildFor(campaign,prior);
    if(!wb)throw Error('無法建立 '+campaign+' 的工作簿');
-   const bytes=await wb.xlsx.writeBuffer();
+   const bytes=(enforceMicrosoftJhengHeiWorkbook(wb), await wb.xlsx.writeBuffer());
    const base=v326R11BatchName(campaign)||campaign;
    let filename=v326R14Filename(base,'xlsx');
    if(used.has(filename))filename=v326R14Filename(`${base}_${i+1}`,'xlsx');
@@ -2635,7 +2641,7 @@ $('download').onclick = async function(){
     const expectedGsSheets=['GS日報表','GS廣告活動','GS關鍵字報表','廣告'];
     const missingGsSheets=expectedGsSheets.filter(name=>!workbook.getWorksheet(name));
     if(missingGsSheets.length)throw Error('報表類型錯誤：選擇的是 GS 標準版，但輸出缺少 '+missingGsSheets.join('、')+'；已停止下載，避免誤產 DGC。');
-    const bytes=await workbook.xlsx.writeBuffer();
+    const bytes=(enforceMicrosoftJhengHeiWorkbook(workbook), await workbook.xlsx.writeBuffer());
     const basename=$('filename').value.trim() || 'GoogleAds_GS標準版_週報';
     await downloadData(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),outputName(basename,'xlsx'));
     status.className='note success';
@@ -2982,7 +2988,7 @@ $('download').onclick=async function(){
   const names=wb.worksheets.filter(ws=>ws.name!=='_google_config'&&ws.name!=='上刊圖').map(ws=>ws.name);
   if(!names.length)throw Error('未產生任何 App 月份分頁');
   box.textContent=`已建立 ${names.length} 張工作表（${names.join('、')}），正在匯出 XLSX…`;
-  const bytes=await wb.xlsx.writeBuffer();
+  const bytes=(enforceMicrosoftJhengHeiWorkbook(wb), await wb.xlsx.writeBuffer());
   if(!bytes||bytes.byteLength===0)throw Error('XLSX 匯出內容為空');
   const base=$('filename').value.trim()||'GoogleAds_APP_CPI_週報';
   await downloadData(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),outputName(base,'xlsx'));
@@ -3256,7 +3262,7 @@ $('download').onclick=async function(){
   const prior=await getPrior();
   const wb=await buildV3($('campaign').value,prior);
   progress('產生 XLSX 檔案');
-  const bytes=await wb.xlsx.writeBuffer();
+  const bytes=(enforceMicrosoftJhengHeiWorkbook(wb), await wb.xlsx.writeBuffer());
   if(!bytes||!bytes.byteLength)throw Error('ExcelJS 回傳空白檔案');
   // Validate the exact serialized ZIP when JSZip is available. This does
   // not rebuild or restyle the accepted workbook and remains PMax-only.
@@ -4397,7 +4403,7 @@ $('download').onclick=async function(){
   const prior=await getPrior();
   const wb=await buildV3('',prior);
   box.textContent='正在輸出合併 CPM Excel…';
-  const data=await wb.xlsx.writeBuffer();
+  const data=(enforceMicrosoftJhengHeiWorkbook(wb), await wb.xlsx.writeBuffer());
   const base=$('filename').value.trim()||'GoogleAds_GDN-YT_合併CPM週報';
   const name=outputName(base,'xlsx');
   await downloadData(new Blob([data],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),name);
@@ -4552,7 +4558,7 @@ $('download').onclick=async function(){
  $('download').disabled=true;box.textContent='正在整理多國 GS 轉換資料…';
  try{
   if(!window.ExcelJS)throw Error('ExcelJS 尚未載入，請檢查網路連線');
-  const wb=await v331BuildWorkbook();const buffer=await wb.xlsx.writeBuffer();
+  const wb=await v331BuildWorkbook();const buffer=(enforceMicrosoftJhengHeiWorkbook(wb), await wb.xlsx.writeBuffer());
   const filename=outputName($('filename').value.trim()||'GoogleAds_GS多國轉換週報','xlsx');
   await downloadData(new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),filename);
   box.className='note success';box.textContent=`✓ 成功產出 ${v331Countries.length} 個國家、${v331Countries.length*4} 個工作表：${filename}`;
@@ -5204,8 +5210,8 @@ buildV3=async function(c,prior=null){
  if(typeKey()==='PMAX_ORIGINAL'){
   const config=wb.getWorksheet('_google_config');
   if(config){let saved={};try{saved=JSON.parse(String(config.getCell('A2').value||'{}'));}catch(e){}
-   config.getCell('A1').value='Google Ads Report Generator V3.47 / config';
-   config.getCell('A2').value=JSON.stringify({...saved,pmaxConversionMode:$('pmaxConversionMode').value,_googleVersion:'3.47'});
+   config.getCell('A1').value='Google Ads Report Generator V3.48 / config';
+   config.getCell('A2').value=JSON.stringify({...saved,pmaxConversionMode:$('pmaxConversionMode').value,_googleVersion:'3.48'});
   }
  }
  return wb;
@@ -5305,8 +5311,8 @@ function v346FixCpmWorkbook(wb){
   const config=wb.getWorksheet('_google_config');
   if(config){
     let saved={};try{saved=JSON.parse(String(config.getCell('A2').value||'{}'))}catch(e){}
-    config.getCell('A1').value='Google Ads Report Generator V3.47 / config';
-    config.getCell('A2').value=JSON.stringify({...saved,_googleVersion:'3.47'});
+    config.getCell('A1').value='Google Ads Report Generator V3.48 / config';
+    config.getCell('A2').value=JSON.stringify({...saved,_googleVersion:'3.48'});
   }
   return wb;
 }
@@ -5362,4 +5368,20 @@ buildV3=async function(c,prior=null){
 };
 /* END V3.46 */
 
+
+/* 匯出前統一所有工作表（包含保留範本及合併儲存格）的字型，不變動其他格式。 */
+function enforceMicrosoftJhengHeiWorkbook(workbook) {
+  if (!workbook || !Array.isArray(workbook.worksheets)) return workbook;
+  for (const sheet of workbook.worksheets) {
+    sheet.eachRow({ includeEmpty: true }, row => {
+      row.eachCell({ includeEmpty: true }, cell => {
+        const oldFont = cell.font || {};
+        if (oldFont.name !== '微軟正黑體') {
+          cell.font = { ...oldFont, name: '微軟正黑體' };
+        }
+      });
+    });
+  }
+  return workbook;
+}
 </script></body></html>
