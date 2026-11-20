@@ -139,7 +139,7 @@ body, body *, body *::before, body *::after {
   font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif !important;
 }
 </style>
-</head><body><header><h1>Google Ads 廣告成效報表產生器</h1><p>V3.48｜YouTube／Demand Gen／GDN／Search／App · 共用報表面板</p></header><main class="wrap">
+</head><body><header><h1>Google Ads 廣告成效報表產生器</h1><p>V3.57｜YouTube／Demand Gen／GDN／Search／App · 共用報表面板</p></header><main class="wrap">
 <section class="card"><h2><span class="n">1</span>上傳資料</h2><div class="grid"><div class="mode-wrap"><label>操作模式</label><div class="mode-tabs" role="group" aria-label="操作模式"><button class="mode-tab active" id="tabNew" type="button" aria-pressed="true">建立新報表</button><button class="mode-tab" id="tabUpdate" type="button" aria-pressed="false">更新報表</button></div><input type="hidden" id="mode" value="new"><div class="tiny" id="modeNote">上傳 Google Ads Raw Data，建立全新週報</div></div><div id="oldBox" class="hidden"><label>上次由本工具產生的週報</label><input type="file" id="old" accept=".xlsx"></div></div><div style="margin-top:16px"><label>Google Ads Raw Data（CSV／XLSX）</label><input type="file" id="raw" accept=".csv,.tsv,.txt,.xlsx,.xls"></div><div class="tiny" style="margin-top:8px">自動搜尋「日期／廣告活動／廣告群組／廣告名稱／曝光／點擊／費用／轉換」表頭；支援匯出檔前兩列為報表資訊、第三列為表頭及 UTF-16 Tab 分隔 CSV。</div><div id="uploadInfo"></div><details class="advanced" style="margin-top:16px"><summary>進階：Google Search／PMax 額外 Raw Data（選填）</summary><div class="extras"><p class="tiny">依既有 GS 週報規劃的四份選填資料；GS 模式將使用；缺少資料時不會填入虛構的曝光比重。</p><div class="grid"><div><label>Campaign 曝光比重</label><input type="file" id="gsCampaignShare" accept=".csv,.xlsx,.xls"></div><div><label>Ad Group 曝光比重</label><input type="file" id="gsGroupShare" accept=".csv,.xlsx,.xls"></div><div><label>網頁連結額外資訊（Sitelink）</label><input type="file" id="gsSitelink" accept=".csv,.xlsx,.xls"></div><div><label>轉換動作明細（加入購物車／完成購買）</label><input type="file" id="gsConversions" accept=".csv,.tsv,.txt,.xlsx,.xls"><div class="tiny" id="gsConversionsStatus">未上傳；轉換次數與轉換價值可分開匯入，只有 ROAS 需要購買轉換價值；PMax 右側「轉換成效」只會從這份明細抓轉換動作及次數。</div></div></div><p class="tiny">廣告文案、AI MAX 搜尋字詞保留手動維護；兩個手動維護分頁在更新報表時保留既有內容。</p></div></details><details class="advanced" style="margin-top:12px"><summary>PMax 素材資源群組 Raw Data（選填，自動辨識版型）</summary><div class="extras"><label>素材資源群組報表（CSV／Excel）</label><input id="pmaxAssets" type="file" accept=".csv,.tsv,.xlsx,.xls"><p class="tiny">不必上傳：未上傳則只產出每日成效；上傳時自動加入素材資源群組分析，並核對數據走期。</p></div></details></div><div id="batchCampaignWrap" class="hidden"><h3 style="font-size:14px;margin:15px 0 8px">批次產出｜選擇 Campaign</h3><div id="batchCampaignList" class="batch-list"></div><p class="tiny">依需要勾選廣告活動，分別產出 Excel 並打包 ZIP；每份僅包含自身 Campaign 的數據。</p></div></section>
 <section class="card"><h2><span class="n">2</span>報表設定</h2><div id="lockInfo" class="lock"><span id="lockText">建立新報表：可自由設定</span><button type="button" class="secondary hidden" id="unlock">解鎖並修改設定</button></div><fieldset id="settings"><div class="settings-layout">
 <div class="settings-row two"><div><label>報表類型</label><select id="type"><option value="" selected disabled>請選擇報表類型</option><option value="YT 優化轉換（訂閱 CPA）">YouTube｜優化轉換（訂閱 CPA）</option><option value="YT_VIEW">YouTube｜影片觀看 CPV</option><option value="DGC_CLICK">Demand Gen｜點擊 CPC</option><option value="GDN_YR_CPM">GDN／YT｜曝光 CPM</option><option value="GS_STANDARD">Google Search｜標準版（多分頁）</option><option value="GS_SHOPPING">Google Search｜轉換版</option><option value="GS_MULTI_COUNTRY">Google Search｜多國轉換版（依國家分頁）</option><option value="GS_ADVANCED">Google Search｜進階版（多分頁）</option><option value="APP_INSTALL">App｜安裝 CPI（自動分頁）</option><option value="PMAX_ORIGINAL">PMax｜原版型（每日＋素材資源群組）</option></select></div><div id="normalCampaignField"><label>行銷活動</label><select id="campaign"><option value="">請選擇行銷活動</option></select></div><div id="gsScopeField" class="hidden"><label>GS 專案資料範圍</label><select id="gsScope"><option value="custom" selected>自訂合併的廣告活動（預設）</option><option value="all">全部廣告活動</option></select><div id="gsCustomCampaigns" class="hidden gs-campaign-list"></div><div class="tiny">GS 標準版與進階版皆產出一份多分頁 Excel，不會依 Campaign 拆成多份。</div></div></div>
@@ -997,8 +997,7 @@ refresh = function(){
     const days=entries.map(r=>r.date).filter(Boolean).sort();
     const range=days.length ? days[0]+' ～ '+days[days.length-1] : '無有效日期';
     causes.push('所選走期沒有 Raw Data（資料日期：'+range+'）');
-  }
-  // Asset CSV is required by the PMax build, so validate it before enabling the button.
+  }// Asset CSV is required by the PMax build, so validate it before enabling the button.
   // 素材資源群組為選填，不阻擋基本版產出。
   $('download').disabled=causes.length>0;
   note.textContent=causes.length ? '尚無法下載：'+causes.join('；') : '資料與設定已齊全，可以下載 Excel 週報';
@@ -1997,8 +1996,7 @@ fields=function(){return {...v326R11PriorFields(),batchFilenames:{...v326R11Batc
 const v326R11PriorRestore=restore;
 restore=function(o){const out=v326R11PriorRestore(o);if(o?.batchFilenames&&typeof o.batchFilenames==='object')Object.assign(v326R11BatchNames,o.batchFilenames);v326R11DrawNames();return out};
 v326R11DrawNames();
-function v326R11FixTemplateSheet(wb,c,typ){
- if(!['YT_VIEW','DGC_CLICK','YT 優化轉換（訂閱 CPA）'].includes(typ))return wb;
+function v326R11FixTemplateSheet(wb,c,typ){if(!['YT_VIEW','DGC_CLICK','YT 優化轉換（訂閱 CPA）'].includes(typ))return wb;
  const ws=typ==='YT 優化轉換（訂閱 CPA）'?wb.getWorksheet('YT訂閱'):wb.worksheets.find(x=>x.name!=='_google_config'&&x.name!=='上刊圖');
  if(!ws)return wb;
  const ytSub=typ==='YT 優化轉換（訂閱 CPA）',yt=ytSub||typ==='YT_VIEW';
@@ -2997,11 +2995,7 @@ $('download').onclick=async function(){
   box.className='note error';box.textContent='App CPI 下載失敗：'+(e?.message||String(e));console.error('APP CPI download',e);
  }finally{v326AppBusy=false;refresh();}
 };
-v326AppAutoDates();refresh();
-
-
-
-// PMax uses the existing gsCPA checkbox as a display-only CPA toggle.
+v326AppAutoDates();refresh();// PMax uses the existing gsCPA checkbox as a display-only CPA toggle.
 // Other GS report types keep their original gsCPA label and calculation behavior.
 const v326PmaxOriginalUpdateGsOptions=updateGsOptions;
 updateGsOptions=function(){
@@ -3334,7 +3328,14 @@ function v326AdvAllDates(first,last){
 function v326AdvBy(rows,fn){const result=new Map();for(const r of rows){const key=fn(r);if(!result.has(key))result.set(key,[]);result.get(key).push(r);}return result;}
 function v326AdvAggregate(rows){return rows.reduce((t,r)=>{t.impr+=r.impr||0;t.click+=r.click||0;t.conv+=r.conv||0;t.spend+=r.spend||0;return t;},{impr:0,click:0,conv:0,spend:0});}
 function v326AdvNum(v){const t=String(v??'').trim();if(!t||t==='--'||t===' —'||t==='-')return null;const n=Number(t.replace(/[,$%\s]/g,''));return Number.isFinite(n)?n:null;}
-function v326AdvRate(v){const raw=v326AdvText(v);const n=v326AdvNum(raw);return n===null?null:raw.includes('%')?n/100:n>1?n/100:n;}
+function v326AdvRate(v){
+ const raw=v326AdvText(v);
+ // Google Ads privacy/volume threshold values such as '<10%' are REAL exported
+ // values. Never turn them into null, 0 or guessed numeric percentages.
+ if(/^[<>≤≥≦≧]\s*[\d,.]+\s*%$/.test(raw))return raw;
+ const n=v326AdvNum(raw);
+ return n===null?(raw&&raw!=='--'&&raw!=='—'&&raw!=='-'?raw:null):raw.includes('%')?n/100:n>1?n/100:n;
+}
 function v326AdvFormatCell(c,isPercent=false,isMoney=false){
  c.font={...(c.font||{}),name:'微軟正黑體'};
  c.alignment={...(c.alignment||{}),vertical:'middle'};
@@ -3376,7 +3377,9 @@ async function v326AdvReadExtra(id,required){
  const grid=await readGrid(file);
  const idx=grid.findIndex((row,i)=>i<25&&required.every(n=>row.some(v=>v326AdvText(v)===n)));
  if(idx<0)throw Error('GS 進階版額外檔案「'+id+'」缺少欄位：'+required.join('、'));
- const head=grid[idx].map(v326AdvText),lookup=key=>head.indexOf(key);
+ const head=grid[idx].map(v326AdvText);
+ const headerKey=v=>v326AdvText(v).normalize('NFKC').toLowerCase().replace(/\s+/g,'').replace(/[：:]/g,':').replace(/[。．]/g,'.');
+ const lookup=key=>head.findIndex(h=>headerKey(h)===headerKey(key));
  const item=(row,key)=>{const n=lookup(key);return n>=0?row[n]:''};
  return {head,rows:grid.slice(idx+1).filter(r=>r.some(v=>v326AdvText(v))),get:item};
 }
@@ -3572,7 +3575,7 @@ async function v326BuildGsAdvanced(c,prior){
  // 7/7 AI Max search terms: preserve uploaded prior sheet on update, or parse optional feed.
  let aiList=[];
  if(aiFeed){
-  const seen=new Map();for(const r of aiFeed.rows){const name=v326AdvText(aiFeed.get(r,'搜尋字詞'));if(!name||name==='總計')continue;
+  const seen=new Map();for(const r of aiFeed.rows){const name=v326AdvText(aiFeed.get(r,'搜尋字詞'));if(!name||v349IsAiMaxSummary(name))continue;
    const cn=v326AdvCampaign(aiFeed.get(r,'廣告活動'));if(cn&&!byC.has(cn))continue;
    const agg=seen.get(name)||{impr:0,click:0,conv:0,spend:0};
    agg.impr+=v326AdvNum(aiFeed.get(r,'曝光'))||0;agg.click+=v326AdvNum(aiFeed.get(r,'點擊'))||0;
@@ -3580,9 +3583,14 @@ async function v326BuildGsAdvanced(c,prior){
   }
   aiList=[...seen].sort((a,b)=>b[1].impr-a[1].impr);
  }
- const ai=v326AdvCloneSheet(wb,src,'AI MAX搜尋字詞',Math.max(2,1+aiList.length),8);
+ const ai=v326AdvCloneSheet(wb,src,'AI MAX搜尋字詞',Math.max(2,2+aiList.length),8);
  v326AdvWriteHeader(ai,['搜尋字詞','曝光','點擊','轉換','費用(未稅)','CPC','CTR','CPA']);
- aiList.forEach(([name,val],i)=>{ai.getCell(i+2,1).value=name;v326AdvWriteMetricArray(ai,i+2,2,val,'other');});
+ if(aiList.length){
+  ai.getCell('A2').value='總計';
+  v326AdvWriteMetricArray(ai,2,2,v326AdvAggregate(aiList.map(([,stats])=>stats)),'other');
+ }
+ // The reference template reserves row 2 for totals; no search term may overwrite it.
+ aiList.forEach(([name,val],i)=>{ai.getCell(i+3,1).value=name;v326AdvWriteMetricArray(ai,i+3,2,val,'other');});
  if(!aiList.length && prior?.getWorksheet('AI MAX搜尋字詞') && $('mode').value==='update'){
   const prevSheet=prior.getWorksheet('AI MAX搜尋字詞');
   for(let r=2;r<=prevSheet.rowCount;r++){
@@ -3592,7 +3600,7 @@ async function v326BuildGsAdvanced(c,prior){
    }
   }
  }else if(!aiList.length)ai.getCell('A2').value='未上傳 AI MAX 搜尋字詞 Raw Data，無法推算此分頁數據';
- // Use the same display style for AI max header, no imaginary totals.
+ // Use the reference AI MAX layout: header row 1, formal totals row 2, actual terms from row 3.
  for(let col=1;col<=8;col++){const cell=ai.getCell(1,col);cell.fill=blue;cell.font={...(cell.font||{}),name:'微軟正黑體',bold:true,color:{argb:'FFFFFFFF'}};}
  // CPA stays an optional display column in GS advanced; default ON to match this
  // formal reference. Column hiding preserves original column addresses/formulas.
@@ -3983,8 +3991,7 @@ function v328HideSafeFutureRows(wb,c){
       const last=Math.min(ws.rowCount,1800);
       for(let r=5;r<=last;r++){
         const row=ws.getRow(r),date=v326R12ExcelDate(row.getCell(1).value);
-        if(!date||date<=latest)continue;
-        let liveSide=false;
+        if(!date||date<=latest)continue;let liveSide=false;
         for(let col=9;col<=Math.min(ws.columnCount,45);col++){
           const v=row.getCell(col).value;if(v!==null&&v!==undefined&&v!==''){liveSide=true;break;}
         }
@@ -4983,8 +4990,7 @@ function v342ApplyNumberFormats(wb){
         return;
       }
       cell.numFmt = v342IntegerFormat(format);
-    }));
-  }
+    }));}
 }
 function v342FixYtViewBorders(wb){
   if (typeKey() !== 'YT_VIEW') return wb;
@@ -5369,9 +5375,697 @@ buildV3=async function(c,prior=null){
 /* END V3.46 */
 
 
+/* V3.49 — spreadsheet precision, percent-format normalization, preserve share thresholds,
+   remove Excel notes and AI MAX Google Ads export subtotals.
+   This postprocessor is called from the common last-mile export for every Google report.
+   No data rows are reaggregated here, and source-bound '<10%' text is never approximated. */
+function v349IsAiMaxSummary(value){
+ const name=String(value??'').normalize('NFKC').trim().replace(/\s+/g,' ').toLowerCase();
+ return /^(?:總計|合計)(?:\s*[:：]\s*.*)?$/.test(name)
+   || /^total\s*[:：]?\s*(?:filtered\s+search\s+terms?|search\s+terms?|[\s\S]*)$/.test(name);
+}
+function v349IsPercentageHeader(raw){
+ const h=String(raw??'').normalize('NFKC').trim().replace(/\s+/g,'').toLowerCase();
+ if(!h)return false;
+ // Percentage-looking DATA (such as '<10%' or '9.5%') is not a header.
+ if(/^[<>≤≥≦≧+\-]?[\d,.]+[%％]$/.test(h))return false;
+ // Only percentages/ratios rendered as a percentage; ROAS/CPA/CPC/CPM/CPV are not percentages.
+ if(/^(?:roas|cpa|cpc|cpm|cpv|cpi|成本|費用|預算|金額)/i.test(h))return false;
+ return /[%％]|百分比|曝光比重|曝光佔比|曝光占比|點擊率|觀看率|轉換率|互動率|到達率|開啟率|vtr|lctr|ctr|impressionshare|impr\.share|lost.*share|click.?through.?rate|conversionrate|conv\.rate/.test(h);
+}
+function v349IsDecimalMetricHeader(raw){
+ const label=String(raw??'').normalize('NFKC').trim().replace(/\s+/g,'').toLowerCase();
+ return /^(?:廣告)?(?:cpc|cpm|cpa|cpv|cpi|roas)(?:\([^)]*\))?$/.test(label)
+   || /^(?:每次)?(?:點擊|轉換|觀看|安裝)成本$/.test(label);
+}
+function v349MetricFormat(oldFmt,isPercent){
+ if(isPercent)return '0.00%';
+ const fmt=String(oldFmt||'General');
+ if(fmt.includes('%'))return '0.00%';
+ if(/^(?:General|0|#,##0|0\.0|0\.00|#,##0\.00)$/i.test(fmt))return '#,##0.00';
+ // Preserve currencies / existing negative sections / unit literals and replace only decimals.
+ const parts=fmt.split(';');
+ return parts.map(part=>{
+  if(!/[0#?]/.test(part))return part;
+  if(/(?:0|#|\?)(?:\.[0#?]+)?/.test(part)){
+   let updated=part.replace(/((?:#,##)?(?:0|#|\?))(?:\.[0#?]+)?/,(_,first)=>first+'.00');
+   if(!updated.includes('.')&&!updated.includes('%'))updated=updated.replace(/0/,'0.00');
+   return updated;
+  }
+  return part;
+ }).join(';');
+}
+function v349IsDerivedFormula(cell){
+ const v=cell?.value;
+ return !!(v&&typeof v==='object'&&(typeof v.formula==='string'||typeof v.sharedFormula==='string'));
+}
+function v349IsSafeNumber(v){return typeof v==='number'&&Number.isFinite(v);}
+function v349CleanExportWorkbook(workbook){
+ if(!workbook?.worksheets)return workbook;
+ for(const ws of workbook.worksheets){
+  if(ws.name.startsWith('_')||ws.state==='veryHidden')continue;
+  if(/^AI\s*MAX\s*搜尋字詞/i.test(ws.name)){
+   // In an updated report, this subtotal may have been copied from the prior sheet.
+   // Remove its entire row, not merely the label, so no duplicated numeric totals remain.
+   for(let r=ws.rowCount;r>=2;r--){
+    const c=ws.getRow(r).getCell(1);
+    if(typeof c.value==='string'&&v351IsExportSubtotal(c.value))ws.spliceRows(r,1);
+   }
+  }
+  const headings=new Map();
+  // Identify percentage columns and panels by their real headers. A column can host
+  // separate blocks with different meanings, so later headers take precedence.
+  const maxR=Math.min(ws.rowCount,20000);
+  for(let r=1;r<=maxR;r++){
+   const row=ws.getRow(r);
+   row.eachCell({includeEmpty:false},cell=>{
+    const v=cell.value;
+    if(typeof v!=='string')return;
+    const label=v.normalize('NFKC').trim();
+    if(!label)return;
+    if(v349IsPercentageHeader(label)){
+     if(!headings.has(cell.col))headings.set(cell.col,[]);
+     headings.get(cell.col).push({r,percent:true,precision:false});
+    }else if(/^(?:日期|廣告活動|行銷活動|廣告群組|關鍵字|搜尋字詞|素材資源|成本|預算|金額|曝光|點擊|費用|CPC|CPA|CPM|CPV|ROAS|轉換價值|轉換次數|所有轉換|所有轉換次數|廣告費用|廣告花費|安裝次數|總計)$/i.test(label)){
+     if(!headings.has(cell.col))headings.set(cell.col,[]);
+     headings.get(cell.col).push({r,percent:false,precision:v349IsDecimalMetricHeader(label)});
+    }
+   });
+  }
+  for(const [col,markers] of headings){
+   markers.sort((a,b)=>a.r-b.r);
+   for(let k=0;k<markers.length;k++){
+    const {r,percent,precision}=markers[k];if(!percent&&!precision)continue;
+    const last=(markers[k+1]?.r||maxR+1)-1;
+    for(let rr=r+1;rr<=last;rr++){
+     const cell=ws.getRow(rr).getCell(col),v=cell.value;
+     if(v==null||v==='')continue;
+     if(precision&&!percent){
+      if(v349IsSafeNumber(v)||v349IsDerivedFormula(cell))cell.numFmt=v349MetricFormat(cell.numFmt,false);
+      continue;
+     }
+     if(v349IsSafeNumber(v)){
+      // Some raw supplementary percentages arrive as 10 or 0.1; normalize only
+      // when existing style was NOT already percent-based. No unconditional scaling.
+      const hadPercent=String(cell.numFmt||'').includes('%');
+      if(!hadPercent && Math.abs(v)>1 && Math.abs(v)<=100)cell.value=v/100;
+      cell.numFmt='0.00%';
+     }else if(v349IsDerivedFormula(cell))cell.numFmt='0.00%';
+     else if(typeof v==='string'){
+      const text=v.trim();
+      // Exact exported bounds, including '<10%', are text and must remain text.
+      if(/^[<>≤≥≦≧]\s*[\d,.]+\s*%$/.test(text))continue;
+      if(/^-?[\d,.]+\s*%$/.test(text)){
+       const n=Number(text.replace(/[,%\s]/g,''));
+       if(Number.isFinite(n)){cell.value=n/100;cell.numFmt='0.00%';}
+      }
+     }
+    }
+   }
+  }
+  // Every calculated (formula) metric has two decimal places; percentages show 0.00%.
+  // Stored formula/value is untouched, including total SUMs and weighted ratios.
+  ws.eachRow({includeEmpty:false},row=>row.eachCell({includeEmpty:false},cell=>{
+   if(v349IsDerivedFormula(cell)){
+    const source=String(cell.numFmt||'');
+    const markers=headings.get(cell.col)||[];
+    let nearest=null;
+    for(const mark of markers){if(mark.r<cell.row)nearest=mark;else break;}
+    const isPct=source.includes('%')||(nearest?.percent===true);
+    cell.numFmt=v349MetricFormat(source,isPct);
+   }
+  }));
+  // Remove only standalone explanatory footnotes, never actual data in a '備註' field.
+  // A footnote outside a data table has no place in the exported customer report.
+  ws.eachRow({includeEmpty:false},row=>row.eachCell({includeEmpty:false},cell=>{
+   if(typeof cell.value==='string'&&/^(?:註[：:]|附註[：:]|備註[：:])/.test(cell.value.trim())){
+    cell.value=null;
+   }
+  }));
+ }
+ // Cell comments are a workbook-wide feature; remove them even from hidden/template tabs.
+ // In ExcelJS 4.x, setting note=undefined can create a blank note. Remove its backing model.
+ for(const ws of workbook.worksheets){
+  ws.eachRow({includeEmpty:true},row=>row.eachCell({includeEmpty:true},cell=>{
+   if(typeof v3262RemoveExcelNote==='function')v3262RemoveExcelNote(cell);
+   else if(cell._comment!==undefined)delete cell._comment;
+  }));
+ }
+ const config=workbook.getWorksheet('_google_config');
+ if(config){
+  let cfg={};try{cfg=JSON.parse(String(config.getCell('A2').value||'{}'))}catch(e){}
+  config.getCell('A1').value='Google Ads Report Generator V3.49 / config';
+  config.getCell('A2').value=JSON.stringify({...cfg,_googleVersion:'3.49'});
+ }
+ return workbook;
+}
+/* END V3.49 */
+
+/* V3.50: GS advanced remaining-budget cell, auditable CPA formulas,
+   and consistent right-alignment for numeric metrics throughout all Google sheets.
+   Run AFTER V3.49's final formatter; retain raw text and all legacy builders. */
+function v350Head(v){
+  return typeof v==='string' ? v.normalize('NFKC').replace(/[\s\u3000]/g,'').toLowerCase() : '';
+}
+function v350IsCPALabel(v){return /^(?:廣告)?cpa$/.test(v350Head(v));}
+function v350IsCostLabel(v){
+  const h=v350Head(v);
+  return /^(?:費用|費用\(未稅\)|廣告費用|廣告花費|實際費用|花費\(未稅\)|含服務費費用|廣告成本|消耗金額)$/.test(h);
+}
+function v350IsConversionLabel(v){
+  const h=v350Head(v);
+  return /^(?:轉換|轉換次數|轉換數|所有轉換|所有轉換次數|完成購買|購買次數|購買|名單|名單數|完成預約|轉換\([^)]*\))$/.test(h);
+}
+function v350NumericValue(cell){
+  const v=cell?.value;
+  if(typeof v==='number'&&Number.isFinite(v))return v;
+  if(v&&typeof v==='object'&&typeof v.result==='number'&&Number.isFinite(v.result))return v.result;
+  return null;
+}
+function v350IsFormula(cell){
+  const value=cell?.value;
+  return !!(value&&typeof value==='object'&&(typeof value.formula==='string'||typeof value.sharedFormula==='string'));
+}
+function v350ApplyCpaFormulas(ws){
+  // Only tables with an explicit CPA, cost, and conversion header are eligible.
+  // Never infer a conversion denominator from an unrelated column or sheet.
+  const panels=[];
+  const end=Math.min(ws.rowCount,20000);
+  for(let r=1;r<=end;r++){
+    const values=[];
+    ws.getRow(r).eachCell({includeEmpty:false},cell=>{
+      if(typeof cell.value==='string')values.push({col:cell.col,head:v350Head(cell.value)});
+    });
+    const cpa=values.filter(x=>/^(?:廣告)?cpa$/.test(x.head));
+    if(!cpa.length)continue;
+    const candidates={
+      cost:values.filter(x=>v350IsCostLabel(x.head)),
+      conv:values.filter(x=>v350IsConversionLabel(x.head))
+    };
+    for(const cp of cpa){
+      const cost=candidates.cost[0],conv=candidates.conv[0];
+      if(cost&&conv&&new Set([cp.col,cost.col,conv.col]).size===3){
+        panels.push({header:r,cpa:cp.col,cost:cost.col,conv:conv.col});
+      }
+    }
+  }
+  let count=0;
+  for(let i=0;i<panels.length;i++){
+    const p=panels[i];
+    const bottom=(panels[i+1]?.header||end+1)-1;
+    for(let r=p.header+1;r<=bottom;r++){
+      const costCell=ws.getCell(r,p.cost),convCell=ws.getCell(r,p.conv);
+      const costV=costCell.value,convV=convCell.value;
+      if(costV===null||costV===undefined||costV===''||
+         convV===null||convV===undefined||convV==='')continue;
+      const recognized=v=>typeof v==='number'||v350IsFormula({value:v});
+      if(!recognized(costV)||!recognized(convV))continue;
+      const cell=ws.getCell(r,p.cpa);
+      if(typeof cell.value==='string'&&!/^(?:-|－|—|#DIV\/0!)$/.test(cell.value.trim()))continue;
+      const costRef=costCell.address,convRef=convCell.address;
+      const formula=`IFERROR(IF(${convRef}=0,"-",${costRef}/${convRef}),"-")`;
+      const c=v350NumericValue(costCell),n=v350NumericValue(convCell);
+      const result=n===0?'-':n!==null&&c!==null?c/n:undefined;
+      cell.value=result===undefined?{formula}:{formula,result};
+      cell.numFmt='#,##0.00';
+      count++;
+    }
+  }
+  return count;
+}
+function v350RightAlignNumbers(workbook){
+  for(const ws of workbook.worksheets){
+    ws.eachRow({includeEmpty:false},row=>row.eachCell({includeEmpty:false},cell=>{
+      // Do not right-align text labels, titles, or merged-cell followers.
+      if(cell.isMerged&&cell.master&&cell.master!==cell)return;
+      const v=cell.value;
+      const metric=typeof v==='number'||v instanceof Date||v350IsFormula(cell)||
+        (typeof v==='string'&&/^[<>≤≥≦≧]?\s*[-+]?\s*[\d,.]+(?:\s*[%％])?$/.test(v.trim()));
+      if(metric){
+        cell.alignment={...(cell.alignment||{}),horizontal:'right'};
+      }
+    }));
+  }
+}
+function v350FinishWorkbook(workbook){
+  // GS advanced uses F4 for the remaining-budget label, B2 for budget, and
+  // H7 for actual cost (未稅). It previously wrote the result to H4 by mistake.
+  const daily=workbook.getWorksheet('GS日報表');
+  if(daily&&v350Head(daily.getCell('F4').value).includes('剩餘預算')&&
+     v350Head(daily.getCell('H6').value)==='費用(未稅)'){
+    const b=daily.getCell('B2'),cost=daily.getCell('H7'),out=daily.getCell('G4'),old=daily.getCell('H4');
+    if(old.style&&Object.keys(old.style).length){
+      out.style={...old.style,alignment:{...(old.alignment||{}),horizontal:'right'}};
+    }
+    const budget=v350NumericValue(b),spent=v350NumericValue(cost);
+    if(b.value!==null&&b.value!==undefined&&b.value!==''){
+      const result=budget!==null&&spent!==null?budget-spent:undefined;
+      out.value=result===undefined?{formula:'IFERROR(B2-H7,"-")'}:{formula:'IFERROR(B2-H7,"-")',result};
+      out.numFmt='#,##0.00';
+    }else out.value=null;
+    old.value=null;
+  }
+  // The same explicit header-based rule also covers GS and other Google reports
+  // that truly expose all three fields. It leaves unmatched CPA columns untouched.
+  for(const ws of workbook.worksheets){
+    if(ws.name.startsWith('_')||ws.state==='veryHidden')continue;
+    v350ApplyCpaFormulas(ws);
+  }
+  v350RightAlignNumbers(workbook);
+  workbook.calcProperties=workbook.calcProperties||{};
+  workbook.calcProperties.fullCalcOnLoad=true;
+  const cfg=workbook.getWorksheet('_google_config');
+  if(cfg){
+    let old={};try{old=JSON.parse(String(cfg.getCell('A2').value||'{}'))}catch(e){}
+    cfg.getCell('A1').value='Google Ads Report Generator V3.51 / config';
+    cfg.getCell('A2').value=JSON.stringify({...old,_googleVersion:'3.51'});
+  }
+  return workbook;
+}
+/* END V3.50 */
+
+/* V3.51: AI MAX reference layout rescue.
+   The Google source export's "總計：篩選出的搜尋字詞" is not a search term.
+   Formal Excel summary at A2:H2 IS mandatory; details begin at row 3.
+   Preserve all real terms and the source template's row-2 style. */
+function v351IsExportSubtotal(value){
+ const name=String(value??'').normalize('NFKC').trim();
+ return /^(?:總計|合計)\s*[:：]/.test(name)||/^total\s*[:：]/i.test(name)
+  || /^total\s+filtered\s+search\s+terms?$/i.test(name);
+}
+function v351SheetNumber(cell){
+ const v=cell?.value;
+ if(typeof v==='number'&&Number.isFinite(v))return v;
+ if(v&&typeof v==='object'&&typeof v.result==='number'&&Number.isFinite(v.result))return v.result;
+ if(typeof v==='string'&&/^[-+]?\d[\d,]*(?:\.\d+)?$/.test(v.trim()))return Number(v.replace(/,/g,''));
+ return null;
+}
+function v351FixAiMaxTotal(wb){
+ const ws=wb?.getWorksheet?.('AI MAX搜尋字詞');if(!ws)return;
+ if(v350Head(ws.getCell('A1').value)!=='搜尋字詞')return;
+ const text=(r)=>String(ws.getCell(r,1).value??'').trim();
+ const isFormal=(v)=>/^(?:總計|合計)$/.test(v.normalize('NFKC').replace(/\s/g,''));
+ // There is no legitimate total when the optional feed was not uploaded.
+ if(text(2).includes('未上傳')||text(2).includes('無法推算'))return;
+ // Remove only an obsolete extra total elsewhere; do not delete any search terms.
+ for(let r=ws.rowCount;r>=3;r--){
+  if(isFormal(text(r))||v351IsExportSubtotal(text(r)))ws.spliceRows(r,1);
+ }
+ let detailStart=isFormal(text(2))?3:2;
+ let inserted=false;
+ const realRows=[];
+ for(let r=detailStart;r<=ws.rowCount;r++){
+  const t=text(r);
+  if(!t||isFormal(t)||v351IsExportSubtotal(t)||t.includes('未上傳'))continue;
+  // Do not count a note/blank as a search term; zero-valued terms remain valid.
+  const hasMetrics=[2,3,4,5].some(c=>{const v=ws.getCell(r,c).value;return v!==null&&v!==undefined&&v!=='';});
+  if(hasMetrics)realRows.push(r);
+ }
+ if(!realRows.length)return;
+ if(detailStart===2){
+  // Preserve the row-2 summary style, which V3.50 accidentally applied to the first term.
+  const saved=Array.from({length:8},(_,i)=>JSON.parse(JSON.stringify(ws.getCell(2,i+1).style||{})));
+  const height=ws.getRow(2).height;
+  ws.spliceRows(2,0,[]);
+  inserted=true;
+  for(let c=1;c<=8;c++)ws.getCell(2,c).style=saved[c-1];
+  if(height)ws.getRow(2).height=height;
+  detailStart=3;
+ }
+ const end=Math.max(...realRows)+(inserted?1:0);
+ const vals={};
+ for(let c=2;c<=5;c++){
+  let total=0;
+  for(let r=3;r<=end;r++){
+   const name=text(r);if(!name||isFormal(name)||v351IsExportSubtotal(name))continue;
+   const n=v351SheetNumber(ws.getCell(r,c));if(n!==null)total+=n;
+  }
+  vals[c]=total;
+ }
+ ws.getCell('A2').value='總計';
+ ws.getCell('A2').font={...(ws.getCell('A2').font||{}),name:'微軟正黑體',bold:true};
+ for(let c=2;c<=5;c++){
+  const key=String.fromCharCode(64+c),cell=ws.getCell(2,c);
+  cell.value={formula:`SUM(${key}3:${key}${end})`,result:vals[c]};
+  cell.numFmt='#,##0';
+  cell.alignment={...(cell.alignment||{}),horizontal:'right'};
+ }
+ const click=vals[3],impr=vals[2],conv=vals[4],fee=vals[5];
+ ws.getCell('F2').value={formula:'IFERROR(E2/C2,"-")',result:click?fee/click:'-'};
+ ws.getCell('F2').numFmt='#,##0.00';
+ ws.getCell('G2').value={formula:'IFERROR(C2/B2,0)',result:impr?click/impr:0};
+ ws.getCell('G2').numFmt='0.00%';
+ ws.getCell('H2').value={formula:'IFERROR(IF(D2=0,"-",E2/D2),"-")',result:conv?fee/conv:'-'};
+ ws.getCell('H2').numFmt='#,##0.00';
+ for(const c of [6,7,8]){
+  const cell=ws.getCell(2,c);cell.alignment={...(cell.alignment||{}),horizontal:'right'};
+ }
+}
+/* END V3.51 */
+
+
+/* V3.52: workbook-wide number formats.
+   Numeric values always use grouping; computed formulas display two decimal places.
+   Percentage displays remain percentages, dates/times remain dates, raw threshold
+   text such as '<10%' stays unchanged. No numeric value/formula is rounded or rebuilt. */
+function v352IsDateFormat(fmt){
+  // Exclude quoted literals and escaped characters before examining Excel date codes.
+  if(/\[(?:h+|m+|s+)\]/i.test(String(fmt||'')))return true;
+  const clean=String(fmt||'').replace(/"(?:[^"]|"")*"/g,'').replace(/\\./g,'')
+    .replace(/\[[^\]]*\]/g,'').toLowerCase();
+  return /(?:y{2,4}|d{1,4}|h{1,2}:|:\s*s{1,2}|a\/p|am\/pm|mmm|m{1,2}:s{1,2})/.test(clean)
+    || /(?:^|[^a-z])m{1,2}[\/-]d{1,2}/.test(clean)
+    || /(?:^|[^a-z])d{1,2}[\/-]m{1,2}/.test(clean);
+}
+function v352HeaderKind(raw){
+  const str=String(raw??'').normalize('NFKC').replace(/[\s\u3000]/g,'').toLowerCase();
+  if(!str||/^[<>≤≥≦≧+\-]?[\d,.]+[%％]?$/.test(str))return '';
+  if(typeof v349IsPercentageHeader==='function' && v349IsPercentageHeader(str))return 'percent';
+  if(/(?:^|[_(（])(?:cpc|cpm|cpa|cpv|cpi|roas)(?:$|[_)）])/.test(str)
+     ||/(?:費用|花費|成本|金額|轉換價值|營收|業績|剩餘預算|每日預算|總預算|單價|客單價|預算$)/.test(str))return 'decimal';
+  return '';
+}
+function v352CustomFormat(fmt,decimals){
+  const old=String(fmt||'General');
+  const digits=decimals?'#,##0.00':'#,##0';
+  if(old==='General'||/^0(?:\.0+)?$/.test(old)||/^#,##0(?:\.0+)?$/.test(old))return digits;
+  // Preserve currency symbols, negative sections, accounting and literal suffixes.
+  // Modify only the numeric format token, not currency locale codes like [$NT$-404].
+  const sections=old.split(';');
+  return sections.map(section=>{
+    if(!/[0#?]/.test(section))return section;
+    const masked=section.replace(/\[[^\]]*\]/g,m=>'\u0001'.repeat(m.length));
+    const match=/(?:#,##|#|\?)?0(?:\.[0#?]+)?/.exec(masked);
+    if(!match)return section;
+    return section.slice(0,match.index)+digits+section.slice(match.index+match[0].length);
+  }).join(';');
+}
+function v352NormalizeNumberFormats(workbook){
+  if(!workbook?.worksheets)return workbook;
+  for(const ws of workbook.worksheets){
+    if(ws.name.startsWith('_')||ws.state==='veryHidden')continue;
+    const headers=new Map();
+    ws.eachRow({includeEmpty:false},row=>row.eachCell({includeEmpty:false},cell=>{
+      const raw=cell.value;
+      if(typeof raw!=='string')return;
+      const kind=v352HeaderKind(raw);
+      if(!kind)return;
+      if(!headers.has(cell.col))headers.set(cell.col,[]);
+      headers.get(cell.col).push({row:cell.row,kind});
+    }));
+    ws.eachRow({includeEmpty:false},row=>{
+      row.eachCell({includeEmpty:false},cell=>{
+        if(cell.isMerged && cell.master && cell.master!==cell)return;
+        const v=cell.value, formula=v350IsFormula(cell);
+        const numeric=typeof v==='number'&&Number.isFinite(v);
+        if(!numeric&&!formula)return; // Never convert literal strings or identifiers.
+        if(v instanceof Date || v352IsDateFormat(cell.numFmt))return;
+        const old=String(cell.numFmt||'General');
+        const marks=headers.get(cell.col)||[];
+        let nearest=null;
+        for(const m of marks){if(m.row<cell.row)nearest=m;else break;}
+        const left=cell.col>1?ws.getCell(cell.row,cell.col-1):null;
+        const beside=left&&typeof left.value==='string'?v352HeaderKind(left.value):'';
+        const kind=beside||nearest?.kind||'';
+        if(old.includes('%')||kind==='percent'){
+          // Old V3.49 already fixes percentage source units; do not rescale here.
+          cell.numFmt='0.00%';
+        }else{
+          const decimal=formula||kind==='decimal'||!numeric||!Number.isInteger(v)||
+            /(?:0|#|\?)\.[0#?]+/.test(old);
+          cell.numFmt=v352CustomFormat(old,decimal);
+        }
+        cell.alignment={...(cell.alignment||{}),horizontal:'right'};
+      });
+    });
+  }
+  workbook.calcProperties=workbook.calcProperties||{};
+  workbook.calcProperties.fullCalcOnLoad=true;
+  const cfg=workbook.getWorksheet('_google_config');
+  if(cfg){
+    let old={};try{old=JSON.parse(String(cfg.getCell('A2').value||'{}'))}catch(e){}
+    cfg.getCell('A1').value='Google Ads Report Generator V3.52 / config';
+    cfg.getCell('A2').value=JSON.stringify({...old,_googleVersion:'3.52'});
+  }
+  return workbook;
+}
+/* END V3.52 */
+
+
+/* V3.53 | Ensure total cells are true Excel formulas across Google reports.
+   Derive additive metrics from the underlying detail cells and ratios from
+   the total row (never sum/average CPC, CTR, CPA, CPM, CPV or ROAS).
+   Preserve manual budgets, source-only impression share, template formatting,
+   blank unavailable metrics, existing formulas, and hidden prior worksheets. */
+function v353MetricKind(value){
+ const v=String(value??'').normalize('NFKC').replace(/[\s　:：_\-()（）]/g,'').toLowerCase();
+ if(!v)return '';
+ if(/^(?:ctr|點閱率|點擊率|連結點擊率|lctr)$/.test(v))return 'ctr';
+ if(/^(?:cpc|每次點擊費用|單次點擊成本|lcpc)$/.test(v))return 'cpc';
+ if(/^(?:cpa|cpl|每次轉換費用|每次轉換成本|每筆名單成本|單次轉換成本|每次成果成本)$/.test(v))return 'cpa';
+ if(/^(?:cpm|千次曝光成本|每千次曝光費用)$/.test(v))return 'cpm';
+ if(/^(?:cpv|每次觀看成本|每次觀看費用)$/.test(v))return 'cpv';
+ if(/^(?:cpi|每次安裝成本|每次安裝費用)$/.test(v))return 'cpi';
+ if(/^(?:roas|廣告投資報酬率|廣告投資報酬)$/.test(v))return 'roas';
+ if(/^(?:觀看率|影片觀看率|trueview觀看率|vtr)$/.test(v))return 'vtr';
+ if(/^(?:轉換率|轉換百分比|cv率|cvr)$/.test(v))return 'cvr';
+ // Impression share is not additive and cannot be exactly reconstructed
+ // from displayed row-level impression shares. Do not fabricate a total.
+ if(/曝光比重|搜尋曝光比重|因預算而錯失|因評級而錯失|預算達成率|投放進度|執行率/.test(v))return 'external';
+ if(/(?:轉換價值|conversionvalue|購買轉換價值|營業額|營收|收入|業績|總價值)/.test(v))return 'value';
+ if(/^(?:轉換|轉換次數|conversions|conversion|名單|表單名單|購買|完成購買|安裝|安裝次數|install|installs|潛在客戶|預約|獲得的轉換|訂閱|subscribe|加入購物車)$/.test(v))return 'conv';
+ if(/trueview觀看|影片觀看|影片觀賞|觀看次數|觀看數|views|viewcount/.test(v))return 'views';
+ if(/(?:曝光|impressions|impression|展示次數)/.test(v))return 'impr';
+ if(/(?:點擊|clicks|click|連結點擊)/.test(v))return 'click';
+ if(/(?:費用|花費|成本|廣告支出|廣告花費|消耗|spend|cost)/.test(v))return 'cost';
+ return '';
+}
+function v353IsTotalTitle(raw){
+ const s=String(raw??'').normalize('NFKC').trim().replace(/[\s　]/g,'');
+ // Do not conflate an external search-term-export subtotal with a report row.
+ return /^(?:總計|合計|小計|素材總計|資料總計|全部總計|總和|grandtotal|total|subtotal)$/i.test(s);
+}
+function v353Address(col,row){let a='';for(let i=col;i>0;i=Math.floor((i-1)/26))a=String.fromCharCode(65+(i-1)%26)+a;return a+row}
+function v353Value(c){
+ const v=c?.value;
+ if(typeof v==='number'&&Number.isFinite(v))return v;
+ if(v&&typeof v==='object'&&typeof v.result==='number'&&Number.isFinite(v.result))return v.result;
+ if(typeof v==='string'&&/^[-+]?\d[\d,]*(?:\.\d+)?$/.test(v.trim()))return Number(v.replace(/,/g,''));
+ return null;
+}
+function v353HasActual(c){const v=c?.value;return v!==null&&v!==undefined&&v!==''}
+function v353IsFormula(c){return typeof c?.value?.formula==='string'||typeof c?.value?.sharedFormula==='string'}
+function v353IsNumeric(c){return typeof c?.value==='number'&&Number.isFinite(c.value)}
+function v353Role(kind){return ['ctr','cpc','cpa','cpm','cpv','cpi','roas','vtr','cvr'].includes(kind)?'ratio':kind==='external'?'external':'sum'}
+function v353Formula(ws,row,col,kind,first,last,index,stats){
+ const cell=ws.getCell(row,col),original=cell.value;
+ if(v353IsFormula(cell)|| (cell.isMerged&&cell.master&&cell.master!==cell))return;
+ if(!v353IsNumeric(cell)&&v353HasActual(cell))return;
+ const dcol=v353Address(col,first).replace(/\d+$/,'');
+ const hasDetail=[];let computed=0,allKnown=true;
+ for(let r=first;r<=last;r++){
+  const c=ws.getCell(r,col);
+  if(c.isMerged&&c.master&&c.master!==c)continue;
+  if(!v353HasActual(c))continue;
+  const known=v353Value(c);
+  if(known===null){
+   if(v353IsFormula(c)){allKnown=false;hasDetail.push(r)}
+   continue;
+  }
+  computed+=known;hasDetail.push(r);
+ }
+ const originalN=v353Value(cell);
+ const set=(formula,cache,format)=>{
+  cell.value=cache===null||cache===undefined?{formula}:{formula,result:cache};
+  if(format)cell.numFmt=format;
+  cell.alignment={...(cell.alignment||{}),horizontal:'right'};
+  stats.replaced++;
+ };
+ if(v353Role(kind)==='sum'){
+  if(!hasDetail.length)return;
+  const cache=originalN!==null?originalN:(allKnown?computed:null);
+  const format=(kind==='cost'||kind==='value')?'#,##0.00':(String(cell.numFmt||'').includes('%')?'0.00%':'#,##0');
+  set(`SUM(${dcol}${first}:${dcol}${last})`,cache,format);
+  return;
+ }
+ if(v353Role(kind)!=='ratio')return;
+ // Only ratios with identifiable numerator and denominator can be rebuilt.
+ const at=t=>index[t]!==undefined?ws.getCell(row,index[t]):null;
+ const id=t=>index[t]!==undefined?v353Address(index[t],row):null;
+ let num,den,factor=1;
+ if(kind==='ctr'){num='click';den='impr'}
+ else if(kind==='cpc'){num='cost';den='click'}
+ else if(kind==='cpa'){num='cost';den='conv'}
+ else if(kind==='cpm'){num='cost';den='impr';factor=1000}
+ else if(kind==='cpv'){num='cost';den='views'}
+ else if(kind==='cpi'){num='cost';den='conv'}
+ else if(kind==='roas'){num='value';den='cost'}
+ else if(kind==='vtr'){num='views';den='impr'}
+ else if(kind==='cvr'){num='conv';den='click'}
+ if(!num||!id(num)||!id(den)||!v353HasActual(at(num))||!v353HasActual(at(den)))return;
+ const x=v353Value(at(num)),y=v353Value(at(den));
+ const cache=originalN!==null?originalN:(x!==null&&y!==null?(y===0?'-':x/y*factor):null);
+ const expression=factor===1?`${id(num)}/${id(den)}`:`${id(num)}/${id(den)}*${factor}`;
+ set(`IFERROR(IF(${id(den)}=0,"-",${expression}),"-")`,cache,(kind==='ctr'||kind==='vtr'||kind==='cvr')?'0.00%':'#,##0.00');
+}
+function v353Panel(ws, cfg,stats){
+ const {row,first,last,cols,kind,head}=cfg;
+ if(row>ws.rowCount||last<first)return;
+ const label=ws.getCell(row,head).value;
+ if(!v353IsTotalTitle(label))return;
+ const metrics={},index={};
+ // Static schema is preferred to positional guesses; headers fill any gaps.
+ for(const [c,k] of Object.entries(kind||{})){
+  const cn=Number(c);if(cn<cols[0]||cn>cols[1])continue;
+  metrics[cn]=k;
+  if(!index[k])index[k]=cn;
+ }
+ for(let col=cols[0];col<=cols[1];col++){
+  if(!metrics[col]){
+   const header=ws.getCell(cfg.header,col).value;
+   metrics[col]=v353MetricKind(header);
+  }
+  if(metrics[col]&&!index[metrics[col]])index[metrics[col]]=col;
+ }
+ // All additive metrics first, so formulas for derived columns reference totals.
+ for(const ratioPass of [false,true]){
+  for(let col=cols[0];col<=cols[1];col++){
+   const k=metrics[col];if(!k||k==='external')continue;
+   if((v353Role(k)==='ratio')!==ratioPass)continue;
+   v353Formula(ws,row,col,k,first,last,index,stats);
+  }
+ }
+ stats.panels++;
+}
+function v353MarkKnownTotal(ws,row,titleCol,metricCol,firstDetail){
+ const label=ws.getCell(row,titleCol),metric=ws.getCell(row,metricCol);
+ if(v353IsTotalTitle(label.value))return;
+ if(v353HasActual(label)||(!v353IsNumeric(metric)&&!v353IsFormula(metric)))return;
+ // A total is only derivable when detail metrics exist; do not fabricate a
+ // summary when an optional asset or audience feed was omitted.
+ let found=false;
+ for(let r=firstDetail;r<=ws.rowCount;r++){
+  const c=ws.getCell(r,metricCol);
+  if(v353IsNumeric(c)||v353IsFormula(c)){found=true;break}
+ }
+ if(found){label.value='總計';label.font={...(label.font||{}),bold:true};}
+}
+function v353NamedPanels(ws){
+ const name=ws.name.replace(/^.*-(GS日報表|GS廣告活動|GS關鍵字報表|廣告)$/,'$1');
+ // GS advanced historically emits populated numeric total rows without a label.
+ // Name these exact known summary rows only when their detail supports the sum.
+ for(const [match,row,label,metric,detail] of [
+  ['GS廣告活動',2,1,2,3],['GS群組',2,1,3,3],
+  ['GS關鍵字',2,1,4,3],['GS廣告文案',2,1,2,3],
+  ['GS網頁連結額外資訊',2,1,2,3],['GS關鍵字報表',3,1,4,4],
+  ['廣告',2,1,3,3]]){
+  if(match===name)v353MarkKnownTotal(ws,row,label,metric,detail);
+ }
+ const list=[];
+ const mk=(row,header,first,cols,kind,head=1)=>list.push({row,header,first,last:ws.rowCount,cols,kind,head});
+ if(name==='GS日報表'){
+  if(v353IsTotalTitle(ws.getCell('A7').value)){
+   const adv=v353MetricKind(ws.getCell('H6').value)==='cost'&&v353MetricKind(ws.getCell('D6').value)==='conv';
+   mk(7,6,8,adv?[2,8]:[2,6],adv?{2:'impr',3:'click',4:'conv',5:'ctr',6:'cpc',7:'cpa',8:'cost'}:{2:'impr',3:'click',4:'cost',5:'cpc',6:'ctr'});
+  }
+ }else if(name==='GS廣告活動'){
+  if(v353IsTotalTitle(ws.getCell('A2').value)){
+   const advanced=v353MetricKind(ws.getCell('B1').value)==='impr';
+   mk(2,1,3,advanced?[2,8]:[3,7],advanced?{2:'impr',3:'click',4:'conv',5:'ctr',6:'cpc',7:'cpa',8:'cost'}:{3:'impr',4:'click',5:'cost',6:'cpc',7:'ctr'});
+  }
+ }else if(name==='GS群組'){
+  if(v353IsTotalTitle(ws.getCell('A2').value)||v353IsTotalTitle(ws.getCell('B2').value))
+   mk(2,1,3,[3,9],{3:'impr',4:'click',5:'conv',6:'ctr',7:'cpc',8:'cpa',9:'cost'},v353IsTotalTitle(ws.getCell('A2').value)?1:2);
+ }else if(name==='GS關鍵字'){
+  if(v353IsTotalTitle(ws.getCell('A2').value)||v353IsTotalTitle(ws.getCell('C2').value))
+   mk(2,1,3,[4,10],{4:'impr',5:'click',6:'conv',7:'cost',8:'cpc',9:'ctr',10:'cpa'},v353IsTotalTitle(ws.getCell('A2').value)?1:3);
+ }else if(name==='GS關鍵字報表'){
+  if(v353IsTotalTitle(ws.getCell('A3').value)||v353IsTotalTitle(ws.getCell('C3').value))
+   mk(3,2,4,[4,8],{4:'impr',5:'click',6:'cost',7:'cpc',8:'ctr'},v353IsTotalTitle(ws.getCell('A3').value)?1:3);
+ }else if(['GS廣告文案','GS網頁連結額外資訊','AI MAX搜尋字詞'].includes(name)){
+  const spec={2:'impr',3:'click',4:'conv',5:'cost',6:'cpc',7:'ctr',8:'cpa'};
+  if(v353IsTotalTitle(ws.getCell('A2').value))mk(2,1,3,[2,8],spec);
+ }else if(name==='廣告'){
+  if(v353IsTotalTitle(ws.getCell('A2').value))mk(2,1,3,[3,10],{3:'impr',4:'click',5:'conv',6:'value',7:'cost',8:'cpa',9:'cpc',10:'ctr'});
+ }else if(name==='PMAX'){
+  if(v353IsTotalTitle(ws.getCell('A9').value))mk(9,7,10,[2,10],{2:'impr',3:'click',4:'cost',5:'conv',6:'value',7:'ctr',8:'cpc',9:'cpa',10:'roas'});
+  if(v353IsTotalTitle(ws.getCell('M9').value))mk(9,7,10,[14,22],{14:'impr',15:'click',16:'cost',17:'conv',18:'value',19:'ctr',20:'cpc',21:'cpa',22:'roas'},13);
+ }else if(/^\d{4}$/.test(name)){
+  if(v353IsTotalTitle(ws.getCell('A9').value))mk(9,8,10,[2,8],{2:'impr',3:'click',4:'cost',5:'conv',6:'ctr',7:'cpc',8:'cpi'});
+  if(v353IsTotalTitle(ws.getCell('K9').value))mk(9,8,10,[12,18],{12:'impr',13:'click',14:'cost',15:'conv',16:'ctr',17:'cpc',18:'cpi'},11);
+ }
+ return list;
+}
+function v353GenericPanels(ws, known){
+ const proposals=[];
+ const maxCol=Math.min(ws.columnCount||30,40),rowCount=ws.rowCount;
+ for(let row=1;row<=rowCount;row++){
+  for(let col=1;col<=maxCol;col++){
+   if(!v353IsTotalTitle(ws.getCell(row,col).value)||known.has(row+':'+col))continue;
+   let header=0,score=0,kind={};
+   for(let r=Math.max(1,row-12);r<row;r++){
+    const candidate={};let points=0;
+    for(let c=col+1;c<=Math.min(maxCol,col+14);c++){
+     const k=v353MetricKind(ws.getCell(r,c).value);
+     if(k){candidate[c]=k;points++}
+    }
+    if(points>=2&&(points>score||points===score&&r>header)){
+     header=r;score=points;kind=candidate;
+    }
+   }
+   if(score<2)continue; // Do not guess an action-summary or budget block.
+   let first,last;
+   if(row<=header+2){
+    first=row+1;last=rowCount;let streak=0,seen=false;
+    for(let r=first;r<=rowCount;r++){
+     const has=Object.keys(kind).some(c=>v353HasActual(ws.getCell(r,Number(c))))&&
+       ![...Array(Math.min(2,col))].some((_,i)=>v353IsTotalTitle(ws.getCell(r,i+1).value));
+     if(has){seen=true;streak=0}else if(seen&&++streak>=3){last=r-3;break}
+    }
+   }else{first=header+1;last=row-1}
+   if(first>last)continue;
+   const cols=[Math.min(...Object.keys(kind).map(Number)),Math.max(...Object.keys(kind).map(Number))];
+   proposals.push({row,header,first,last,cols,kind,head:col});
+  }
+ }
+ return proposals;
+}
+function v353EnsureTotalFormulas(wb){
+ if(!wb?.worksheets)return wb;
+ const stats={panels:0,replaced:0};
+ for(const ws of wb.worksheets){
+  if(ws.name.startsWith('_')||ws.state==='veryHidden'||ws.name==='上刊圖')continue;
+  const named=v353NamedPanels(ws),known=new Set(named.map(p=>p.row+':'+p.head));
+  for(const cfg of named)v353Panel(ws,cfg,stats);
+  for(const cfg of v353GenericPanels(ws,known))v353Panel(ws,cfg,stats);
+ }
+ wb.calcProperties=wb.calcProperties||{};
+ wb.calcProperties.fullCalcOnLoad=true;
+ wb.__v353TotalsDiagnostics=stats;
+ const cfg=wb.getWorksheet('_google_config');
+ if(cfg){
+  let previous={};try{previous=JSON.parse(String(cfg.getCell('A2').value||'{}'))}catch(e){}
+  cfg.getCell('A1').value='Google Ads Report Generator V3.53 / config';
+  cfg.getCell('A2').value=JSON.stringify({...previous,_googleVersion:'3.53'});
+ }
+ return wb;
+}
+/* END V3.53 */
+
 /* 匯出前統一所有工作表（包含保留範本及合併儲存格）的字型，不變動其他格式。 */
 function enforceMicrosoftJhengHeiWorkbook(workbook) {
   if (!workbook || !Array.isArray(workbook.worksheets)) return workbook;
+  v349CleanExportWorkbook(workbook);
+  v351FixAiMaxTotal(workbook);
+  v353EnsureTotalFormulas(workbook);
+  v350FinishWorkbook(workbook);
+  v352NormalizeNumberFormats(workbook);
+  const v353Config=workbook.getWorksheet('_google_config');
+  if(v353Config){
+    let v353Old={};try{v353Old=JSON.parse(String(v353Config.getCell('A2').value||'{}'))}catch(e){}
+    v353Config.getCell('A1').value='Google Ads Report Generator V3.53 / config';
+    v353Config.getCell('A2').value=JSON.stringify({...v353Old,_googleVersion:'3.53'});
+  }
   for (const sheet of workbook.worksheets) {
     sheet.eachRow({ includeEmpty: true }, row => {
       row.eachCell({ includeEmpty: true }, cell => {
@@ -5384,4 +6078,667 @@ function enforceMicrosoftJhengHeiWorkbook(workbook) {
   }
   return workbook;
 }
+
+/* V3.54 | YouTube video-view summary rows and column-A tail cleanup.
+   Do not merge either summary row. Put the requested live Excel formulas
+   in the LAST main-table column (H), not the former E:H merged master.
+   Run after all legacy formatting, especially V3.42's A17:A74 border copy. */
+function v354MetricNumber(cell) {
+  const v=cell?.value;
+  if (typeof v === 'number' && Number.isFinite(v)) return v;
+  if (v && typeof v === 'object' && typeof v.result === 'number' && Number.isFinite(v.result)) return v.result;
+  return null;
+}
+function v354FixYtViewSummary(workbook) {
+  if (!workbook?.worksheets || typeKey()!=='YT_VIEW') return workbook;
+  const ws=workbook.worksheets.find(w=>w.name!=='_google_config' && w.name!=='上刊圖' && w.state!=='veryHidden');
+  if (!ws) return workbook;
+  let budgetRow=0, rateRow=0;
+  // Both rows can move to the day immediately following the final reporting date.
+  for (let r=1; r<=ws.rowCount; r++) {
+    const label=String(ws.getCell(r,1).value??'').replace(/[\s　]/g,'');
+    if (label==='總預算') budgetRow=r;
+    if (label==='總執行率') rateRow=r;
+  }
+  if (!budgetRow || !rateRow || rateRow!==budgetRow+1) return workbook;
+  const yellow={type:'pattern',pattern:'solid',fgColor:{argb:'FFFFFF00'}};
+  const stroke=(style)=>({style,color:{argb:'FF000000'}});
+  // Unmerge across ALL eight columns so no E:H merge can survive, including
+  // the original static template's E75:H75/E76:H76 ranges.
+  for (const r of [budgetRow,rateRow]) {
+    ws.unMergeCells(`A${r}:H${r}`);
+    for (let c=1;c<=8;c++) {
+      const cell=ws.getCell(r,c);
+      if (c>1 && c<8) cell.value=null;
+      cell.fill={...yellow,fgColor:{...yellow.fgColor}};
+      cell.font={...(cell.font||{}),name:'微軟正黑體',bold:true,color:{argb:'FF000000'}};
+      cell.border={
+        top:stroke(r===budgetRow?'medium':'thin'),
+        bottom:stroke(r===rateRow?'medium':'thin'),
+        ...(c===1?{left:stroke('medium')}:{left:stroke('thin')}),
+        ...(c===8?{right:stroke('medium')}:{right:stroke('thin')})
+      };
+    }
+  }
+  ws.getCell(budgetRow,1).value='總預算';
+  ws.getCell(rateRow,1).value='總執行率';
+  const budget=v354MetricNumber(ws.getCell('B2'));
+  const clicks=v354MetricNumber(ws.getCell('D9'));
+  const totalBudget=ws.getCell(budgetRow,8);
+  totalBudget.value=budget===null?{formula:'B2'}:{formula:'B2',result:budget};
+  totalBudget.numFmt='#,##0.00';
+  totalBudget.alignment={...(totalBudget.alignment||{}),horizontal:'right'};
+  const execution=ws.getCell(rateRow,8);
+  const result=budget===null||clicks===null?null:budget===0?'-':clicks/budget;
+  execution.value=result===null?{formula:'IFERROR(D9/B2,"-")'}:{formula:'IFERROR(D9/B2,"-")',result};
+  execution.numFmt='0.00%';
+  execution.alignment={...(execution.alignment||{}),horizontal:'right'};
+  // The A column below '總執行率' is intentionally blank and UNBORDERED;
+  // no dated-data-table border may leak into this unused template tail.
+  for (let r=rateRow+1; r<=Math.max(76,ws.rowCount); r++) {
+    const cell=ws.getCell(r,1);
+    cell.border={};
+    cell.fill={type:'pattern',pattern:'none'};
+  }
+  workbook.calcProperties=workbook.calcProperties||{};
+  workbook.calcProperties.fullCalcOnLoad=true;
+  return workbook;
+}
+const v354PreviousExportCleanup=enforceMicrosoftJhengHeiWorkbook;
+enforceMicrosoftJhengHeiWorkbook=function(workbook){
+  const result=v354PreviousExportCleanup(workbook);
+  v354FixYtViewSummary(result);
+  const cfg=result?.getWorksheet('_google_config');
+  if (cfg) {
+    let obj={};try{obj=JSON.parse(String(cfg.getCell('A2').value||'{}'))}catch(e){}
+    cfg.getCell('A1').value='Google Ads Report Generator V3.54 / config';
+    cfg.getCell('A2').value=JSON.stringify({...obj,_googleVersion:'3.54'});
+  }
+  return result;
+};
+/* END V3.54 */
+
+/* V3.55 | DATE ALIGNMENT / OUTER-ONLY YT SUMMARY ROWS / SEMANTIC NUMBER FORMATS.
+   This is an EXPORT-TIME finishing pass over the finished workbook.
+   Changes display formatting only; numeric values and formula expressions
+   are never rounded, scaled, or replaced with text. */
+function v355Plain(v) {
+  return String(v===null||v===undefined?'':v).normalize('NFKC').replace(/[\s\u3000:_：()（）]/g,'').toLowerCase();
+}
+function v355LabelKind(text) {
+  const t=v355Plain(text);
+  if(!t || /^[-+<>≤≥≦≧]?[\d,.]+[%％]?$/.test(t))return '';
+  if(/(?:roas|cpc|cpa|cpl|cpm|cpv|cpi|lcpc|平均客單價|客單價|單次轉換成本|每次點擊費用|每次轉換費用|每次轉換成本|每次觀看費用|每次觀看成本|每千次曝光費用|每次安裝成本|平均單次費用)/.test(t)) return 'decimal';
+  if(/(?:%|％|百分比|曝光比重|曝光佔比|曝光占比|錯失曝光|點擊率|觀看率|轉換率|執行率|達成率|互動率|lctr|\bctr\b|\bvtr\b|\bcvr\b|\brate\b)/i.test(t))return 'percent';
+  if(/(?:曝光|impressions?|點擊|clicks?|觀看次數|影片觀看|trueview|views?|轉換|conversions?|名單|購買|安裝|訂閱|筆數|次數|預算|剩餘|費用|花費|成本|spend|cost|金額|營收|價值|revenue|業績|觸及|reach|互動|engagements?)/i.test(t))return 'integer';
+  return '';
+}
+function v355IsDateTitle(text){
+  const t=v355Plain(text);
+  return /^(?:日期|投放日期|成效日期|報表日期|廣告日期|day|date|日期日|投放日)$/.test(t);
+}
+function v355DateValue(value) {
+  if(value instanceof Date)return true;
+  if(typeof value!=='string')return false;
+  const s=value.trim();
+  // Don't mistake campaign ranges or date-like campaign identifiers for date cells.
+  return /^(?:20\d{2}[\/-])?\d{1,2}[\/-]\d{1,2}(?:\s*\([^)]*\)|\s*[（(][^）)]*[）)])?$/.test(s)
+    || /^20\d{2}[\/-]\d{1,2}[\/-]\d{1,2}(?:\s+\d{1,2}:\d{2}(?::\d{2})?)?$/.test(s)
+    || /^\d{1,2}月\d{1,2}日$/.test(s);
+}
+function v355FormulaOf(cell){
+  const v=cell.value;
+  return v && typeof v==='object' && (typeof v.formula==='string'?v.formula:(typeof v.sharedFormula==='string'?v.sharedFormula:'')) || '';
+}
+function v355IsTotal(cell){
+  return typeof v353IsTotalTitle==='function' && v353IsTotalTitle(cell?.value);
+}
+function v355SummaryMetric(ws,cell,allHeaderRows){
+  const col=cell.col,row=cell.row;
+  // Labels immediately to the left of a value take precedence in KPI blocks.
+  for(let offset=1;offset<=2;offset++){
+    if(col-offset<1)break;
+    const left=ws.getCell(row,col-offset);
+    if(typeof left.value==='string'&&!v355IsTotal(left)){
+      const kind=v355LabelKind(left.value);
+      if(kind)return kind;
+    }
+  }
+  // Normal table: nearest header in THIS column above the value.
+  const marks=allHeaderRows.get(col)||[];
+  for(let i=marks.length-1;i>=0;i--){
+    if(marks[i].row<row)return marks[i].kind;
+  }
+  return '';
+}
+function v355FinishNumberAndDates(workbook){
+  if(!workbook?.worksheets)return workbook;
+  for(const ws of workbook.worksheets){
+    if(ws.name.startsWith('_')||ws.state==='veryHidden'||ws.name==='上刊圖')continue;
+    const headers=new Map(),dateHeaders=new Map();
+    ws.eachRow({includeEmpty:false},row=>row.eachCell({includeEmpty:false},cell=>{
+      if(typeof cell.value!=='string')return;
+      const kind=v355LabelKind(cell.value);
+      if(kind){if(!headers.has(cell.col))headers.set(cell.col,[]);headers.get(cell.col).push({row:cell.row,kind});}
+      if(v355IsDateTitle(cell.value)){
+        if(!dateHeaders.has(cell.col))dateHeaders.set(cell.col,[]);
+        dateHeaders.get(cell.col).push(cell.row);
+      }
+    }));
+    ws.eachRow({includeEmpty:false},row=>row.eachCell({includeEmpty:false},cell=>{
+      if(cell.isMerged&&cell.master&&cell.master!==cell)return;
+      const value=cell.value,formula=v355FormulaOf(cell),numeric=typeof value==='number'&&Number.isFinite(value);
+      const isDate=value instanceof Date || (typeof v352IsDateFormat==='function'&&v352IsDateFormat(cell.numFmt));
+      const columnHasDateHeader=(dateHeaders.get(cell.col)||[]).some(headerRow=>headerRow<cell.row);
+      const dateByText=v355DateValue(value)&&(columnHasDateHeader||cell.col===1);
+      const dateByColumn=columnHasDateHeader && (numeric || value instanceof Date || dateByText);
+      if(isDate||dateByText||dateByColumn){
+        cell.alignment={...(cell.alignment||{}),horizontal:'left'};
+        return;
+      }
+      if(!numeric&&!formula)return; // text, identifiers, and '<10%' remain as-is
+      const old=String(cell.numFmt||'General');
+      const kind=v355SummaryMetric(ws,cell,headers);
+      // Explicit percentage format always wins, including total execution rate.
+      if(old.includes('%')||kind==='percent'){
+        cell.numFmt='0.00%';
+      }else{
+        // Count, conversion, spend, value, budgets, and SUM total rows:
+        // display whole numbers with grouping, even if a SUM is a formula.
+        const f=formula.replace(/^\s*=/,'').trim();
+        const additive=/^(?:SUM|SUBTOTAL|SUMIF|SUMIFS)\s*\(/i.test(f);
+        const directSource=/^\$?[A-Z]{1,3}\$?\d+$/i.test(f);
+        const decimal=kind==='decimal'||(kind!=='integer'&&!!formula&&!additive&&!directSource);
+        cell.numFmt=typeof v352CustomFormat==='function'
+          ? v352CustomFormat(old,decimal)
+          : (decimal?'#,##0.00':'#,##0');
+      }
+      cell.alignment={...(cell.alignment||{}),horizontal:'right'};
+    }));
+  }
+  workbook.calcProperties=workbook.calcProperties||{};
+  workbook.calcProperties.fullCalcOnLoad=true;
+  return workbook;
+}
+function v355FixYtViewOuterBorders(workbook){
+  if(!workbook?.worksheets||typeKey()!=='YT_VIEW')return workbook;
+  const ws=workbook.worksheets.find(w=>w.name!=='_google_config'&&w.name!=='上刊圖'&&w.state!=='veryHidden');
+  if(!ws)return workbook;
+  let budgetRow=0,rateRow=0;
+  for(let r=1;r<=ws.rowCount;r++){
+    const label=v355Plain(ws.getCell(r,1).value);
+    if(label==='總預算')budgetRow=r;
+    else if(label==='總執行率')rateRow=r;
+  }
+  if(!budgetRow||rateRow!==budgetRow+1)return workbook;
+  const stroke=()=>({style:'medium',color:{argb:'FF000000'}});
+  for(const r of [budgetRow,rateRow]){
+    ws.unMergeCells(`A${r}:H${r}`);
+    for(let c=1;c<=8;c++){
+      const cell=ws.getCell(r,c);
+      // Every row is one large outer rectangle, no internal cell lines.
+      cell.border={top:stroke(),bottom:stroke(),...(c===1?{left:stroke()}:{}),...(c===8?{right:stroke()}:{})};
+    }
+  }
+  const budget=ws.getCell(budgetRow,8);
+  // Keep the live Excel reference created by V3.54; only change its format.
+  budget.numFmt='#,##0';
+  budget.alignment={...(budget.alignment||{}),horizontal:'right'};
+  const rate=ws.getCell(rateRow,8);
+  rate.numFmt='0.00%';
+  rate.alignment={...(rate.alignment||{}),horizontal:'right'};
+  // Keep all blank A cells below the last yellow summary row borderless.
+  for(let r=rateRow+1;r<=Math.max(76,ws.rowCount);r++){
+    const cell=ws.getCell(r,1);
+    cell.border={};
+    cell.fill={type:'pattern',pattern:'none'};
+  }
+  return workbook;
+}
+const v355PreviousExportCleanup=enforceMicrosoftJhengHeiWorkbook;
+enforceMicrosoftJhengHeiWorkbook=function(workbook){
+  const result=v355PreviousExportCleanup(workbook);
+  v355FinishNumberAndDates(result);
+  v355FixYtViewOuterBorders(result);
+  const cfg=result?.getWorksheet('_google_config');
+  if(cfg){
+    let old={};try{old=JSON.parse(String(cfg.getCell('A2').value||'{}'))}catch(e){}
+    cfg.getCell('A1').value='Google Ads Report Generator V3.55 / config';
+    cfg.getCell('A2').value=JSON.stringify({...old,_googleVersion:'3.55'});
+  }
+  return result;
+};
+/* END V3.55 */
+
+/* V3.56 - YT VIEW TOTALS: correct ALL 3 "素材總計" rows and retain cached
+   Excel formula results. Previous code wrote formulas without result caches, so
+   some viewers displayed blanks despite populated source details. Right-side
+   tables can shift when optional video-progress columns are selected. */
+function v356ColumnName(index){
+  let out='';for(let i=index;i>0;i=Math.floor((i-1)/26))out=String.fromCharCode(65+(i-1)%26)+out;
+  return out;
+}
+function v356Numeric(cell){
+  const value=cell?.value;
+  if(typeof value==='number'&&Number.isFinite(value))return value;
+  if(value&&typeof value==='object'&&typeof value.result==='number'&&Number.isFinite(value.result))return value.result;
+  if(typeof value==='string'&&/^[-+]?\d[\d,]*(\.\d+)?$/.test(value.trim()))return Number(value.replace(/,/g,''));
+  return null;
+}
+function v356SumCells(ws,first,last,col){
+  let sum=0;for(let r=first;r<=last;r++){
+    const cell=ws.getCell(r,col),n=v356Numeric(cell);
+    if(n!==null)sum+=n;
+    else if(cell?.value&&typeof cell.value==='object'&&(cell.value.formula||cell.value.sharedFormula)){
+      throw Error(`YT ${ws.name}!${v356ColumnName(col)}${r}：明細公式缺少可驗證的數值，已停止匯出以免總計錯誤`);
+    }
+  }
+  return sum;
+}
+function v356WriteFormula(ws,row,col,formula,result,format){
+  const cell=ws.getCell(row,col);
+  cell.value={formula,result};
+  cell.numFmt=format;
+  cell.alignment={...(cell.alignment||{}),horizontal:'right'};
+  cell.font={...(cell.font||{}),bold:true,name:'微軟正黑體'};
+}
+function v356PatchYtBlock(ws,headCol,totalRow,first,last){
+  const name=String(ws.getCell(totalRow,headCol).value||'').replace(/[\s　]/g,'');
+  if(name!=='素材總計')throw Error(`YT 觀看報表 ${v356ColumnName(headCol)}${totalRow}：找不到素材總計列，停止匯出避免產出錯表`);
+  const sums=[];
+  for(let i=1;i<=4;i++){
+    const col=headCol+i,letter=v356ColumnName(col);
+    const result=v356SumCells(ws,first,last,col);
+    v356WriteFormula(ws,totalRow,col,`SUM(${letter}${first}:${letter}${last})`,result,'#,##0');
+    sums.push(result);
+  }
+  // [impressions, video views, clicks, advertising spend] ->
+  // CTR=clicks/impressions; VTR=views/impressions; CPV=spend/views.
+  const specs=[
+    {index:5,numerator:3,denominator:1,fmt:'0.00%'},
+    {index:6,numerator:2,denominator:1,fmt:'0.00%'},
+    {index:7,numerator:4,denominator:2,fmt:'#,##0.00'}
+  ];
+  for(const spec of specs){
+    const n=sums[spec.numerator-1],d=sums[spec.denominator-1];
+    const numerator=v356ColumnName(headCol+spec.numerator)+totalRow;
+    const denominator=v356ColumnName(headCol+spec.denominator)+totalRow;
+    const formula=`IFERROR(IF(${denominator}=0,"-",${numerator}/${denominator}),"-")`;
+    v356WriteFormula(ws,totalRow,headCol+spec.index,formula,d===0?'-':n/d,spec.fmt);
+  }
+  return {nameCol:headCol,totalRow,first,last,imprCol:headCol+1,afterBase:headCol+8};
+}
+function v356WeightedColumn(ws,row,first,last,weightCol,valueCol){
+  const w=v356ColumnName(weightCol),v=v356ColumnName(valueCol);
+  const wRange=`${w}${first}:${w}${last}`,vRange=`${v}${first}:${v}${last}`;
+  let numerator=0,denominator=0;
+  for(let r=first;r<=last;r++){
+    const weight=v356Numeric(ws.getCell(r,weightCol));
+    const value=v356Numeric(ws.getCell(r,valueCol));
+    if(weight!==null && weight>0 && value!==null){numerator+=weight*value;denominator+=weight}
+  }
+  const formula=`IFERROR(IF(SUMPRODUCT(${wRange},--ISNUMBER(${vRange}))=0,"-",SUMPRODUCT(${wRange},${vRange})/SUMPRODUCT(${wRange},--ISNUMBER(${vRange}))),"-")`;
+  v356WriteFormula(ws,row,valueCol,formula,denominator?numerator/denominator:'-','0.00%');
+}
+function v356FixYtViewTotals(wb){
+  if(!wb?.worksheets || typeKey()!=='YT_VIEW')return wb;
+  const ws=wb.worksheets.find(s=>s.name!=='_google_config'&&s.name!=='上刊圖'&&s.state!=='veryHidden');
+  if(!ws)return wb;
+  // Locate the main day's final row; summary rows can move dynamically by date.
+  let cutoff=74;
+  for(let r=10;r<=Math.min(76,ws.rowCount);r++){
+    const label=String(ws.getCell(r,1).value||'').replace(/[\s　]/g,'');
+    if(label==='總預算'||label==='總執行率'){cutoff=Math.min(cutoff,r-1);break}
+  }
+  const panels=[];
+  if(String(ws.getCell(9,1).value||'').replace(/[\s　]/g,'')!=='素材總計'){
+    throw Error('YT 觀看報表 A9 的「素材總計」遺失，已停止匯出');
+  }
+  panels.push(v356PatchYtBlock(ws,1,9,10,Math.max(10,cutoff)));
+  // Video progress options shift the J:Q panels to the right; NEVER rely on
+  // fixed J14 or J22 addresses when those options are enabled.
+  for(const row of [14,22]){
+    const columns=[];
+    for(let col=9;col<=Math.min(36,ws.columnCount+2);col++){
+      if(String(ws.getCell(row,col).value||'').replace(/[\s　]/g,'')==='素材總計')columns.push(col);
+    }
+    if(columns.length!==1)throw Error(`YT 觀看報表第 ${row} 列的素材總計區塊異常（找到 ${columns.length} 處），已停止匯出`);
+    panels.push(v356PatchYtBlock(ws,columns[0],row,row===14?9:19,row===14?13:21));
+  }
+  // Optional 25/50/75/100 percent video-playback columns: do NOT sum their
+  // percentages. Recompute an impression-weighted result from detail rows.
+  const daily=panels[0],audience=panels[1],creative=panels[2];
+  for(let col=9;col<audience.nameCol-1;col++){
+    const header=String(ws.getCell(7,col).value||'');
+    if(header.includes('影片播放進度'))v356WeightedColumn(ws,9,10,daily.last,2,col);
+  }
+  for(const panel of [audience,creative]){
+    const headerRow=panel.totalRow===14?7:17;
+    for(let col=panel.afterBase;col<=Math.min(ws.columnCount,panel.afterBase+4);col++){
+      if(String(ws.getCell(headerRow,col).value||'').includes('影片播放進度')){
+        v356WeightedColumn(ws,panel.totalRow,panel.first,panel.last,panel.imprCol,col);
+      }
+    }
+  }
+  // With the daily total D9 now cached, keep the dynamic budget/execution
+  // rows cached as well; some previewers otherwise display an empty percentage.
+  for(let r=10;r<=Math.min(77,ws.rowCount);r++){
+    if(String(ws.getCell(r,1).value||'').replace(/[\s　]/g,'')==='總預算'){
+      const money=v356Numeric(ws.getCell(2,2));
+      v356WriteFormula(ws,r,8,'B2',money===null?'':money,'#,##0');
+      if(String(ws.getCell(r+1,1).value||'').replace(/[\s　]/g,'')==='總執行率'){
+        const clicks=v356Numeric(ws.getCell(9,4));
+        const rate=money===null||clicks===null||money===0?'-':clicks/money;
+        v356WriteFormula(ws,r+1,8,'IFERROR(D9/B2,"-")',rate,'0.00%');
+      }
+      break;
+    }
+  }
+  // Audit each required total: all 7 columns must contain a real Excel
+  // formula AND a cached result. No viewer should show an empty total.
+  for(const panel of panels){
+    for(let col=panel.nameCol+1;col<=panel.nameCol+7;col++){
+      const value=ws.getCell(panel.totalRow,col).value;
+      if(!value||typeof value.formula!=='string'||!Object.prototype.hasOwnProperty.call(value,'result')){
+        throw Error(`YT 觀看報表 ${v356ColumnName(col)}${panel.totalRow} 缺少總計公式或計算快取`);
+      }
+    }
+  }
+  wb.calcProperties=wb.calcProperties||{};wb.calcProperties.fullCalcOnLoad=true;
+  return wb;
+}
+const v356EarlierExportFinisher=enforceMicrosoftJhengHeiWorkbook;
+enforceMicrosoftJhengHeiWorkbook=function(workbook){
+  const result=v356EarlierExportFinisher(workbook);
+  v356FixYtViewTotals(result);
+  const config=result?.getWorksheet('_google_config');
+  if(config){
+    let prior={};try{prior=JSON.parse(String(config.getCell('A2').value||'{}'))}catch(e){}
+    config.getCell('A1').value='Google Ads Report Generator V3.56 / config';
+    config.getCell('A2').value=JSON.stringify({...prior,_googleVersion:'3.56'});
+  }
+  return result;
+};
+/* END V3.56 */
+/* V3.57 — GS 多國轉換：四階層分頁、國家隔離與轉換動作數值檢核。
+   僅修改 GS_MULTI_COUNTRY，其餘報表類型沿用 V3.56。 */
+const V357_VERSION='3.57';
+let v357EventRows=[];
+let v357EventSchema={conv:false,all:false,date:false,campaign:false,country:false};
+let v357EventsLoading=false,v357EventsError='';
+function v357Norm(v){return String(v??'').normalize('NFKC').trim().replace(/\s+/g,' ').toLowerCase();}
+function v357Country(v){
+ const s=v357Norm(v).replace(/[_.\s\-/]/g,'');
+ if(['de','deu','germany','deutschland','德國','德国'].includes(s))return 'germany';
+ if(['in','ind','india','印度'].includes(s))return 'india';
+ return s;
+}
+function v357KnownCampaignName(input){
+ const known=[...new Set(entries.map(r=>r.campaign).filter(Boolean))];
+ const exact=known.filter(n=>v357Norm(n)===v357Norm(input));
+ if(exact.length===1)return exact[0];
+ const loose=known.filter(n=>gsCampaignKey(n)===gsCampaignKey(input));
+ return loose.length===1?loose[0]:null; // 同名清洗鍵有歧義時，不猜測對應 Campaign
+}
+function v357FindColumn(head,aliases){return gsConvFindColumn(head,aliases);}
+async function v357LoadEvents(file){
+ v357EventsLoading=true;v357EventsError='';v357EventRows=[];
+ v357EventSchema={conv:false,all:false,date:false,campaign:false,country:false};
+ refresh();
+ if(!file){v357EventsLoading=false;refresh();return;}
+ try{
+  const grid=await readGrid(file);let best=null;
+  for(let i=0;i<Math.min(80,grid.length);i++){
+   const h=grid[i];
+   const cols={
+    action:v357FindColumn(h,[...gsConvAliases.action,'轉換事件','事件名稱','action name']),
+    conv:v357FindColumn(h,['轉換','轉換次數','轉換數','conversions','conv.','conversions (by conv. time)']),
+    all:v357FindColumn(h,['所有轉換','所有轉換次數','all conv.','all conv','all conversions','all conversions (by conv. time)']),
+    date:v357FindColumn(h,gsConvAliases.date),
+    campaign:v357FindColumn(h,gsConvAliases.campaign),
+    country:v357FindColumn(h,['國家/地區','國家／地區','國家','地區','地理位置','country','country/territory','country / territory','location','country name'])
+   };
+   if(cols.action<0||(cols.conv<0&&cols.all<0))continue;
+   const score=(cols.campaign>=0?4:0)+(cols.country>=0?4:0)+(cols.date>=0?2:0)+(cols.conv>=0?1:0)+(cols.all>=0?1:0);
+   if(!best||score>best.score)best={i,cols,score};
+  }
+  if(!best)throw Error('找不到「轉換動作」與「轉換／所有轉換」欄位');
+  const {cols}=best;
+  v357EventSchema={conv:cols.conv>=0,all:cols.all>=0,date:cols.date>=0,campaign:cols.campaign>=0,country:cols.country>=0};
+  for(const record of grid.slice(best.i+1)){
+   const action=String(record[cols.action]??'').trim();
+   if(!action||/^(總計|合計|小計|total|subtotal)(?:\s|$)/i.test(action))continue;
+   const date=cols.date>=0?dateIso(record[cols.date]):'';
+   if(cols.date>=0&&!date)continue;
+   const country=cols.country>=0?v357Country(record[cols.country]):'';
+   const rawCampaign=cols.campaign>=0?String(record[cols.campaign]??'').trim():'';
+   const knownCampaign=rawCampaign?v357KnownCampaignName(rawCampaign):null;
+   const rawConv=cols.conv>=0?String(record[cols.conv]??'').trim():'';
+   const rawAll=cols.all>=0?String(record[cols.all]??'').trim():'';
+   if(!rawConv&&!rawAll)continue;
+   v357EventRows.push({action,date,country,rawCampaign,campaign:knownCampaign,
+     conv:rawConv?numeric(rawConv):null,all:rawAll?numeric(rawAll):null});
+  }
+  if(!v357EventRows.length)throw Error('辨識到表頭，但沒有有效轉換事件資料列');
+  if(!v357EventSchema.campaign&&!v357EventSchema.country&&v331Countries.length>1)
+   throw Error('同時缺少「廣告活動」與「國家／地區」，無法辨識各國的轉換事件');
+  const status=$('gsConversionsStatus');
+  const hints=[];
+  for(const c of v331Countries){
+   const selected=entries.filter(r=>c.campaigns.includes(r.campaign)&&(!$('start').value||r.date>=$('start').value)&&(!$('end').value||r.date<=$('end').value));
+   const actions=v357Actions(selected);
+   const n=actions.reduce((s,x)=>s+(x.all??x.conv??0),0);
+   hints.push(c.name+'：'+actions.length+' 種事件'+(actions.length?'，'+(v357EventSchema.all?'所有轉換':'轉換')+' '+Number(n.toFixed(4)):'（未對應）'));
+  }
+  status.textContent='✓ 多國事件表頭第 '+(best.i+1)+' 列，'+v357EventRows.length+' 筆明細；'+hints.join('；')+
+   (!v357EventSchema.conv?'。未提供「轉換」欄，J 欄顯示 —（不以所有轉換冒充）':'')+
+   (!v357EventSchema.all?'。未提供「所有轉換」欄，K 欄顯示 —':'')+
+   (!v357EventSchema.date?'。明細無日期，僅在涵蓋 Raw Data 完整日期範圍時對應':'');
+ }catch(err){v357EventsError=err.message||String(err);v357EventRows=[];
+   $('gsConversionsStatus').textContent='⚠ 多國轉換事件解析失敗：'+v357EventsError;}
+ finally{v357EventsLoading=false;refresh();}
+}
+$('gsConversions').addEventListener('change',e=>{void v357LoadEvents(e.target.files?.[0]);});
+function v357Actions(selected){
+ if(!v357EventRows.length||!selected?.length)return [];
+ const campaigns=new Set(selected.map(r=>r.campaign));
+ const countryCandidates=v331Countries.filter(c=>selected.some(r=>c.campaigns.includes(r.campaign)));
+ if(countryCandidates.length!==1)return []; // 無法確定國家，不能混計
+ const country=v357Country(countryCandidates[0].name);
+ const dates=new Set(selected.map(r=>r.date));
+ const rangeStart=$('start').value,rangeEnd=$('end').value;
+ const allDates=entries.filter(r=>campaigns.has(r.campaign)).map(r=>r.date);
+ const wholePeriod=!allDates.some(d=>rangeStart&&d<rangeStart||rangeEnd&&d>rangeEnd);
+ const collected=new Map();
+ for(const row of v357EventRows){
+  if(row.country && row.country!==country)continue;
+  if(row.rawCampaign){if(!row.campaign||!campaigns.has(row.campaign))continue;}
+  else if(!row.country)continue; // 跨國資料不能以空白國家、空白活動猜測
+  if(row.date){if(!dates.has(row.date))continue;}
+  else if(!wholePeriod)continue; // 缺日期的轉換明細無法切出部分走期
+  const key=v357Norm(row.action);
+  if(!collected.has(key))collected.set(key,{name:row.action,conv:0,all:0,hasConv:false,hasAll:false});
+  const t=collected.get(key);
+  if(row.conv!==null){t.conv+=row.conv;t.hasConv=true;}
+  if(row.all!==null){t.all+=row.all;t.hasAll=true;}
+ }
+ return [...collected.values()].map(v=>({name:v.name,conv:v.hasConv?v.conv:null,all:v.hasAll?v.all:null}))
+  .sort((a,b)=>(b.all??b.conv??0)-(a.all??a.conv??0)||a.name.localeCompare(b.name,'zh-Hant'));
+}
+// I6:K14 保持原版型；數字由國家／活動／日期三重核對後填入。
+v336Actions=function(selected){return v357Actions(selected);};
+const v357OriginalIssues=v331Issues;
+v331Issues=function(){
+ const issues=v357OriginalIssues();if(issues.length)return issues;
+ if(v357EventsLoading)return ['轉換事件明細尚在讀取，請完成後下載'];
+ if($('gsConversions').files?.length&&v357EventsError)return ['轉換事件明細讀取失敗：'+v357EventsError];
+ return [];
+};
+// 自動辨識名稱中的國家（僅補未分配的 Campaign，不覆蓋使用者設定）。
+const v357PreviousUpload=upload;
+upload=async function(file){
+ await v357PreviousUpload(file);
+ if(!v331Active()||!entries.length)return;
+ const taken=new Set(v331Countries.flatMap(c=>c.campaigns));
+ for(const name of v331CampaignNames()){
+  if(taken.has(name))continue;
+  const candidates=v331Countries.filter(c=>{
+   const n=v357Norm(c.name),campaign=v357Norm(name);
+   return campaign===n||campaign.startsWith(n+'-')||campaign.startsWith(n+'_')||campaign.startsWith(n+' ');
+  });
+  if(candidates.length===1)candidates[0].campaigns.push(name);
+ }
+ v331Render();refresh();
+};
+function v357WriteRatio(ws,row,numerator,denominator,dest,fmt){
+ const n=v340CellNumber(ws.getCell(numerator+row)),d=v340CellNumber(ws.getCell(denominator+row));
+ const value=d?n/d:0;
+ const c=ws.getCell(dest+row);c.value={formula:`IFERROR(${numerator}${row}/${denominator}${row},0)`,result:value};c.numFmt=fmt;
+}
+function v357Totals(ws,first,last,totalRow,counts,cpcNum,cpcDen,cpcCol,ctrNum,ctrDen,ctrCol){
+ for(const col of counts){
+  let result=0;for(let r=first;r<=last;r++)result+=v340CellNumber(ws.getCell(col+r));
+  const c=ws.getCell(col+totalRow);
+  c.value={formula:`SUM(${col}${first}:${col}${last})`,result:+result.toFixed(8)};
+  c.numFmt='#,##0';
+ }
+ for(let r=first;r<=last;r++){
+  const check=ws.getCell(counts[0]+r).value;
+  if(check===null||check===undefined||check==='')continue;
+  v357WriteRatio(ws,r,cpcNum,cpcDen,cpcCol,'#,##0.00');
+  v357WriteRatio(ws,r,ctrNum,ctrDen,ctrCol,'0.00%');
+ }
+ v357WriteRatio(ws,totalRow,cpcNum,cpcDen,cpcCol,'#,##0.00');
+ v357WriteRatio(ws,totalRow,ctrNum,ctrDen,ctrCol,'0.00%');
+}
+function v357CampaignSheet(source,target,selected,name){
+ const ws=v331CopySheet(source,target,name);
+ const by=new Map();for(const r of selected){if(!by.has(r.campaign))by.set(r.campaign,[]);by.get(r.campaign).push(r);}
+ const groups=[...by].sort((a,b)=>totals(b[1]).spend-totals(a[1]).spend||a[0].localeCompare(b[0]));
+ const last=2+groups.length;
+ v326GsClearRows(ws,1,Math.max(ws.rowCount,last),1,7);
+ const header=['廣告活動','曝光','點擊','費用(未稅)','CPC','CTR'];
+ header.forEach((s,i)=>{const c=ws.getCell(1,i+1);c.value=s;c.style=JSON.parse(JSON.stringify(source.getCell(1,i===0?1:i+2).style||{}));});
+ ws.getCell('A2').value='總計';
+ groups.forEach(([campaign,rs],i)=>{
+  const r=i+3,t=totals(rs),sp=t.spend*(1+serviceFee());
+  ws.getCell(r,1).value=campaign;
+  ws.getCell(r,2).value=t.impr;ws.getCell(r,3).value=t.click;ws.getCell(r,4).value=+sp.toFixed(5);
+  ws.getCell(r,1).style=JSON.parse(JSON.stringify(source.getCell(3,1).style||{}));
+  for(let c=2;c<=6;c++)ws.getCell(r,c).style=JSON.parse(JSON.stringify(source.getCell(3,Math.min(c+1,7)).style||{}));
+ });
+ v357Totals(ws,3,last,2,['B','C','D'],'D','C','E','C','B','F');
+ v326GsFrame(ws,1,last,1,6);
+ for(let r=1;r<=Math.max(last,ws.rowCount);r++){ws.getCell(r,7).value=null;ws.getCell(r,7).border={};}
+ for(let c=1;c<=6;c++)ws.getColumn(c).width=c===1?Math.max(39,ws.getColumn(c).width||0):Math.max(17,ws.getColumn(c).width||0);
+ ws.getColumn(7).width=3;
+ v326GsClearBorders(ws,last+1,ws.rowCount,1,7);
+ v326GsTrimRows(ws,last);
+ return ws;
+}
+// 以「完整」廣告活動名稱作為彙總鍵，避免原 GS 標準範本去掉底線後合併不同 Campaign。
+function v357BuildDimension(source,target,name,records,dimension){
+ const ws=v331CopySheet(source,target,name),isKeyword=dimension==='keyword';
+ const startingRow=isKeyword?4:3,totalRow=isKeyword?3:2;
+ const cols=isKeyword?8:7;
+ const grouped=new Map();
+ for(const rec of records){
+  const labels=isKeyword?[rec.campaign,rec.group||'未命名群組',rec.keyword||'未提供關鍵字']:[rec.campaign,rec.group||'未命名群組'];
+  const key=JSON.stringify(labels);
+  if(!grouped.has(key))grouped.set(key,{labels,rows:[]});
+  grouped.get(key).rows.push(rec);
+ }
+ const groups=[...grouped.values()].filter(g=>{
+  const t=totals(g.rows);
+  return !isKeyword||t.impr!==0||t.click!==0||t.spend!==0||t.conv!==0;
+ }).sort((a,b)=>a.labels[0].localeCompare(b.labels[0],'zh-Hant')||
+   a.labels[1].localeCompare(b.labels[1],'zh-Hant')||
+   (isKeyword?totals(b.rows).spend-totals(a.rows).spend:totals(b.rows).impr-totals(a.rows).impr));
+ const last=startingRow+groups.length-1;
+ v326GsClearRows(ws,totalRow,Math.max(last,ws.rowCount),1,cols);
+ if(isKeyword){
+  const h=['廣告活動','廣告群組','搜尋關鍵字','曝光','點擊','費用(未稅)','CPC','CTR'];
+  h.forEach((v,i)=>ws.getCell(2,i+1).value=v);
+ }else{
+  const h=['廣告活動','廣告群組','曝光','點擊','費用(未稅)','CPC','CTR'];
+  h.forEach((v,i)=>ws.getCell(1,i+1).value=v);
+ }
+ ws.getCell(totalRow,1).value='總計';
+ groups.forEach((g,i)=>{
+  const r=startingRow+i,t=totals(g.rows),money=t.spend*(1+serviceFee());
+  g.labels.forEach((v,j)=>ws.getCell(r,j+1).value=v);
+  const start=isKeyword?4:3;
+  [t.impr,t.click,+money.toFixed(5)].forEach((v,j)=>{const cell=ws.getCell(r,start+j);cell.value=v;cell.numFmt='#,##0';});
+  const sample=source.getRow(startingRow);
+  for(let c=1;c<=cols;c++)ws.getCell(r,c).style=JSON.parse(JSON.stringify(sample.getCell(c).style||{}));
+ });
+ const first=startingRow,upper=Math.max(first,last);
+ if(isKeyword){
+  v357Totals(ws,first,upper,totalRow,['D','E','F'],'F','E','G','E','D','H');
+  ws.getColumn(1).width=40;ws.getColumn(2).width=38;ws.getColumn(3).width=37;
+  v326GsFrame(ws,2,Math.max(3,last),1,8);
+ }else{
+  v357Totals(ws,first,upper,totalRow,['C','D','E'],'E','D','F','D','C','G');
+  ws.getColumn(1).width=40;ws.getColumn(2).width=40;
+  v326GsFrame(ws,1,Math.max(2,last),1,7);
+ }
+ v326GsClearBorders(ws,Math.max(totalRow,last)+1,ws.rowCount,1,cols);
+ v326GsTrimRows(ws,Math.max(totalRow,last));
+ return ws;
+}
+v331BuildWorkbook=async function(){
+ const issues=v331Issues();if(issues.length)throw Error(issues[0]);
+ const output=new ExcelJS.Workbook();output.creator='cacaFly';
+ const savedScope=scopeRows;
+ try{
+  for(const country of v331Countries){
+   const prefix=country.name.trim(),campaigns=new Set(country.campaigns);
+   const selected=savedScope('').filter(r=>campaigns.has(r.campaign));
+   scopeRows=function(){return selected;};
+   let source;
+   try{source=await v326GsStandardWorkbook('');}finally{scopeRows=savedScope;}
+   const daily=v331CopySheet(source.getWorksheet('GS日報表'),output,prefix+'-GS日報表');
+   v338AddEventBlock(daily,selected);
+   const dateCount=new Set(selected.map(r=>r.date)).size;
+   v357Totals(daily,8,7+dateCount,7,['B','C','D'],'D','C','E','C','B','F');
+   if(output.worksheets.length>1)daily.properties.tabColor={argb:'FFFFBF00'};
+   const groupBase=source.getWorksheet('GS廣告活動');
+   v357CampaignSheet(groupBase,output,selected,prefix+'-廣告活動');
+   v357BuildDimension(groupBase,output,prefix+'-廣告群組',selected,'group');
+   v357BuildDimension(source.getWorksheet('GS關鍵字報表'),output,prefix+'-關鍵字報表',selected,'keyword');
+   // 確保每日表日期靠左，非公式數據不會顯示多餘的小數位。
+   for(let r=8;r<=7+dateCount;r++)daily.getCell(r,1).alignment={...(daily.getCell(r,1).alignment||{}),horizontal:'left'};
+  }
+ }finally{scopeRows=savedScope;}
+ const config=output.addWorksheet('_google_config');config.state='veryHidden';
+ config.getCell('A1').value='Google Ads Report Generator V3.57 / config';
+ config.getCell('A2').value=JSON.stringify({...fields(),type:V331_MULTI,multiCountries:v331Countries.map(c=>({name:c.name.trim(),campaigns:[...c.campaigns]})),_googleVersion:V357_VERSION});
+ output.calcProperties.fullCalcOnLoad=true;
+ return output;
+};
+// V3.53 對 GS廣告活動的欄位位置有不同預設；多國版已自行填好逐表公式，避免它改寫成錯欄。
+const v357OldTotalFinisher=v353EnsureTotalFormulas;
+v353EnsureTotalFormulas=function(wb){
+ if(v331Active())return wb;
+ return v357OldTotalFinisher(wb);
+};
+const v357OldExportFinisher=enforceMicrosoftJhengHeiWorkbook;
+enforceMicrosoftJhengHeiWorkbook=function(wb){
+ const out=v357OldExportFinisher(wb);
+ if(v331Active()){
+  const cfg=out.getWorksheet('_google_config');
+  if(cfg){let prev={};try{prev=JSON.parse(String(cfg.getCell('A2').value||'{}'));}catch(e){}
+   cfg.getCell('A1').value='Google Ads Report Generator V3.57 / config';
+   cfg.getCell('A2').value=JSON.stringify({...prev,_googleVersion:V357_VERSION});}
+ }
+ return out;
+};
+if(v331Panel){
+ const description=v331Panel.querySelector('p.tiny');
+ if(description)description.textContent='每個國家依序輸出：GS日報表、廣告活動、廣告群組、關鍵字報表；資料維度逐層增加。日報表 I6:K14 依國家、Campaign、走期讀取轉換事件，不混用「轉換」與「所有轉換」。';
+ const preview=$('v337Preview');
+ if(preview){const title=preview.querySelector('strong');if(title)title.textContent='V3.57｜GS 多國轉換・分頁／轉換事件預覽'; const note=preview.querySelector('div');if(note)note.textContent='每個國家依序產出 GS日報表、廣告活動、廣告群組、關鍵字報表。I6:K14 對應獨立的轉換事件明細；轉換與所有轉換不共用數字。';}
+}
+v331Render();refresh();
+/* END V3.57 */
 </script></body></html>
